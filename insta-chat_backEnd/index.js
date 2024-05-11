@@ -18,6 +18,7 @@ moongose
     console.log("database connected");
   })
   .catch((err) => {
+    console.log(err);
   });
 app.use(
   cors({
@@ -26,6 +27,11 @@ app.use(
     credentials: true,
   })
 );
+// {
+//   origin: "*",
+//   methods: ["GET", "POST"],
+//   credentials: true,
+// }
 // app.use('/login',(req,res,next)=>{
 //     res.json('connected',process.env.MONGOURL)
 //     next()
