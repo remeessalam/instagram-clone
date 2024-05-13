@@ -1,5 +1,5 @@
 // import { LockClosedIcon } from '@heroicons/react/20/solid'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
@@ -14,12 +14,32 @@ function Signup() {
   const dispatch = useDispatch();
 
   const [error, setError] = useState("");
-
+  const [passHidden, setPassHidded] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isfullNameValid, setIsfullNameValid] = useState(true);
+  const [isUserNameValid, setIsUserNameValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const [focus, setFocus] = useState({
+    email: true,
+    fullName: true,
+    userName: true,
+    password: true,
+  });
+  const [formData, setFormData] = useState({
+    email: "",
+    fullName: "",
+    userName: "",
+    password: "",
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const emailRef = useRef(null);
+  const fullNameRef = useRef(null);
+  const userNameRef = useRef(null);
+  const passwordRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");
@@ -29,8 +49,9 @@ function Signup() {
   });
 
   const onSubmit = async (formData) => {
+    console.log(formData, "dataishere");
+    return;
     const { data } = await axios.post("/signup", formData);
-    console.log(data, "dataishere");
     if (data.status === true) {
       localStorage.setItem("userToken", JSON.stringify(data.token));
       localStorage.setItem("userid", JSON.stringify(data?.userid));
@@ -59,15 +80,53 @@ function Signup() {
     }
   };
 
+  const validate = (name, value) => {
+    if (name === "email") {
+      const emailRegex =
+        /^((([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$|^([0-9]{10})$/;
+      return emailRegex.test(String(value).toLowerCase());
+    } else if (name === "fullName") {
+      if (value.length < 3 || value.length > 15) return false;
+      return true;
+    } else if (name === "password") {
+      if (value.length < 7 || value.length > 15) return false;
+      return true;
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+    if (name === "email") {
+      const isValidEmail = validate(name, value);
+      console.log(isValidEmail, "validty");
+      setIsEmailValid(isValidEmail);
+    } else if (name === "fullName") {
+      const isValidFullName = validate(name, value);
+      console.log(isValidFullName, value, "fullnamevalided");
+      setIsfullNameValid(isValidFullName);
+    } else if (name === "userName") {
+    } else {
+      const isValidPassword = validate(name, value);
+      setIsPasswordValid(isValidPassword);
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-full  items-center justify-center py-2 px-4 sm:px-6 lg:px-8 ">
         <div className="w-full max-w-sm object-center space-y-8 border border-slate-200 p-10 mt-[10vh]">
           <div>
-            <h2 className="text-center text-5xl font-serif font-light tracking-tight text-gray-900">
+            {/* <h2 className="text-center text-5xl font-serif font-light tracking-tight text-gray-900">
               Instachat
-            </h2>
-            <p className="text-center text-gray-400 font-bold mt-7 pb-4">
+            </h2> */}
+            <div className="w-full flex justify-center">
+              <img className="max-w-[58%]" src="/name.png" alt="site name" />
+            </div>
+            <p className="text-center text-[#737373] font-semibold mt-5 pb-4">
               Sign up to see photos and videos from your friends.
             </p>
 
@@ -106,61 +165,225 @@ function Signup() {
           >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="relative block w-full appearance-none  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
-                  {...register("fullName", {
-                    required: { value: true, message: "Enter Full Name" },
-                    minLength: { value: 4, message: "Enter Name" },
-                  })}
-                />
-                {errors.fullName && (
-                  <p className=" mt-1 text-center text-1xl font-sans font-light tracking-tight text-gray-900">
-                    {errors.fullName.message}
+              {/** EMAIL OR MOBILE NUMBER*/}
+              <div
+                className="relative rounded mb-3 bg-[#FAFAFA] group focus-within:border-[#999999]  cursor-text flex items-center flex-row border border-gray-300 h-11"
+                onClick={() => {
+                  emailRef.current.focus();
+                  emailRef.current.click();
+                  console.log("clicked");
+                }}
+              >
+                <div className="flex flex-col justify-between w-full  ">
+                  <span
+                    className={`placeholder px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs 
+                        
+                      `}
+                  >
+                    {formData.email && <p>Mobile Number or Email</p>}
+                  </span>
+                  <input
+                    ref={emailRef}
+                    name="email"
+                    type="text"
+                    placeholder="Mobile Number or Email"
+                    className="relative block w-full bg-[#FAFAFA] appearance-none  pl-3  text-gray-900 placeholder-gray-500 focus:z-10  focus:outline-none  sm:text-xs "
+                    value={formData.email}
+                    onFocus={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: false }))
+                    }
+                    onBlur={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true }))
+                    }
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {formData.email && (
+                  <p className="pr-3  text-center text-1xl font-sans font-light tracking-tight text-gray-900">
+                    {/* {errors.email.message} */}
+                    {focus.email &&
+                      (isEmailValid ? (
+                        <img
+                          src="/svg/tick.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ) : (
+                        <img
+                          src="/svg/close.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ))}
                   </p>
                 )}
               </div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="Email"
-                  className="relative block w-full appearance-none  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm mt-3"
-                  {...register("email", {
-                    required: { value: true, message: "Email is required" },
-                    pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: "Enter a valid email",
-                    },
-                  })}
-                />
-                {errors.email && (
-                  <p className=" mt-1 text-center text-1xl font-sans font-light tracking-tight text-gray-900">
-                    {errors.email.message}
+              {/** END EMAIL OR MOBILE NUMBER*/}
+              {/** FULL NAME  */}
+              <div
+                style={{ marginBottom: "12px" }}
+                className="relative mb-3 rounded bg-inputfieldbg group focus-within:border-[#999999]  cursor-text flex items-center flex-row border border-gray-300 h-11"
+                onClick={() => {
+                  fullNameRef.current.focus();
+                  fullNameRef.current.click();
+                  console.log("clicked");
+                }}
+              >
+                <div className="flex flex-col justify-between w-full">
+                  <span className=" px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs ">
+                    {formData.fullName && <p>Full Name</p>}
+                  </span>
+                  <input
+                    ref={fullNameRef}
+                    name="fullName"
+                    type="text"
+                    placeholder="Full Name"
+                    className="relative block w-full bg-[#FAFAFA] appearance-none  pl-3     text-gray-900 placeholder-gray-500 focus:z-10  focus:outline-none sm:text-xs "
+                    onFocus={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: false }))
+                    }
+                    onBlur={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true }))
+                    }
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {formData.fullName && (
+                  <p className="pr-3  text-center text-1xl font-sans font-light tracking-tight text-gray-900">
+                    {/* {errors.email.message} */}
+                    {focus.fullName &&
+                      (isfullNameValid ? (
+                        <img
+                          src="/svg/tick.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ) : (
+                        <img
+                          src="/svg/close.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ))}
                   </p>
                 )}
               </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="relative block w-full appearance-none  border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm mt-3"
-                  {...register("password", {
-                    required: { value: true, message: "Password required" },
-                    minLength: {
-                      value: 8,
-                      message: "Password should be 8 characters long",
-                    },
-                  })}
-                />
-                {errors.password && (
-                  <p className=" mt-1 text-center text-1xl font-sans font-light tracking-tight text-gray-900">
-                    {errors.password.message}
+              {/** END FULL NAME  */}
+              {/** USERNAME */}
+              <div
+                style={{ marginBottom: "12px" }}
+                className="relative rounded bg-inputfieldbg group focus-within:border-[#999999]  cursor-text flex items-center flex-row border border-gray-300 h-11"
+                onClick={() => {
+                  userNameRef.current.focus();
+                  userNameRef.current.click();
+                  console.log("clicked");
+                }}
+              >
+                <div className="flex flex-col justify-between w-full">
+                  <span className=" px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs ">
+                    {formData.userName && <p>Username</p>}
+                  </span>
+                  <input
+                    ref={userNameRef}
+                    type="text"
+                    name="userName"
+                    placeholder="Username"
+                    className="relative block w-full bg-inputfieldbg appearance-none   pl-3 text-gray-900 placeholder-gray-500 focus:z-10  focus:outline-none  sm:text-xs "
+                    onFocus={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: false }))
+                    }
+                    onBlur={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true }))
+                    }
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {formData.userName && (
+                  <p className="pr-3  text-center text-1xl font-sans font-light tracking-tight text-gray-900">
+                    {/* {errors.email.message} */}
+                    {focus.userName &&
+                      (isUserNameValid ? (
+                        <img
+                          src="/svg/tick.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ) : (
+                        <img
+                          src="/svg/close.svg"
+                          alt=""
+                          width={22}
+                          height={22}
+                        />
+                      ))}
                   </p>
                 )}
               </div>
+              {/** END  USERNAME */}
+              {/** PASSWORD */}
+              <div className="relative rounded mt-3 bg-inputfieldbg group focus-within:border-[#999999]  cursor-text flex items-center flex-row border border-gray-300 h-11">
+                <div
+                  className="flex flex-col justify-between w-full"
+                  onClick={() => {
+                    passwordRef.current.focus();
+                    passwordRef.current.click();
+                    console.log("clicked");
+                  }}
+                >
+                  <span className=" px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs ">
+                    {formData.password && <p>Password</p>}
+                  </span>
+                  <input
+                    ref={passwordRef}
+                    type={passHidden ? "password" : "text"}
+                    name="password"
+                    placeholder="Password"
+                    className="relative block w-full appearance-none bg-inputfieldbg  pl-3  text-gray-900 placeholder-gray-500 focus:z-10  focus:outline-none focus:ring-gray-500 sm:text-xs"
+                    onFocus={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: false }))
+                    }
+                    onBlur={(e) =>
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true }))
+                    }
+                    onChange={handleInputChange}
+                  />
+                </div>
+                {formData.password && (
+                  <p className="">
+                    {/* {errors.email.message} */}
+                    {formData.password &&
+                      (isPasswordValid ? (
+                        <img
+                          src="/svg/tick.svg"
+                          alt="tick"
+                          width={27.3}
+                          height={25}
+                        />
+                      ) : (
+                        <img
+                          src="/svg/close.svg"
+                          alt="close"
+                          width={27.3}
+                          height={25}
+                        />
+                      ))}
+                  </p>
+                )}
+                {formData.password && (
+                  <span
+                    onClick={() => setPassHidded((pre) => !pre)}
+                    className="pr-3 ml-3 min-w-[52px] select-none"
+                  >
+                    {passHidden ? "Show" : "Hide"}
+                  </span>
+                )}
+              </div>
+              {/**END PASSWORD  */}
             </div>
 
             <div>
@@ -194,3 +417,36 @@ function Signup() {
 }
 
 export default Signup;
+
+{
+  /** email register 
+  // {...register("email", {
+                    //   required: { value: true, message: "Email is required" },
+                    //   pattern: {
+                    //     value:
+                    //       /^((([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$|^([0-9]{10})$/,
+                    //     message: "Enter a valid email",
+                    //   },
+                    FULL NAME REGISTER
+                       // {...register("fullName", {
+                    //   required: { value: true, message: "Enter Full Name" },
+                    //   minLength: { value: 4, message: "Enter Name" },
+                    // })}
+                    USERNAME REGISTER
+                   {...register("username", {
+                      required: { value: true, message: "Username required" },
+                      minLength: {
+                        value: 3,
+                        message: "Enter a valid username",
+                      },
+                    })}
+                    PASSWORD REGISTER
+                    {...register("password", {
+                      required: { value: true, message: "Password required" },
+                      minLength: {
+                        value: 8,
+                        message: "Password should be 8 characters long",
+                      },
+                    })}
+                    // })} */
+}

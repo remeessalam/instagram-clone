@@ -4,7 +4,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        inputfieldbg: '#FAFAFA',
+      },
+    },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],
       adelia: ["ADELIA", "cursive"],

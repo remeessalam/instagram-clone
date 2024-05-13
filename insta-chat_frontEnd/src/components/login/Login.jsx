@@ -8,7 +8,7 @@ import jwt_decode from "jwt-decode";
 import { userReducer } from "../../reduxgobalState/userSlice";
 import { useDispatch } from "react-redux";
 import "./Login.css";
-import Slider from "./slider";
+import Slider from "./Slider";
 import { useMediaQuery } from "react-responsive";
 
 function Login() {
