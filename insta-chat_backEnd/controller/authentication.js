@@ -11,14 +11,27 @@ module.exports = {
   register: asyncwrappe(async (req, res) => {
     console.log(req.body);
     const { fullName, email, password, userName } = req.body;
+    let sameEmail;
+    let mobuse;
+    if (/^\d+$/.test(email)) {
+      sameEmail = await userSchema.findOne({ mobile: email });
+      console.log("hai1");
+      mobuse = "mobile";
+    } else if (/\S+@\S+\.\S+/.test(email)) {
+      console.log("hai2");
+      mobuse = "email";
+      sameEmail = await userSchema.findOne({ email: email });
+    }
     const pass = await bcrypt.hash(password, 10);
-    const sameEmail = await userSchema.findOne({ email: email });
+    // const sameEmail = await userSchema.findOne({ email: email });
     if (sameEmail) {
-      throw Error("Sorry, this email already exists. try something different");
+      throw Error(
+        "Sorry, this email or mobile already exists. try something different"
+      );
     } else {
       const user = await userSchema.create({
         name: fullName,
-        email: email,
+        [mobuse]: email,
         password: pass,
         username: userName,
       });
@@ -85,7 +98,17 @@ module.exports = {
       console.log(email, password, "thisisemailandpassword");
       // res.status(200).json({ status: "ok" });
       // return;
-      const user = await userSchema.findOne({ email: email });
+      let user;
+      if (/^\d+$/.test(email)) {
+        user = await userSchema.findOne({ mobile: email });
+        console.log("hai1");
+      } else if (/\S+@\S+\.\S+/.test(email)) {
+        console.log("hai2");
+        user = await userSchema.findOne({ email: email });
+      } else {
+        user = await userSchema.findOne({ username: email });
+        console.log("hai3", user);
+      }
       if (user) {
         const use = await bcrypt.compare(password, user.password);
         if (use) {

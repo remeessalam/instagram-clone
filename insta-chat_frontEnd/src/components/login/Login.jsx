@@ -21,7 +21,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
-
+  const [inputType, setInputType] = useState("");
   const IsBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
 
   const emailRef = useRef(null);
@@ -40,11 +40,24 @@ function Login() {
     }
   }, [navigate]);
 
+  let formdata = {};
+
   const onSubmit = async (formData) => {
     try {
       console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
-
+      if (/^\d+$/.test(inputValue)) {
+        setInputType(inputValue);
+        formdata.phone = inputValue;
+      } else if (/\S+@\S+\.\S+/.test(inputValue)) {
+        formdata.email = inputValue;
+        setInputType(inputValue);
+      } else {
+        formdata.userName = inputValue;
+        setInputType(inputValue);
+      }
       // return;
+      formdata.password = inputPassword;
+      console.log(formdata, "thisisformdataiss");
       const { data } = await axios.post("/login", {
         email: inputValue,
         password: inputPassword,

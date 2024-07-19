@@ -54,7 +54,7 @@ function Signup() {
     if (allValidated) return;
     console.log(formData, "dataishere");
 
-    return;
+    // return;
     const { data } = await axios.post("/signup", formData);
     if (data.status === true) {
       localStorage.setItem("userToken", JSON.stringify(data.token));
