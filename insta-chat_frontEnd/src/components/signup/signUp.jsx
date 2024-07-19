@@ -14,6 +14,7 @@ function Signup() {
   const dispatch = useDispatch();
 
   const [error, setError] = useState("");
+  const [allValidated, setAllValidated] = useState(false);
   const [passHidden, setPassHidded] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isfullNameValid, setIsfullNameValid] = useState(true);
@@ -42,14 +43,17 @@ function Signup() {
   const passwordRef = useRef(null);
 
   useEffect(() => {
+    isdataadded();
     const token = localStorage.getItem("userToken");
     if (token) {
       navigate("/");
     }
   });
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async () => {
+    if (allValidated) return;
     console.log(formData, "dataishere");
+
     return;
     const { data } = await axios.post("/signup", formData);
     if (data.status === true) {
@@ -61,6 +65,22 @@ function Signup() {
     } else {
       setError(data.error);
     }
+  };
+  const isdataadded = () => {
+    if (
+      !isEmailValid ||
+      !isfullNameValid ||
+      !isUserNameValid ||
+      !isPasswordValid ||
+      formData.email.length === 0 ||
+      formData.fullName.length === 0 ||
+      formData.userName.length === 0 ||
+      formData.password.length === 0
+    ) {
+      setAllValidated(true);
+      return;
+    }
+    setAllValidated(false);
   };
 
   const response = async (credentialResponse) => {
@@ -79,6 +99,17 @@ function Signup() {
       console.log(data.error);
     }
   };
+  const validateUserName = async (userName) => {
+    const { data } = await axios.post("/signup/checkusername", {
+      username: userName,
+    });
+    if (userName.length < 4 || userName.length > 30 || data.msg === "user") {
+      setIsUserNameValid(false);
+      return;
+    }
+    console.log(data, isUserNameValid, "thisisdata");
+    setIsUserNameValid(true);
+  };
 
   const validate = (name, value) => {
     if (name === "email") {
@@ -88,18 +119,20 @@ function Signup() {
     } else if (name === "fullName") {
       if (value.length < 3 || value.length > 15) return false;
       return true;
-    } else if (name === "password") {
+    } else {
       if (value.length < 7 || value.length > 15) return false;
       return true;
     }
   };
 
   const handleInputChange = (event) => {
+    isdataadded();
     const { name, value } = event.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
+
     if (name === "email") {
       const isValidEmail = validate(name, value);
       console.log(isValidEmail, "validty");
@@ -108,10 +141,11 @@ function Signup() {
       const isValidFullName = validate(name, value);
       console.log(isValidFullName, value, "fullnamevalided");
       setIsfullNameValid(isValidFullName);
-    } else if (name === "userName") {
-    } else {
+    } else if (name === "password") {
       const isValidPassword = validate(name, value);
       setIsPasswordValid(isValidPassword);
+    } else {
+      return;
     }
   };
 
@@ -296,9 +330,10 @@ function Signup() {
                     onFocus={(e) =>
                       setFocus((pre) => ({ ...pre, [e.target.name]: false }))
                     }
-                    onBlur={(e) =>
-                      setFocus((pre) => ({ ...pre, [e.target.name]: true }))
-                    }
+                    onBlur={(e) => (
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true })),
+                      validateUserName(formData.userName)
+                    )}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -326,9 +361,9 @@ function Signup() {
               </div>
               {/** END  USERNAME */}
               {/** PASSWORD */}
-              <div className="relative rounded mt-3 bg-inputfieldbg group focus-within:border-[#999999]  cursor-text flex items-center flex-row border border-gray-300 h-11">
+              <div className="relative rounded mt-3 bg-inputfieldbg group focus-within:border-[#999999]   flex items-center flex-row border border-gray-300 h-11">
                 <div
-                  className="flex flex-col justify-between w-full"
+                  className="flex flex-col justify-between w-full cursor-text"
                   onClick={() => {
                     passwordRef.current.focus();
                     passwordRef.current.click();
@@ -389,7 +424,9 @@ function Signup() {
             <div>
               <button
                 type="submit"
-                className="group relative flex w-full justify-center rounded-md border border-transparent bg-[#0ea5e9] py-2 px-4 text-sm font-medium text-white hover:bg-[#0ea5e9] "
+                className={`group relative flex w-full justify-center rounded-md border border-transparent  py-2 px-4 text-sm font-medium text-white  ${
+                  allValidated ? "bg-[#67b5fa]" : "bg-[#0ea5e9]"
+                }`}
               >
                 Sign up
               </button>

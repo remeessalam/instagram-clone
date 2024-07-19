@@ -13,12 +13,17 @@ app.use(express.json());
 require("dotenv").config();
 
 moongose
-  .connect(process.env.MONGOURL)
+  .connect(process.env.MONGOURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Increase timeout here
+    socketTimeoutMS: 45000, // Optional
+  })
   .then(() => {
     console.log("database connected");
   })
   .catch((err) => {
-    console.log(err);
+    console.log(err, "error");
   });
 app.use(
   cors({

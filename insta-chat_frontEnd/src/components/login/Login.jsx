@@ -1,5 +1,5 @@
 // import { LockClosedIcon } from '@heroicons/react/20/solid'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
@@ -24,6 +24,9 @@ function Login() {
 
   const IsBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
 
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
   const {
     register,
     handleSubmit,
@@ -39,7 +42,13 @@ function Login() {
 
   const onSubmit = async (formData) => {
     try {
-      const { data } = await axios.post("/login", formData);
+      console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
+
+      // return;
+      const { data } = await axios.post("/login", {
+        email: inputValue,
+        password: inputPassword,
+      });
       if (data.status === !false) {
         localStorage.setItem("userToken", JSON.stringify(data.token));
         localStorage.setItem("userid", JSON.stringify(data?.userid));
@@ -74,6 +83,7 @@ function Login() {
   const [inputPassword, setInputPassword] = useState("");
   const [passHidden, setPassHidded] = useState(true);
   const handleInputChange = (event) => {
+    console.log(event.target.name);
     event.target.name === "email"
       ? setInputValue(event.target.value)
       : setInputPassword(event.target.value);
@@ -90,8 +100,8 @@ function Login() {
           )}
           <div className="flex flex-col gap-3 w-[350px]">
             <div className="border border-slate-200 w-full max-w-sm pl-10 pr-10 pt-16 pb-16 mt-1">
-              <div>
-                <img src="/name.png" alt="site name" />
+              <div className="flex justify-center">
+                <img className="max-w-[66%]" src="/name.png" alt="site name" />
               </div>
               <form
                 className="mt-8 space-y-6"
@@ -100,8 +110,14 @@ function Login() {
                 method=""
               >
                 <input type="hidden" name="remember" defaultValue="true" />
-                <div className="-space-y-px rounded-md ">
-                  <div className="relative flex justify-center flex-col border border-gray-300 h-11">
+                <div className="-space-y-px ">
+                  <div
+                    className="relative rounded flex justify-center bg-[#FAFAFA] flex-col border border-gray-300 h-11"
+                    onClick={() => {
+                      emailRef.current.focus();
+                      emailRef.current.click();
+                    }}
+                  >
                     {/* {inputValue && ( */}
                     <span
                       className={`placeholder px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs 
@@ -112,17 +128,23 @@ function Login() {
                     </span>
                     {/* // )} */}
                     <input
+                      ref={emailRef}
                       type="text"
-                      placeholder="phone number, username, or email"
-                      className=" w-full appearance-none text-xs   px-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
-                      {...register("email", {
-                        required: { value: true, message: "Email is required" },
-                        pattern: {
-                          value:
-                            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                          message: "Enter a valid email",
-                        },
-                      })}
+                      name="email"
+                      placeholder="Phone number, username, or email"
+                      className="relative block w-full bg-[#FAFAFA] appearance-none text-xs   pl-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
+                      value={inputValue}
+                      // {...register("email", {
+                      //   required: {
+                      //     value: true,
+                      //     // message: "Email is required"
+                      //   },
+                      //   pattern: {
+                      //     value:
+                      //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                      //     // message: "Enter a valid email",
+                      //   },
+                      // })}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -131,9 +153,15 @@ function Login() {
                       {errors.email.message}
                     </p>
                   )}
-                  <div className="">
-                    <div className="flex items-center justify-between  border border-gray-300 h-11 mt-3 py-3">
-                      <div className="flex flex-col">
+                  <div className="bg-[#FAFAFA]">
+                    <div
+                      className="flex rounded items-center  justify-between  border border-gray-300 h-11 mt-3 py-3"
+                      onClick={() => {
+                        passwordRef.current.focus();
+                        passwordRef.current.click();
+                      }}
+                    >
+                      <div className="flex flex-col cursor-text">
                         <span
                           className={` px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs 
                         
@@ -142,19 +170,22 @@ function Login() {
                           {inputPassword && <p>password</p>}
                         </span>
                         <input
+                          ref={passwordRef}
                           type={passHidden ? "password" : "text"}
-                          placeholder="password"
-                          className="relative  w-full appearance-none text-xs   px-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
-                          {...register("password", {
-                            required: {
-                              value: true,
-                              message: "Password required",
-                            },
-                            minLength: {
-                              value: 8,
-                              message: "Password should be 8 characters long",
-                            },
-                          })}
+                          placeholder="Password"
+                          name="password"
+                          className="relative bg-[#FAFAFA] w-full appearance-none text-xs   px-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
+                          value={inputPassword}
+                          // {...register("password", {
+                          //   required: {
+                          //     value: true,
+                          //     // message: "Password required",
+                          //   },
+                          //   minLength: {
+                          //     value: 8,
+                          //     // message: "Password should be 8 characters long",
+                          //   },
+                          // })}
                           onChange={handleInputChange}
                         />
                       </div>
@@ -177,6 +208,7 @@ function Login() {
 
                 <div>
                   <button
+                    onClick={onSubmit}
                     type="submit"
                     className="group relative flex w-full justify-center rounded-md border border-transparent bg-[#67B5FA] py-2 px-4 text-sm font-semibold text-white hover:bg-[#0064e0] "
                   >
