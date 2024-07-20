@@ -33,10 +33,10 @@ function Signup() {
     password: "",
   });
   const {
-    register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const emailRef = useRef(null);
   const fullNameRef = useRef(null);
   const userNameRef = useRef(null);
@@ -53,8 +53,6 @@ function Signup() {
   const onSubmit = async () => {
     if (allValidated) return;
     console.log(formData, "dataishere");
-
-    // return;
     const { data } = await axios.post("/signup", formData);
     if (data.status === true) {
       localStorage.setItem("userToken", JSON.stringify(data.token));

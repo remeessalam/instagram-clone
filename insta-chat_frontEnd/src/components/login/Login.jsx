@@ -10,29 +10,22 @@ import { useDispatch } from "react-redux";
 import "./Login.css";
 import Slider from "./Slider";
 import { useMediaQuery } from "react-responsive";
+import { loginPageImage } from "../../utils/constant";
 
 function Login() {
-  let image = [
-    "/png/screenshot1.png",
-    "/png/screenshot2.png",
-    "/png/screenshot3.png",
-    "/png/screenshot4.png",
-  ];
+  let image = loginPageImage;
   const navigate = useNavigate();
 
+  const [inputValue, setInputValue] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  const [passHidden, setPassHidded] = useState(true);
   const [error, setError] = useState("");
-  const [inputType, setInputType] = useState("");
   const IsBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
+  const dispatch = useDispatch();
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const dispatch = useDispatch();
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
     if (token) {
@@ -40,24 +33,15 @@ function Login() {
     }
   }, [navigate]);
 
-  let formdata = {};
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (formData) => {
     try {
       console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
-      if (/^\d+$/.test(inputValue)) {
-        setInputType(inputValue);
-        formdata.phone = inputValue;
-      } else if (/\S+@\S+\.\S+/.test(inputValue)) {
-        formdata.email = inputValue;
-        setInputType(inputValue);
-      } else {
-        formdata.userName = inputValue;
-        setInputType(inputValue);
-      }
-      // return;
-      formdata.password = inputPassword;
-      console.log(formdata, "thisisformdataiss");
+
       const { data } = await axios.post("/login", {
         email: inputValue,
         password: inputPassword,
@@ -92,9 +76,6 @@ function Login() {
     }
   };
 
-  const [inputValue, setInputValue] = useState("");
-  const [inputPassword, setInputPassword] = useState("");
-  const [passHidden, setPassHidded] = useState(true);
   const handleInputChange = (event) => {
     console.log(event.target.name);
     event.target.name === "email"
@@ -147,17 +128,6 @@ function Login() {
                       placeholder="Phone number, username, or email"
                       className="relative block w-full bg-[#FAFAFA] appearance-none text-xs   pl-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
                       value={inputValue}
-                      // {...register("email", {
-                      //   required: {
-                      //     value: true,
-                      //     // message: "Email is required"
-                      //   },
-                      //   pattern: {
-                      //     value:
-                      //       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      //     // message: "Enter a valid email",
-                      //   },
-                      // })}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -189,16 +159,6 @@ function Login() {
                           name="password"
                           className="relative bg-[#FAFAFA] w-full appearance-none text-xs   px-3  text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm "
                           value={inputPassword}
-                          // {...register("password", {
-                          //   required: {
-                          //     value: true,
-                          //     // message: "Password required",
-                          //   },
-                          //   minLength: {
-                          //     value: 8,
-                          //     // message: "Password should be 8 characters long",
-                          //   },
-                          // })}
                           onChange={handleInputChange}
                         />
                       </div>
