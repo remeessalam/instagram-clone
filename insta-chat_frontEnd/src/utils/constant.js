@@ -4,3 +4,5 @@ export const loginPageImage = [
   "/png/screenshot3.png",
   "/png/screenshot4.png",
 ];
+
+export const bigScreen = "(min-width: 1024px)";

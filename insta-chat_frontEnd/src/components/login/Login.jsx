@@ -10,7 +10,8 @@ import { useDispatch } from "react-redux";
 import "./Login.css";
 import Slider from "./Slider";
 import { useMediaQuery } from "react-responsive";
-import { loginPageImage } from "../../utils/constant";
+import { bigScreen, loginPageImage } from "../../utils/constant";
+import useChecktoken from "../../hooks/useChecktoken";
 
 function Login() {
   let image = loginPageImage;
@@ -20,18 +21,20 @@ function Login() {
   const [inputPassword, setInputPassword] = useState("");
   const [passHidden, setPassHidded] = useState(true);
   const [error, setError] = useState("");
-  const IsBigScreen = useMediaQuery({ query: "(min-width: 1024px)" });
+  const IsBigScreen = useMediaQuery({ query: bigScreen });
   const dispatch = useDispatch();
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
-    if (token) {
-      navigate("/");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const token = JSON.parse(localStorage.getItem("userToken"));
+  //   if (token) {
+  //     navigate("/");
+  //   }
+  // }, [navigate]);
+
+  useChecktoken();
 
   const {
     handleSubmit,
