@@ -2,33 +2,21 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import allpost from "../../services/allpost";
 import allusers from "../../services/allusers";
-// import follow from '../../services/follow'
-// import unfollow from '../../services/unfollow'
+
 import Post from "../post/post";
 import Friend from "../suggestion/suggestion";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { bigScreen } from "../../utils/constant";
+import useChecktoken from "../../hooks/useChecktoken";
 
 function Content() {
   const [post, setPost] = useState([]);
 
   const [users, setUsers] = useState([]);
 
-  const navigate = useNavigate();
-
-  // const [liked, setLiked] = useState(true)
-
   const refresh = useSelector((state) => state.refresh.refresh);
 
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
-    if (token) {
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+  useChecktoken("/");
 
   useEffect(() => {
     allpost().then((data) => {

@@ -2,56 +2,26 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Getfriend from "../../services/getFriend";
 import GetfriendPost from "../../services/getfriendPost.js";
-import { useNavigate } from "react-router-dom";
 import { bigScreen } from "../../utils/constant.js";
-
-// import jwt_decode from "jwt-decode";
-// import Hover from '../hover/hover'
-// import { useSelector } from 'react-redux';
+import useChecktoken from "../../hooks/useChecktoken.js";
 
 function ShowProfile({ id }) {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
-
-  // const [hopen, setHopen] = useState(false)
-
-  // const [open, setOpen] = useState(false)
 
   const [post, setPost] = useState([]);
 
   const [userDetails, setUser] = useState({});
 
-  const navigate = useNavigate();
-
-  // const [heading, setHeading] = useState('')
-
-  // const [hoverdata, setHoverdata] = useState([])
-
-  // const token = localStorage.getItem('userToken')
-  // const decoded = jwt_decode(token)
-
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
-    !token && navigate("/login");
-  }, [navigate]);
+  useChecktoken();
 
   useEffect(() => {
     GetfriendPost(id).then((data) => {
       setPost(data.data.post);
-      // console.log(data,'frnd all post')
     });
     Getfriend(id).then((data) => {
       setUser(data.data.frienddetails);
-      // console.log(data,'userdetails')
     });
   }, [id]);
-  // function hovercontant(data, text) {
-  //     // console.log(data, 'hover data in profile')
-  //     setHopen(!hopen)
-  //     setHoverdata(data)
-  //     setHeading(text)
-  // }
-  // const { user } = useSelector((state) => ({ ...state }))
-  // console.log(user ,'in profile page ')
 
   return (
     <>
@@ -80,11 +50,6 @@ function ShowProfile({ id }) {
                     />
                   </svg>
                 )}
-                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer" onClick={() => hovercontant(post, 'Update profile picture')}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-
-                                </svg> */}
               </div>
               <div className="flex flex-col w-3/4 m-5 pl-9 ">
                 <div className="flex flex-row m-4">
@@ -93,9 +58,6 @@ function ShowProfile({ id }) {
                       {userDetails?.name}
                     </h1>
                   </div>
-                  {/* <div onClick={() => setOpen(true)} className="flex rounded bg-gray-200 hover:bg-gray-300 cursor-pointer justify-items-center p-2 md:3">
-                                        <h1 className="self-center text-sm">Edit profile</h1>
-                                    </div> */}
                 </div>
 
                 <div className="flex flex-row  m-4">
@@ -135,10 +97,6 @@ function ShowProfile({ id }) {
                     />
                   </svg>
                 )}
-                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer" onClick={() => hovercontant(post, 'Update profile picture')}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
-                                </svg> */}
               </div>
 
               <div className="flex flex-col w-3/4 m-5">
@@ -148,9 +106,6 @@ function ShowProfile({ id }) {
                       remees salam
                     </h1>
                   </div>
-                  {/* <div onClick={() => setOpen(true)} className="flex rounded bg-gray-200 hover:bg-gray-300 cursor-pointer justify-items-center p-1">
-                                        <h1 className="self-center">edit profile</h1>
-                                    </div> */}
                 </div>
                 <div className="flex flex-row ">
                   <h1 className="mr-7 cursor-default">post {post?.length}</h1>
@@ -220,7 +175,6 @@ function ShowProfile({ id }) {
                 </div>
               );
             })}
-            {/* <Hover change={hopen} setChange={setHopen} Contant={hoverdata} Heading={heading} /> */}
           </div>
         </div>
       </div>

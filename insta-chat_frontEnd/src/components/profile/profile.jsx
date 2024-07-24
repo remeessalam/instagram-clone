@@ -3,11 +3,10 @@ import { useMediaQuery } from "react-responsive";
 import { Example } from "../editprofile/profileEditModal";
 import Getpost from "../../services/getpost";
 import Getuser from "../../services/getuser";
-// import jwt_decode from "jwt-decode";
 import Hover from "../smallmodal/modal";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { bigScreen } from "../../utils/constant";
+import useChecktoken from "../../hooks/useChecktoken";
 
 function Profile() {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
@@ -24,14 +23,7 @@ function Profile() {
 
   const [hoverdata, setHoverdata] = useState([]);
 
-  const navigate = useNavigate();
-  // const token = localStorage.getItem('userToken')
-  // const decoded = jwt_decode(token)
-
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
-    !token && navigate("/login");
-  }, [navigate]);
+  useChecktoken("/profile");
 
   useEffect(() => {
     Getpost().then((data) => {
@@ -42,7 +34,6 @@ function Profile() {
     });
   }, []);
   function hovercontant(data, text) {
-    // console.log(data, 'hover data in profile')
     setHopen(!hopen);
 
     setHoverdata(data);

@@ -7,6 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { userReducer } from "../../reduxgobalState/userSlice";
 import { useDispatch } from "react-redux";
+import useOnSubmit from "../../hooks/useOnSubmit";
 
 function Signup() {
   const navigate = useNavigate();
@@ -33,7 +34,6 @@ function Signup() {
     password: "",
   });
   const {
-    handleSubmit,
     formState: { errors },
   } = useForm();
 
@@ -49,21 +49,21 @@ function Signup() {
       navigate("/");
     }
   });
-
-  const onSubmit = async () => {
-    if (allValidated) return;
-    console.log(formData, "dataishere");
-    const { data } = await axios.post("/signup", formData);
-    if (data.status === true) {
-      localStorage.setItem("userToken", JSON.stringify(data.token));
-      localStorage.setItem("userid", JSON.stringify(data?.userid));
-      localStorage.setItem("user", JSON.stringify(data?.user));
-      dispatch(userReducer());
-      navigate("/");
-    } else {
-      setError(data.error);
-    }
-  };
+  const handleSubmit = useOnSubmit();
+  // const onSubmit = async () => {
+  //   if (allValidated) return;
+  //   console.log(formData, "dataishere");
+  //   const { data } = await axios.post("/signup", formData);
+  //   if (data.status === true) {
+  //     localStorage.setItem("userToken", JSON.stringify(data.token));
+  //     localStorage.setItem("userid", JSON.stringify(data?.userid));
+  //     localStorage.setItem("user", JSON.stringify(data?.user));
+  //     dispatch(userReducer());
+  //     navigate("/");
+  //   } else {
+  //     setError(data.error);
+  //   }
+  // };
   const isdataadded = () => {
     if (
       !isEmailValid ||
@@ -192,7 +192,10 @@ function Signup() {
           <form
             className="mt-8 space-y-6"
             action=""
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(formData, setError, "/signup");
+            }}
             method=""
           >
             <input type="hidden" name="remember" defaultValue="true" />

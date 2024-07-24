@@ -10,7 +10,8 @@ const maxAge = 60 * 60 * 24;
 module.exports = {
   register: asyncwrappe(async (req, res) => {
     console.log(req.body);
-    const { fullName, email, password, userName } = req.body;
+    const { formData } = req.body;
+    const { fullName, email, password, userName } = formData;
     let sameEmail;
     let mobuse;
     if (/^\d+$/.test(email)) {
@@ -22,11 +23,11 @@ module.exports = {
       mobuse = "email";
       sameEmail = await userSchema.findOne({ email: email });
     }
+    console.log("thisispass");
     const pass = await bcrypt.hash(password, 10);
-    // const sameEmail = await userSchema.findOne({ email: email });
     if (sameEmail) {
       throw Error(
-        "Sorry, this email or mobile already exists. try something different"
+        "Sorry, this email or mobile number already exists. try something different"
       );
     } else {
       const user = await userSchema.create({
@@ -94,7 +95,8 @@ module.exports = {
         }
       }
     } else {
-      const { email, password } = req.body;
+      const { formData } = req.body;
+      const { email, password } = formData;
       console.log(email, password, "thisisemailandpassword");
       // res.status(200).json({ status: "ok" });
       // return;

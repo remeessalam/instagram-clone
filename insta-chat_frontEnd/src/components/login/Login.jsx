@@ -1,5 +1,5 @@
 // import { LockClosedIcon } from '@heroicons/react/20/solid'
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
@@ -12,6 +12,7 @@ import Slider from "./Slider";
 import { useMediaQuery } from "react-responsive";
 import { bigScreen, loginPageImage } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";
+import useOnSubmit from "../../hooks/useOnSubmit";
 
 function Login() {
   let image = loginPageImage;
@@ -27,40 +28,39 @@ function Login() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  // useEffect(() => {
-  //   const token = JSON.parse(localStorage.getItem("userToken"));
-  //   if (token) {
-  //     navigate("/");
-  //   }
-  // }, [navigate]);
-
-  useChecktoken();
+  useChecktoken("/");
 
   const {
-    handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (formData) => {
-    try {
-      console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
+  // const handleSubmit = ()=>{
 
-      const { data } = await axios.post("/login", {
-        email: inputValue,
-        password: inputPassword,
-      });
-      if (data.status === !false) {
-        localStorage.setItem("userToken", JSON.stringify(data.token));
-        localStorage.setItem("userid", JSON.stringify(data?.userid));
-        localStorage.setItem("user", JSON.stringify(data?.user));
-        dispatch(userReducer());
-        navigate("/");
-      } else {
-        setError(data.error);
-      }
-    } catch (err) {
-      // console.log(err, 'login error')
-    }
+  //   useOnSubmit({ email: inputValue,
+  //     password: inputPassword}, setError, '/login');
+  // }
+
+  const handleSubmit = useOnSubmit();
+
+  const onSubmit = async (formData) => {
+    // try {
+    //   console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
+    //   const { data } = await axios.post("/login", {
+    //     email: inputValue,
+    //     password: inputPassword,
+    //   });
+    //   if (data.status === true) {
+    //     localStorage.setItem("userToken", JSON.stringify(data.token));
+    //     localStorage.setItem("userid", JSON.stringify(data?.userid));
+    //     localStorage.setItem("user", JSON.stringify(data?.user));
+    //     dispatch(userReducer());
+    //     navigate("/");
+    //   } else {
+    //     setError(data.error);
+    //   }
+    // } catch (err) {
+    //   // console.log(err, 'login error')
+    // }
   };
   const response = async (credentialResponse) => {
     var token = credentialResponse.credential;
@@ -103,7 +103,14 @@ function Login() {
               <form
                 className="mt-8 space-y-6"
                 action=""
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(
+                    { email: inputValue, password: inputPassword },
+                    setError,
+                    "/login"
+                  );
+                }}
                 method=""
               >
                 <input type="hidden" name="remember" defaultValue="true" />
