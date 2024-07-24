@@ -2,29 +2,27 @@ import { Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./components/login/Login";
 import Signup from "./components/signup/signUp";
 import HomePage from "./pages/homepage";
-import { ProfilePage } from "./pages/profilePage";
+import ProfilePage from "./pages/profilePage";
 import Chatpage from "./pages/chatpage";
 import Error from "./pages/Error";
-import { Showuser } from "./pages/showProfile";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import Showuser from "./pages/showProfile";
 import io from "socket.io-client";
 import SideBar from "./layout/sideBar";
-import { Provider } from "react-redux";
-import { store } from "./reduxgobalState/store";
 
 const socket = io.connect("http://localhost:4000/");
 const AppLayout = () => {
   return (
-    <>
-      <Provider store={store}>
-        <GoogleOAuthProvider clientId="117584395273-oljruplarl1md005un2cv7rmkvf11so6.apps.googleusercontent.com">
-          <SideBar />
-          <Outlet />
-        </GoogleOAuthProvider>
-      </Provider>
-    </>
+    <div className="flex">
+      <div className="w-1/4">
+        <SideBar />
+      </div>
+      <div className="lg:w-3/4 w-full mx-auto">
+        <Outlet />
+      </div>
+    </div>
   );
 };
+
 //we can create route in createBrowserrouter it's coming from react-router-dom
 const appRouter = createBrowserRouter([
   {

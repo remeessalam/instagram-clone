@@ -24,7 +24,7 @@ function Content() {
       // console.log(data, 'home useEffect')
     });
     allusers().then((data) => {
-      // console.log(data.data.user, 'user data"s multiple')
+      console.log(data.data.user, 'user data"s multiple');
       setUsers(data.data.user);
     });
   }, [refresh]);
@@ -134,9 +134,10 @@ function Content() {
               <h1 className=" mt-7 text-sx font-semibold text-gray-500">
                 Suggestions For You
               </h1>
-              {users?.map((obj) => (
-                <Friend key={obj._id} frnd={obj} />
-              ))}
+              {users?.map((obj) => {
+                console.log(obj, "thisisobj");
+                return <Friend key={obj._id} frnd={obj} />;
+              })}
             </div>
           </div>
         )}

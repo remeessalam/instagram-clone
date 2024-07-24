@@ -5,14 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { userReducer } from "../../reduxgobalState/userSlice";
-import { useDispatch } from "react-redux";
 import useOnSubmit from "../../hooks/useOnSubmit";
 
 function Signup() {
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const [error, setError] = useState("");
   const [allValidated, setAllValidated] = useState(false);
@@ -50,20 +46,7 @@ function Signup() {
     }
   });
   const handleSubmit = useOnSubmit();
-  // const onSubmit = async () => {
-  //   if (allValidated) return;
-  //   console.log(formData, "dataishere");
-  //   const { data } = await axios.post("/signup", formData);
-  //   if (data.status === true) {
-  //     localStorage.setItem("userToken", JSON.stringify(data.token));
-  //     localStorage.setItem("userid", JSON.stringify(data?.userid));
-  //     localStorage.setItem("user", JSON.stringify(data?.user));
-  //     dispatch(userReducer());
-  //     navigate("/");
-  //   } else {
-  //     setError(data.error);
-  //   }
-  // };
+
   const isdataadded = () => {
     if (
       !isEmailValid ||

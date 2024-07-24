@@ -1,15 +1,5 @@
-import Profile from '../components/profile/profile'
-import SideBar from '../layout/sideBar'
+import Profile from "../components/profile/profile";
 
+const ProfilePage = () => <Profile />;
 
-
-
-export function ProfilePage() {
-    return (
-        <>
-            <SideBar component={<Profile />} />
-        </>
-    )
-}
-
-
+export default ProfilePage;
