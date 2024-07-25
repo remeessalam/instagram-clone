@@ -3,8 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import allpost from "../../services/allpost";
 import allusers from "../../services/allusers";
 
-import Post from "../post/post";
-import Friend from "../suggestion/suggestion";
+import Post from "../post/Post";
+import Friend from "../suggestion/Suggestion";
 import { useSelector } from "react-redux";
 import { bigScreen } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";

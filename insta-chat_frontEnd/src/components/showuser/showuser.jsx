@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Getfriend from "../../services/getFriend";
+import Getfriend from "../../services/getFriend.js";
 import GetfriendPost from "../../services/getfriendPost.js";
 import { bigScreen } from "../../utils/constant.js";
 import useChecktoken from "../../hooks/useChecktoken.js";

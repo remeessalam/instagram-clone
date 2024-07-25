@@ -2,18 +2,27 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 // import jwt_decode from "jwt-decode";
 import { useMediaQuery } from "react-responsive";
-import Modal from "../components/modal/modal";
+import Modal from "../components/modal/Modal";
 // import Slide from "../components/searchusers/slideover";
 import SearchBar from "../components/search/Search";
 import { useSelector } from "react-redux";
 import { bigScreen, svgIcons } from "../utils/constant";
 import useChecktoken from "../hooks/useChecktoken";
-import Notification from "../components/notification/notification";
+import Notification from "../components/notification/Notifications";
 
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
 
   const navigate = useNavigate();
+
+  const [currentTab, setCurrentTab] = useState({
+    home: true,
+    search: false,
+    message: false,
+    notification: false,
+    create: false,
+    profile: false,
+  });
 
   // const [image, setImage] = useState('')
 
@@ -55,6 +64,17 @@ const SideBar = () => {
       }
     });
   };
+
+  const handleTabClick = (tab) => {
+    setCurrentTab((prev) => {
+      const newTabsState = {};
+      for (let key in prev) {
+        newTabsState[key] = false;
+      }
+      newTabsState[tab] = true;
+      return newTabsState;
+    });
+  };
   return (
     <>
       {/* MAIN DIV */}
@@ -87,14 +107,27 @@ const SideBar = () => {
 
                   <Link to={"/"}>
                     <div
-                      onClick={handleClose}
+                      onClick={() => {
+                        handleClose();
+                        handleTabClick("home");
+                      }}
                       className={`flex m-1 p-3 flex-row items-center ${
                         Search || not ? `w-[50px]` : `w-full`
                       }  h-12 hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
-                      <div className=" w-6">{svgIcons.homeIcon}</div>
+                      <div className=" w-6">
+                        {currentTab.home
+                          ? svgIcons.homeIcon
+                          : svgIcons.homeIconOutline}
+                      </div>
                       <div className={`${Search || not ? `hidden` : `block`}`}>
-                        <h1 className={`flex ml-4 font-bold text-[16px]`}>
+                        <h1
+                          className={`${
+                            currentTab.home
+                              ? `scale-110 font-bold text-[16px]`
+                              : ` `
+                          } flex ml-4 `}
+                        >
                           Home
                         </h1>
                       </div>
@@ -108,6 +141,7 @@ const SideBar = () => {
                     onClick={() => {
                       not && closeNotification();
                       setSearch(!Search);
+                      handleTabClick("search");
                     }}
                   >
                     <div className="">{svgIcons.searchIcon}</div>
@@ -118,7 +152,10 @@ const SideBar = () => {
 
                   <Link to={"/chat"}>
                     <div
-                      onClick={handleClose}
+                      onClick={() => {
+                        handleClose();
+                        handleTabClick("message");
+                      }}
                       className={`flex m-1 p-3 ${
                         Search || not ? `w-[50px]` : `w-full`
                       }   flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
@@ -137,6 +174,7 @@ const SideBar = () => {
                     onClick={() => {
                       Search && closeSearch();
                       setNot(!not);
+                      handleTabClick("notification");
                     }}
                   >
                     <div className="">{svgIcons.notificationIcon}</div>
@@ -149,6 +187,7 @@ const SideBar = () => {
                     onClick={() => {
                       setOpen(true);
                       handleClose();
+                      handleTabClick("create");
                     }}
                     className={`flex flex-row m-1 p-3 ${
                       Search || not ? `w-[50px]` : `w-full`
@@ -163,7 +202,10 @@ const SideBar = () => {
 
                   <Link to={"/profile"}>
                     <div
-                      onClick={handleClose}
+                      onClick={() => {
+                        handleClose();
+                        handleTabClick("profile");
+                      }}
                       className={`flex m-1 p-3 ${
                         Search || not ? `w-[50px]` : `w-full`
                       }    flex-row items-center  hover:bg-gray-100 rounded-lg hover:scale-110  duration-300`}

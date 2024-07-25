@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ShowProfile from "../components/showuser/showuser";
+import ShowProfile from "../components/showuser/ShowUser";
 
 const Showuser = () => {
   const { id } = useParams();

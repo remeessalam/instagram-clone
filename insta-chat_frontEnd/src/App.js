@@ -1,11 +1,11 @@
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import Login from "./components/login/Login";
-import Signup from "./components/signup/signUp";
-import HomePage from "./pages/homepage";
-import ProfilePage from "./pages/profilePage";
-import Chatpage from "./pages/chatpage";
+import Signup from "./components/signup/SignUp";
+import HomePage from "./pages/Homepage";
+import ProfilePage from "./pages/ProfilePage";
+import Chatpage from "./pages/ChatPage";
 import Error from "./pages/Error";
-import Showuser from "./pages/showProfile";
+import Showuser from "./pages/ShowProfile";
 import io from "socket.io-client";
 import SideBar from "./layout/sideBar";
 

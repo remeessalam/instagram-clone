@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import clickLike from "../../services/like";
-import Lastseen from "../showposttime/addedtime";
+import Lastseen from "../showposttime/AddedTime";
 import jwt_decode from "jwt-decode";
 import { refreshReducer } from "../../reduxgobalState/slices/appSlice";
 import { useDispatch } from "react-redux";
 import addComment from "../../services/addcomment";
-import Popup from "../postpopup/popup";
+import Popup from "../postpopup/Popup";
 
 function Post({ e }) {
   const [liked, setLiked] = useState();

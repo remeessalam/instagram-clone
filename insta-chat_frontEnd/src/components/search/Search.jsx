@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import finduser from "../../services/finduser";
-import Friend from "../suggestion/suggestion";
+import Friend from "../suggestion/Suggestion";
 import Getuser from "../../services/getuser";
 const Search = ({ open, setOpen, handleClose }) => {
   const [find, setFind] = useState("");

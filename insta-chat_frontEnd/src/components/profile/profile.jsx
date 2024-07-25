@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Example } from "../editprofile/profileEditModal";
+import { Example } from "../editprofile/ProfileEditModal";
 import Getpost from "../../services/getpost";
 import Getuser from "../../services/getuser";
-import Hover from "../smallmodal/modal";
+import Hover from "../smallmodal/Modal";
 import { useSelector } from "react-redux";
 import { bigScreen } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";
