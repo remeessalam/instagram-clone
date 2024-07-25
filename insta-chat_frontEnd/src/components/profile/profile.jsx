@@ -219,9 +219,9 @@ function Profile() {
                   key={i}
                   className=" cursor-pointer grid justify-items-start group"
                 >
-                  <div className="justify-self-center min-w-80 min-h-80 max-h-80 max-w-80 relative">
+                  <div className="justify-self-center min-w-80 min-h-80 max-h-80 max-w-80 ">
                     <img
-                      className="justify-self-center object-cover sm:h-80 h-[100px]  w-80 hover:opacity-25"
+                      className="justify-self-center object-cover sm:h-80 h-[100px]  w-80 "
                       src={e.image[0]?.url}
                       alt=""
                     />

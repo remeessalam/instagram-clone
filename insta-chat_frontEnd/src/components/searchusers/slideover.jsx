@@ -1,7 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 // import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
 import finduser from "../../services/finduser";
 import Friend from "../suggestion/suggestion";
 import Getuser from "../../services/getuser";
@@ -27,7 +26,11 @@ export default function Slide({ open, setOpen }) {
   }, [find]);
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10 bg-green-900" onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="relative z-10 left-[60px] bg-green-900"
+        onClose={setOpen}
+      >
         {/* <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"
@@ -40,9 +43,9 @@ export default function Slide({ open, setOpen }) {
           <div className="fixed inset-0  bg-opacity-75 transition-opacity" />
         </Transition.Child> */}
 
-        <div className="fixed inset-0  overflow-hidden ml-14">
-          <div className="absolute inset-0  overflow-hidden ml-14">
-            <div className="pointer-events-none fixed  inset-y-0 left-0 flex max-w-full ml-14">
+        <div className="fixed inset-0  left-[60px] overflow-hidden ml-14">
+          <div className="absolute inset-0 left-[60px]  overflow-hidden ml-14">
+            <div className="pointer-events-none fixed  inset-y-0 left-[60px] flex max-w-full ">
               <Transition.Child
                 as={Fragment}
                 enter="transform transition ease-in-out duration-500 sm:duration-700"

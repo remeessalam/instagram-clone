@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       colors: {
         inputfieldbg: "#FAFAFA",
+        newinputfieldbg: "#EFEFEF",
+        borderColor: "#dbdbdb",
       },
     },
     fontFamily: {

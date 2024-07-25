@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 // import jwt_decode from "jwt-decode";
 import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/modal";
-import Slide from "../components/searchusers/slideover";
-import Notification from "../components/notification/notification";
+// import Slide from "../components/searchusers/slideover";
+import SearchBar from "../components/search/Search";
 import { useSelector } from "react-redux";
 import { bigScreen, svgIcons } from "../utils/constant";
-const SideBar = (props) => {
+import useChecktoken from "../hooks/useChecktoken";
+import Notification from "../components/notification/notification";
+
+const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
 
   const navigate = useNavigate();
@@ -23,129 +26,148 @@ const SideBar = (props) => {
   const { user } = useSelector((state) => ({ ...state }));
 
   // console.log(user.user, 'userrrrrrrrr')
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("user"));
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
+  useChecktoken();
 
   function logout() {
     localStorage.clear();
-
     navigate("/login");
   }
+
+  const handleClose = () => {
+    Search && closeSearch();
+    not && closeNotification();
+  };
+  const closeSearch = () => {
+    setSearch((pre) => {
+      if (pre === true) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  };
+  const closeNotification = () => {
+    setNot((pre) => {
+      if (pre === true) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  };
   return (
     <>
       {/* MAIN DIV */}
-      <div className={`lex ${Search ? `w-60px]` : `w-[244px]`} h-screen`}>
+      <div className={`flex fixed  h-screen`}>
         {/* SIDEBAR DIV */}
         {IsBigScreen ? (
-          <div
-            className={`flex ${
-              Search ? `w-[50px]` : `w-[244px]`
-            } fixed border-r h-screen border-slate-300`}
-          >
-            {/* <h1>side bar</h1> */}
-            <div className="flex justify-between flex-col px-3 pt-2 pb-5">
-              <div>
-                <div
-                  className={`${
-                    Search ? `invisible` : `block`
-                  } mb-5 px-4 pt-6 pb-3`}
-                >
-                  <img
-                    className="max-w-[103px] h-9"
-                    src={Search ? svgIcons?.instagramSidebaricon : "/file.png"}
-                    alt="site name"
-                  />
-                </div>
-                {Search ? (
-                  <div className="my-1 py-3">{svgIcons.homeIcon}</div>
-                ) : (
+          <>
+            <div
+              className={`relative flex transition-all ease-in-out duration-300 ${
+                Search || not ? `w-[80px]` : `w-[244px]`
+              } fixed border-r h-screen border-slate-300`}
+            >
+              <div className={`flex justify-between  flex-col px-3 pt-2 pb-5`}>
+                <div>
+                  <div
+                    className={`${
+                      Search || not ? `block` : `block`
+                    } mb-5 px-4 pt-6 pb-3`}
+                  >
+                    {Search || not ? (
+                      svgIcons.instagramSidebaricon
+                    ) : (
+                      <img
+                        className="max-w-[103px] h-9"
+                        src="/file.png"
+                        alt="site name"
+                      />
+                    )}
+                  </div>
+
                   <Link to={"/"}>
-                    <div className="flex m-1 p-3 flex-row items-center w-full h-12 hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
-                      <div className="">{svgIcons.homeIcon}</div>
-                      <div>
-                        <h1 className="flex ml-4 font-bold text-[16px]">
+                    <div
+                      onClick={handleClose}
+                      className={`flex m-1 p-3 flex-row items-center ${
+                        Search || not ? `w-[50px]` : `w-full`
+                      }  h-12 hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
+                    >
+                      <div className=" w-6">{svgIcons.homeIcon}</div>
+                      <div className={`${Search || not ? `hidden` : `block`}`}>
+                        <h1 className={`flex ml-4 font-bold text-[16px]`}>
                           Home
                         </h1>
                       </div>
                     </div>
                   </Link>
-                )}
 
-                {Search ? (
-                  <div className="my-1 py-3">{svgIcons.searchIcon}</div>
-                ) : (
                   <div
-                    className="flex m-1 p-3 flex-row items-center  w-full  hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
-                    onClick={() => setSearch(!Search)}
+                    className={`flex m-1 p-3 flex-row items-center ${
+                      Search || not ? `w-[50px]` : `w-full`
+                    }   hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
+                    onClick={() => {
+                      not && closeNotification();
+                      setSearch(!Search);
+                    }}
                   >
                     <div className="">{svgIcons.searchIcon}</div>
-                    <div>
+                    <div className={`${Search || not ? `hidden` : `block`}`}>
                       <h1 className="flex  ml-4">Search</h1>
                     </div>
                   </div>
-                )}
 
-                {Search ? (
-                  <div className="my-1 py-3">{svgIcons.messengerIcon}</div>
-                ) : (
                   <Link to={"/chat"}>
-                    <div className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
+                    <div
+                      onClick={handleClose}
+                      className={`flex m-1 p-3 ${
+                        Search || not ? `w-[50px]` : `w-full`
+                      }   flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
+                    >
                       <div className="">{svgIcons.messengerIcon}</div>
-                      <div>
+                      <div className={`${Search || not ? `hidden` : `block`}`}>
                         <h1 className="flex ml-4">Message</h1>
                       </div>
                     </div>
                   </Link>
-                )}
 
-                {Search ? (
-                  <div className="my-1 py-3">{svgIcons.notificationIcon}</div>
-                ) : (
                   <div
-                    className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
-                    onClick={() => setNot(!not)}
+                    className={`flex m-1 p-3 ${
+                      Search || not ? `w-[50px]` : `w-full`
+                    } cursor-pointer flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
+                    onClick={() => {
+                      Search && closeSearch();
+                      setNot(!not);
+                    }}
                   >
                     <div className="">{svgIcons.notificationIcon}</div>
-                    <div>
+                    <div className={`${Search || not ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4">Notifications</h1>
                     </div>
                   </div>
-                )}
 
-                {Search ? (
-                  <div className="my-1 py-3">{svgIcons.createIcon}</div>
-                ) : (
                   <div
-                    onClick={() => setOpen(true)}
-                    className="flex flex-row m-1 p-3   items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300 "
+                    onClick={() => {
+                      setOpen(true);
+                      handleClose();
+                    }}
+                    className={`flex flex-row m-1 p-3 ${
+                      Search || not ? `w-[50px]` : `w-full`
+                    }   items-center hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300 `}
                   >
                     <div className="">{svgIcons.createIcon}</div>
 
-                    <div>
+                    <div className={`${Search || not ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4">Create</h1>
                     </div>
                   </div>
-                )}
 
-                {Search ? (
-                  <div className="my-1 py-3">
-                    {user?.user?.image ? (
-                      <img
-                        className="h-6 w-6 rounded-full aspect-square object-cover"
-                        src={user?.user?.image}
-                        alt=""
-                      />
-                    ) : (
-                      svgIcons.userIcon
-                    )}
-                  </div>
-                ) : (
                   <Link to={"/profile"}>
-                    <div className="flex m-1 p-3 flex-row items-center w-full hover:bg-gray-100 rounded-full hover:scale-110  duration-300">
+                    <div
+                      onClick={handleClose}
+                      className={`flex m-1 p-3 ${
+                        Search || not ? `w-[50px]` : `w-full`
+                      }    flex-row items-center  hover:bg-gray-100 rounded-lg hover:scale-110  duration-300`}
+                    >
                       <div className="">
                         {user?.user?.image ? (
                           <img
@@ -157,19 +179,25 @@ const SideBar = (props) => {
                           svgIcons.userIcon
                         )}
                       </div>
-                      <div>
+                      <div className={`${Search || not ? `hidden` : `block`}`}>
                         <h1 className="flex ml-4">Profile</h1>
                       </div>
                     </div>
                   </Link>
-                )}
-              </div>
+                </div>
 
-              <button className="flex px-4 py-2" onClick={logout}>
-                Log-out
-              </button>
+                <button className="flex px-4 py-2" onClick={logout}>
+                  Log-out
+                </button>
+              </div>
+              <SearchBar
+                open={Search}
+                setOpen={setSearch}
+                handleClose={handleClose}
+              />
+              <Notification open={not} setOpen={setNot} />
             </div>
-          </div>
+          </>
         ) : (
           <div>
             <div className="flex fixed bottom-0 w-full bg-gray-100 z-10 h-12">
@@ -251,12 +279,8 @@ const SideBar = (props) => {
             </div>
           </div>
         )}
-        {/* {IsBigScreen && <div className=" w-1/4 "></div>} */}
-        {/* <div className="lg:w-3/4 w-full mx-auto">{props.component}</div> */}
       </div>
       <Modal open={open} setOpen={setOpen} />
-      <Slide open={Search} setOpen={setSearch} />
-      <Notification open={not} setOpen={setNot} />
     </>
   );
 };
