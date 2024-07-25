@@ -1,10 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
-import refreshSlice from './rerenderSlice';
-import userSlice from './userSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import app from "./slices/appSlice";
+import userSlice from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    refresh: refreshSlice,
-    user: userSlice
+    app: app,
+    user: userSlice,
   },
-})
+});

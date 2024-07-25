@@ -38,87 +38,131 @@ const SideBar = (props) => {
   return (
     <>
       {/* MAIN DIV */}
-      <div className="flex w-[244px] h-screen">
+      <div className={`lex ${Search ? `w-60px]` : `w-[244px]`} h-screen`}>
         {/* SIDEBAR DIV */}
         {IsBigScreen ? (
-          <div className="flex w-[244px] fixed border-r h-screen border-slate-300">
+          <div
+            className={`flex ${
+              Search ? `w-[50px]` : `w-[244px]`
+            } fixed border-r h-screen border-slate-300`}
+          >
             {/* <h1>side bar</h1> */}
             <div className="flex justify-between flex-col px-3 pt-2 pb-5">
               <div>
-                <div className=" mb-5 px-4 pt-6 pb-3">
+                <div
+                  className={`${
+                    Search ? `invisible` : `block`
+                  } mb-5 px-4 pt-6 pb-3`}
+                >
                   <img
                     className="max-w-[103px] h-9"
-                    src="/file.png"
+                    src={Search ? svgIcons?.instagramSidebaricon : "/file.png"}
                     alt="site name"
                   />
                 </div>
-                <Link to={"/"}>
-                  <div className="flex m-1 p-3 flex-row items-center w-full h-12 hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
-                    <div className="">{svgIcons.homeIcon}</div>
+                {Search ? (
+                  <div className="my-1 py-3">{svgIcons.homeIcon}</div>
+                ) : (
+                  <Link to={"/"}>
+                    <div className="flex m-1 p-3 flex-row items-center w-full h-12 hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
+                      <div className="">{svgIcons.homeIcon}</div>
+                      <div>
+                        <h1 className="flex ml-4 font-bold text-[16px]">
+                          Home
+                        </h1>
+                      </div>
+                    </div>
+                  </Link>
+                )}
+
+                {Search ? (
+                  <div className="my-1 py-3">{svgIcons.searchIcon}</div>
+                ) : (
+                  <div
+                    className="flex m-1 p-3 flex-row items-center  w-full  hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
+                    onClick={() => setSearch(!Search)}
+                  >
+                    <div className="">{svgIcons.searchIcon}</div>
                     <div>
-                      <h1 className="flex ml-4 font-bold text-[16px]">Home</h1>
+                      <h1 className="flex  ml-4">Search</h1>
                     </div>
                   </div>
-                </Link>
+                )}
 
-                <div
-                  className="flex m-1 p-3 flex-row items-center  w-full  hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
-                  onClick={() => setSearch(!Search)}
-                >
-                  <div className="">{svgIcons.searchIcon}</div>
-                  <div>
-                    <h1 className="flex  ml-4">Search</h1>
-                  </div>
-                </div>
+                {Search ? (
+                  <div className="my-1 py-3">{svgIcons.messengerIcon}</div>
+                ) : (
+                  <Link to={"/chat"}>
+                    <div className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
+                      <div className="">{svgIcons.messengerIcon}</div>
+                      <div>
+                        <h1 className="flex ml-4">Message</h1>
+                      </div>
+                    </div>
+                  </Link>
+                )}
 
-                <Link to={"/chat"}>
-                  <div className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300">
-                    <div className="">{svgIcons.messengerIcon}</div>
+                {Search ? (
+                  <div className="my-1 py-3">{svgIcons.notificationIcon}</div>
+                ) : (
+                  <div
+                    className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
+                    onClick={() => setNot(!not)}
+                  >
+                    <div className="">{svgIcons.notificationIcon}</div>
                     <div>
-                      <h1 className="flex ml-4">Message</h1>
+                      <h1 className="flex ml-4">Notifications</h1>
                     </div>
                   </div>
-                </Link>
+                )}
 
-                <div
-                  className="flex m-1 p-3  flex-row items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300"
-                  onClick={() => setNot(!not)}
-                >
-                  <div className="">{svgIcons.notificationIcon}</div>
-                  <div>
-                    <h1 className="flex ml-4">Notifications</h1>
-                  </div>
-                </div>
+                {Search ? (
+                  <div className="my-1 py-3">{svgIcons.createIcon}</div>
+                ) : (
+                  <div
+                    onClick={() => setOpen(true)}
+                    className="flex flex-row m-1 p-3   items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300 "
+                  >
+                    <div className="">{svgIcons.createIcon}</div>
 
-                <div
-                  onClick={() => setOpen(true)}
-                  className="flex flex-row m-1 p-3   items-center w-full hover:bg-gray-100 rounded-full  hover:scale-110  duration-300 "
-                >
-                  <div className="">{svgIcons.createIcon}</div>
-
-                  <div>
-                    <h1 className="flex ml-4">Create</h1>
-                  </div>
-                </div>
-
-                <Link to={"/profile"}>
-                  <div className="flex m-1 p-3 flex-row items-center w-full hover:bg-gray-100 rounded-full hover:scale-110  duration-300">
-                    <div className="">
-                      {user?.user?.image ? (
-                        <img
-                          className="h-6 w-6 rounded-full aspect-square object-cover"
-                          src={user?.user?.image}
-                          alt=""
-                        />
-                      ) : (
-                        svgIcons.userIcon
-                      )}
-                    </div>
                     <div>
-                      <h1 className="flex ml-4">Profile</h1>
+                      <h1 className="flex ml-4">Create</h1>
                     </div>
                   </div>
-                </Link>
+                )}
+
+                {Search ? (
+                  <div className="my-1 py-3">
+                    {user?.user?.image ? (
+                      <img
+                        className="h-6 w-6 rounded-full aspect-square object-cover"
+                        src={user?.user?.image}
+                        alt=""
+                      />
+                    ) : (
+                      svgIcons.userIcon
+                    )}
+                  </div>
+                ) : (
+                  <Link to={"/profile"}>
+                    <div className="flex m-1 p-3 flex-row items-center w-full hover:bg-gray-100 rounded-full hover:scale-110  duration-300">
+                      <div className="">
+                        {user?.user?.image ? (
+                          <img
+                            className="h-6 w-6 rounded-full aspect-square object-cover"
+                            src={user?.user?.image}
+                            alt=""
+                          />
+                        ) : (
+                          svgIcons.userIcon
+                        )}
+                      </div>
+                      <div>
+                        <h1 className="flex ml-4">Profile</h1>
+                      </div>
+                    </div>
+                  </Link>
+                )}
               </div>
 
               <button className="flex px-4 py-2" onClick={logout}>

@@ -14,7 +14,7 @@ function Content() {
 
   const [users, setUsers] = useState([]);
 
-  const refresh = useSelector((state) => state.refresh.refresh);
+  const refresh = useSelector((state) => state.app.refresh);
 
   useChecktoken("/");
 
