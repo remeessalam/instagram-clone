@@ -25,9 +25,9 @@ const Search = ({ open, setOpen, handleClose }) => {
     <div
       className={`absolute transition-all ease-in-out duration-200 overflow-hidden ${
         !open
-          ? `w-[0px] left-[244px] border-r-0 `
-          : `w-[420px] left-[80px] border-r`
-      }  h-screen rounded-r-2xl  z-50 border-borderColor`}
+          ? `w-[0px] left-[244px] border-0 `
+          : `w-[420px] left-[80px] border-r border-borderColor rounded-r-2xl `
+      }  h-screen  z-50 `}
     >
       <div className="  h-screen">
         <div className="flex h-full  flex-col overflow-y-scroll bg-white shadow-xl">

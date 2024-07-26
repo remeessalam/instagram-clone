@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 // import jwt_decode from "jwt-decode";
 import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/Modal";
@@ -13,18 +13,26 @@ import Notification from "../components/notification/Notifications";
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
 
+  const location = useLocation();
+
   const navigate = useNavigate();
 
   const [currentTab, setCurrentTab] = useState({
-    home: true,
+    home: false,
     search: false,
-    message: false,
+    chat: false,
     notification: false,
     create: false,
     profile: false,
   });
-
-  // const [image, setImage] = useState('')
+  useEffect(() => {
+    const tabName =
+      location?.pathname === "/" ? "home" : location?.pathname.slice(1);
+    setCurrentTab((prevTabs) => ({
+      ...prevTabs,
+      [tabName]: true,
+    }));
+  }, [location]);
 
   const [open, setOpen] = useState(false);
 
@@ -69,9 +77,38 @@ const SideBar = () => {
     setCurrentTab((prev) => {
       const newTabsState = {};
       for (let key in prev) {
-        newTabsState[key] = false;
+        newTabsState[key] = false; // ervery thing in current tab is now false;
       }
-      newTabsState[tab] = true;
+      newTabsState[tab] = true; // only changing the clicked tab true;
+      console.log(newTabsState["search"], "thisisipathname");
+      if (tab === "search" || tab === "notification") {
+        //search tab true
+        if (prev["search"] === true && tab === "search") {
+          //cheacking prev state of search is true and click on search
+          const path =
+            location.pathname === "/" ? "home" : location.pathname.slice(1);
+          console.log(path, "thisisipathname");
+          newTabsState[tab] = false;
+          newTabsState[path] = true;
+          return newTabsState;
+        } else if (prev["notification"] === true && tab === "notification") {
+          //cheacking prev state of notification is true and click on search
+          const path =
+            location.pathname === "/" ? "home" : location.pathname.slice(1);
+          console.log(path, "thisisipathname");
+          newTabsState[tab] = false;
+          newTabsState[path] = true;
+          return newTabsState;
+        } else if (prev["create"] === true && tab === "create") {
+          //cheacking prev state of notification is true and click on search
+          const path =
+            location.pathname === "/" ? "home" : location.pathname.slice(1);
+          console.log(path, "thisisipathname");
+          newTabsState[tab] = false;
+          newTabsState[path] = true;
+          return newTabsState;
+        }
+      }
       return newTabsState;
     });
   };
@@ -123,9 +160,7 @@ const SideBar = () => {
                       <div className={`${Search || not ? `hidden` : `block`}`}>
                         <h1
                           className={`${
-                            currentTab.home
-                              ? `scale-110 font-bold text-[16px]`
-                              : ` `
+                            currentTab.home ? `font-bold text-[16px]` : ` `
                           } flex ml-4 `}
                         >
                           Home
@@ -137,6 +172,8 @@ const SideBar = () => {
                   <div
                     className={`flex m-1 p-3 flex-row items-center ${
                       Search || not ? `w-[50px]` : `w-full`
+                    } ${
+                      currentTab.search ? `border` : ` transition-none`
                     }   hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     onClick={() => {
                       not && closeNotification();
@@ -144,7 +181,11 @@ const SideBar = () => {
                       handleTabClick("search");
                     }}
                   >
-                    <div className="">{svgIcons.searchIcon}</div>
+                    <div className="">
+                      {currentTab.search
+                        ? svgIcons.boldSearchIcon
+                        : svgIcons.searchIcon}
+                    </div>
                     <div className={`${Search || not ? `hidden` : `block`}`}>
                       <h1 className="flex  ml-4">Search</h1>
                     </div>
@@ -154,15 +195,26 @@ const SideBar = () => {
                     <div
                       onClick={() => {
                         handleClose();
-                        handleTabClick("message");
+                        handleTabClick("chat");
                       }}
                       className={`flex m-1 p-3 ${
                         Search || not ? `w-[50px]` : `w-full`
                       }   flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
-                      <div className="">{svgIcons.messengerIcon}</div>
+                      <div className="">
+                        {currentTab.chat
+                          ? svgIcons.filledMessengerIcon
+                          : svgIcons.messengerIcon}
+                        {console.log(currentTab.chat, "thisisfillms")}
+                      </div>
                       <div className={`${Search || not ? `hidden` : `block`}`}>
-                        <h1 className="flex ml-4">Message</h1>
+                        <h1
+                          className={`flex ml-4 ${
+                            currentTab.chat ? `font-bold text-[16px]` : ` `
+                          } `}
+                        >
+                          Message
+                        </h1>
                       </div>
                     </div>
                   </Link>
@@ -170,6 +222,8 @@ const SideBar = () => {
                   <div
                     className={`flex m-1 p-3 ${
                       Search || not ? `w-[50px]` : `w-full`
+                    } ${
+                      currentTab.notification ? `border` : ``
                     } cursor-pointer flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     onClick={() => {
                       Search && closeSearch();
@@ -177,7 +231,11 @@ const SideBar = () => {
                       handleTabClick("notification");
                     }}
                   >
-                    <div className="">{svgIcons.notificationIcon}</div>
+                    <div className="">
+                      {currentTab.notification
+                        ? svgIcons.fillnotificationIcon
+                        : svgIcons.notificationIcon}
+                    </div>
                     <div className={`${Search || not ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4">Notifications</h1>
                     </div>
@@ -187,7 +245,7 @@ const SideBar = () => {
                     onClick={() => {
                       setOpen(true);
                       handleClose();
-                      handleTabClick("create");
+                      // handleTabClick("create");
                     }}
                     className={`flex flex-row m-1 p-3 ${
                       Search || not ? `w-[50px]` : `w-full`
@@ -213,7 +271,11 @@ const SideBar = () => {
                       <div className="">
                         {user?.user?.image ? (
                           <img
-                            className="h-6 w-6 rounded-full aspect-square object-cover"
+                            className={`h-6 w-6 rounded-full aspect-square object-cover ${
+                              currentTab.profile
+                                ? `w-7 h-7 border-2 border-black`
+                                : ``
+                            }`}
                             src={user?.user?.image}
                             alt=""
                           />
@@ -222,7 +284,13 @@ const SideBar = () => {
                         )}
                       </div>
                       <div className={`${Search || not ? `hidden` : `block`}`}>
-                        <h1 className="flex ml-4">Profile</h1>
+                        <h1
+                          className={`flex ml-4 ${
+                            currentTab.profile ? `font-bold text-[16px]` : ``
+                          }`}
+                        >
+                          Profile
+                        </h1>
                       </div>
                     </div>
                   </Link>

@@ -51,7 +51,7 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
         <Link
           to={`/showuser/${frnd._id}`}
           onClick={() => {
-            setOpen(false);
+            // setOpen(false);
             setFind("");
             handleClose();
           }}
