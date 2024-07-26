@@ -8,12 +8,13 @@ import Error from "./pages/Error";
 import Showuser from "./pages/ShowProfile";
 import io from "socket.io-client";
 import SideBar from "./layout/sideBar";
+import { bigScreen } from "./utils/constant";
 
 const socket = io.connect("http://localhost:4000/");
 const AppLayout = () => {
   return (
     <div className="flex">
-      <div className="w-1/4">
+      <div className={`${bigScreen ? `w-0 bg-black` : `w-1/4`}`}>
         <SideBar />
       </div>
       <div className="lg:w-3/4 w-full mx-auto">

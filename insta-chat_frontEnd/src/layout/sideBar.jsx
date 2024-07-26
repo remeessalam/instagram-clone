@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
-// import jwt_decode from "jwt-decode";
 import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/Modal";
-// import Slide from "../components/searchusers/slideover";
 import SearchBar from "../components/search/Search";
 import { useSelector } from "react-redux";
 import { bigScreen, svgIcons } from "../utils/constant";
 import useChecktoken from "../hooks/useChecktoken";
 import Notification from "../components/notification/Notifications";
+import useChangeTab from "../hooks/useChangeTab";
 
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
 
-  const location = useLocation();
-
   const navigate = useNavigate();
+
+  const location = useLocation();
 
   const [currentTab, setCurrentTab] = useState({
     home: false,
@@ -25,14 +24,6 @@ const SideBar = () => {
     create: false,
     profile: false,
   });
-  useEffect(() => {
-    const tabName =
-      location?.pathname === "/" ? "home" : location?.pathname.slice(1);
-    setCurrentTab((prevTabs) => ({
-      ...prevTabs,
-      [tabName]: true,
-    }));
-  }, [location]);
 
   const [open, setOpen] = useState(false);
 
@@ -44,6 +35,15 @@ const SideBar = () => {
 
   // console.log(user.user, 'userrrrrrrrr')
   useChecktoken();
+
+  useEffect(() => {
+    const tabName =
+      location?.pathname === "/" ? "home" : location?.pathname.slice(1);
+    setCurrentTab((prevTabs) => ({
+      ...prevTabs,
+      [tabName]: true,
+    }));
+  }, [location]);
 
   function logout() {
     localStorage.clear();
@@ -73,45 +73,7 @@ const SideBar = () => {
     });
   };
 
-  const handleTabClick = (tab) => {
-    setCurrentTab((prev) => {
-      const newTabsState = {};
-      for (let key in prev) {
-        newTabsState[key] = false; // ervery thing in current tab is now false;
-      }
-      newTabsState[tab] = true; // only changing the clicked tab true;
-      console.log(newTabsState["search"], "thisisipathname");
-      if (tab === "search" || tab === "notification") {
-        //search tab true
-        if (prev["search"] === true && tab === "search") {
-          //cheacking prev state of search is true and click on search
-          const path =
-            location.pathname === "/" ? "home" : location.pathname.slice(1);
-          console.log(path, "thisisipathname");
-          newTabsState[tab] = false;
-          newTabsState[path] = true;
-          return newTabsState;
-        } else if (prev["notification"] === true && tab === "notification") {
-          //cheacking prev state of notification is true and click on search
-          const path =
-            location.pathname === "/" ? "home" : location.pathname.slice(1);
-          console.log(path, "thisisipathname");
-          newTabsState[tab] = false;
-          newTabsState[path] = true;
-          return newTabsState;
-        } else if (prev["create"] === true && tab === "create") {
-          //cheacking prev state of notification is true and click on search
-          const path =
-            location.pathname === "/" ? "home" : location.pathname.slice(1);
-          console.log(path, "thisisipathname");
-          newTabsState[tab] = false;
-          newTabsState[path] = true;
-          return newTabsState;
-        }
-      }
-      return newTabsState;
-    });
-  };
+  const handleTabClick = useChangeTab();
   return (
     <>
       {/* MAIN DIV */}
@@ -146,7 +108,7 @@ const SideBar = () => {
                     <div
                       onClick={() => {
                         handleClose();
-                        handleTabClick("home");
+                        handleTabClick("home", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 flex-row items-center ${
                         Search || not ? `w-[50px]` : `w-full`
@@ -178,7 +140,7 @@ const SideBar = () => {
                     onClick={() => {
                       not && closeNotification();
                       setSearch(!Search);
-                      handleTabClick("search");
+                      handleTabClick("search", setCurrentTab);
                     }}
                   >
                     <div className="">
@@ -195,7 +157,7 @@ const SideBar = () => {
                     <div
                       onClick={() => {
                         handleClose();
-                        handleTabClick("chat");
+                        handleTabClick("chat", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
                         Search || not ? `w-[50px]` : `w-full`
@@ -228,7 +190,7 @@ const SideBar = () => {
                     onClick={() => {
                       Search && closeSearch();
                       setNot(!not);
-                      handleTabClick("notification");
+                      handleTabClick("notification", setCurrentTab);
                     }}
                   >
                     <div className="">
@@ -245,7 +207,6 @@ const SideBar = () => {
                     onClick={() => {
                       setOpen(true);
                       handleClose();
-                      // handleTabClick("create");
                     }}
                     className={`flex flex-row m-1 p-3 ${
                       Search || not ? `w-[50px]` : `w-full`
@@ -262,7 +223,7 @@ const SideBar = () => {
                     <div
                       onClick={() => {
                         handleClose();
-                        handleTabClick("profile");
+                        handleTabClick("profile", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
                         Search || not ? `w-[50px]` : `w-full`
