@@ -2,7 +2,7 @@
 // import follow from '../../services/follow'
 // import unfollow from '../../services/unfollow'
 import ClearSharpIcon from "@mui/icons-material/ClearSharp";
-import Maping from "../showfollowersandfollowin/DataMapping";
+import Maping from "../showfollowersandfollowin/Datamapping";
 
 export default function Hover({ change, setChange, Contant, Heading }) {
   console.log(Contant);

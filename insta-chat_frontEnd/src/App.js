@@ -3,12 +3,12 @@ import Login from "./components/login/Login";
 import Signup from "./components/signup/SignUp";
 import HomePage from "./pages/Homepage";
 import ProfilePage from "./pages/ProfilePage";
-import Chatpage from "./pages/ChatPage";
+import Chatpage from "./pages/Chatpage";
 import Error from "./pages/Error";
 import Showuser from "./pages/ShowProfile";
 import io from "socket.io-client";
-import SideBar from "./layout/sideBar";
 import { bigScreen } from "./utils/constant";
+import SideBar from "./layout/SideNavBar";
 
 const socket = io.connect("http://localhost:4000/");
 const AppLayout = () => {
