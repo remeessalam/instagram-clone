@@ -7,6 +7,10 @@ module.exports = {
         inputfieldbg: "#FAFAFA",
         newinputfieldbg: "#EFEFEF",
         borderColor: "#dbdbdb",
+        sideBarMenuBorderColor: "rgb(244, 244, 244, 1)",
+      },
+      boxShadow: {
+        custom: "0px 0px 10px 1px rgba(199,199,199,1)",
       },
     },
     fontFamily: {
