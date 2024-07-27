@@ -66,7 +66,7 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "../services/axioscall";
-import { userReducer } from "../reduxgobalState/userSlice";
+import { userReducer } from "../reduxgobalState/slices/userSlice";
 
 const useOnSubmit = () => {
   const dispatch = useDispatch();

@@ -5,7 +5,9 @@ const useChecktoken = (path) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem("userToken"));
+    const token =
+      JSON.parse(localStorage.getItem("userToken")) &&
+      JSON.parse(localStorage.getItem("user"));
     !token ? navigate("/login") : path && navigate(path);
   }, [navigate]);
 };

@@ -1,9 +1,5 @@
-import SideBar from "../layout/sideBar";
-import Chat from '../components/chat/chat'
+import Chat from "../components/chat/Chat";
 
-export default function Chatpage({ Socket }) {
+const Chatpage = ({ Socket }) => <Chat Socket={Socket} />;
 
-    return (
-        <SideBar component={<Chat Socket={Socket} />} />
-    )
-}
+export default Chatpage;

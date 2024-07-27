@@ -3,8 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import allpost from "../../services/allpost";
 import allusers from "../../services/allusers";
 
-import Post from "../post/post";
-import Friend from "../suggestion/suggestion";
+import Post from "../post/Post";
+import Friend from "../suggestion/Suggestion";
 import { useSelector } from "react-redux";
 import { bigScreen } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";
@@ -14,7 +14,7 @@ function Content() {
 
   const [users, setUsers] = useState([]);
 
-  const refresh = useSelector((state) => state.refresh.refresh);
+  const refresh = useSelector((state) => state.app.refresh);
 
   useChecktoken("/");
 
@@ -24,7 +24,7 @@ function Content() {
       // console.log(data, 'home useEffect')
     });
     allusers().then((data) => {
-      // console.log(data.data.user, 'user data"s multiple')
+      console.log(data.data.user, 'user data"s multiple');
       setUsers(data.data.user);
     });
   }, [refresh]);
@@ -134,9 +134,10 @@ function Content() {
               <h1 className=" mt-7 text-sx font-semibold text-gray-500">
                 Suggestions For You
               </h1>
-              {users?.map((obj) => (
-                <Friend key={obj._id} frnd={obj} />
-              ))}
+              {users?.map((obj) => {
+                console.log(obj, "thisisobj");
+                return <Friend key={obj._id} frnd={obj} />;
+              })}
             </div>
           </div>
         )}

@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
-import { userReducer } from "../../reduxgobalState/userSlice";
+import { userReducer } from "../../reduxgobalState/slices/userSlice";
 import { useDispatch } from "react-redux";
 import "./Login.css";
 import Slider from "./Slider";
