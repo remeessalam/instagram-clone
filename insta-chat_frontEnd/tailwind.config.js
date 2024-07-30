@@ -15,6 +15,19 @@ module.exports = {
       spacing: {
         width: "calc(100% - 244px)",
       },
+      keyframes: {
+        bouncing: {
+          "0%, 100%": {
+            transform: "scale(1)",
+          },
+          "50%": {
+            transform: "scale(1.25)",
+          },
+        },
+      },
+      animation: {
+        bouncing: "bouncing 0.35s ease-in-out",
+      },
     },
     fontFamily: {
       poppins: ["Poppins", "sans-serif"],

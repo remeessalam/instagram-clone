@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import notification from "../../services/getnotification";
-import Time from "../showposttime/AddedTime";
+import Time from "../showposttime/Addedtime";
 
 const NotificationC = ({ open, setOpen }) => {
   const [notifications, setNotifications] = useState([]);
