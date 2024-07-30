@@ -10,14 +10,15 @@ import io from "socket.io-client";
 import { bigScreen } from "./utils/constant";
 import SideBar from "./layout/SideNavBar";
 
-const socket = io.connect("http://localhost:4000/");
+// const socket = io.connect("http://localhost:4000/");
+const socket = "hai";
 const AppLayout = () => {
   return (
     <div className="flex">
-      <div className={`${bigScreen ? `w-0 bg-black` : `w-1/4`}`}>
+      <div className={`${bigScreen ? `w-[244px] bg-gray-400 fixed` : `w-0`}`}>
         <SideBar />
       </div>
-      <div className="lg:w-3/4 w-full mx-[244px]">
+      <div className="lg:w-width w-full ml-[244px]">
         <Outlet />
       </div>
     </div>
