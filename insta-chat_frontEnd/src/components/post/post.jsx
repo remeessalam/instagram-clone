@@ -39,9 +39,9 @@ function Post({ e }) {
 
   const Comments = (postId) => {
     require("react-dom");
-    window.React2 = require("react");
+    window.React = require("react");
     console.log(
-      window.React1 === window.React2,
+      window.React1 === window.React,
       "===================reeeeeeeact"
     );
     addComment(postId, comment).then((data) => {
@@ -54,12 +54,12 @@ function Post({ e }) {
   return (
     <div
       key={e._id}
-      className=" flex flex-col  mx-auto rounded-md border border-slate-300 lg:w-3/4 w-full mb-3  drop-shadow-l"
+      className=" flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3  drop-shadow-l"
     >
-      <div className="flex justify-start min-h-18 mt-2">
+      <div className="flex justify-start items-center min-h-18 my-2 ">
         {e.user.image ? (
           <img
-            className="ml-3 rounded-full w-9 h-9 object-cover"
+            className="rounded-full w-9 h-9 object-cover"
             src={e.user.image}
             alt=""
           />
@@ -77,28 +77,20 @@ function Post({ e }) {
             />
           </svg>
         )}
-        <div className="flex-col">
-          <h1 className="text-justify text-sm ml-3">{e.user.name}</h1>
-          <div className="flex flex-row ml-3">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-              />
-            </svg>
-
+        <div className="flex items-center">
+          <h1 className="text-justify font-semibold text-sm ml-3">
+            {e.user.name}
+          </h1>
+          <span className="pb-[7.5px] mx-[5px] font-bold text-lg text-gray-500">
+            .
+          </span>
+          <h1 className="text-sm text-gray-500">
+            <Lastseen time={e.createdAt} />
+          </h1>
+          {/* <div className="flex flex-row ml-3">
             <h1 className="text-justify ml-3 text-sm">
-              <Lastseen time={e.createdAt} /> ago
             </h1>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="">
@@ -113,9 +105,9 @@ function Post({ e }) {
         >
           {e.image.map((obj, i) => {
             return (
-              <div key={i} className=" min-w-full snap-always snap-center">
+              <div key={i} className="flex min-w-full snap-always snap-center">
                 <img
-                  className="flex h-96  mx-auto object-cover "
+                  className=" min-h-[468px] w-full max-h-[585px] object-cover "
                   src={obj.url}
                   alt=""
                 />
@@ -218,7 +210,7 @@ function Post({ e }) {
         <h1 className="text-sx font-medium">{e.user.name} </h1>
         <p className="pl-6 pb-4 font-light text-sx">{e.caption}</p>
       </div>
-      <div className="flex flex-row justify-start pl-7 border-y p-3 w-full">
+      <div className="flex flex-row justify-start pl-7 border-b p-3 w-full">
         <div className="w-3/4">
           <input
             className="w-full focus:outline-0"
