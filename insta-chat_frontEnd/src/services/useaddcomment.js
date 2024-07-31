@@ -1,12 +1,15 @@
 import axios from "./axioscall";
-import { useNavigate } from "react-router-dom";
 
-const useAddComment = (postId, text) => {
-  const navigate = useNavigate();
+const addComment = async (postId, text, navigate) => {
+  // const navigate = useNavigate();
+  console.log(postId, "commentclicked");
 
   let token = JSON.parse(localStorage.getItem("userToken"));
 
-  !token && navigate("/login");
+  if (!token) {
+    navigate("/login");
+    return Promise.reject("No token found");
+  }
 
   return new Promise((resolve, reject) => {
     axios
@@ -22,4 +25,4 @@ const useAddComment = (postId, text) => {
   });
 };
 
-export default useAddComment;
+export default addComment;

@@ -7,12 +7,14 @@ import { useDispatch } from "react-redux";
 import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
+import { useNavigate } from "react-router-dom";
 
-function Post({ e }) {
+const Post = ({ e }) => {
   const [liked, setLiked] = useState();
   // const [likedEffect, setLikedEffect] = useState(false)
+  const navigate = useNavigate();
 
-  const [comment, setComment] = useState();
+  const [comment, setComment] = useState("");
 
   const [open, setOpen] = useState(false);
 
@@ -22,7 +24,7 @@ function Post({ e }) {
 
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
-
+  console.log(e, "thisise");
   const like = (postId) => {
     // setLikedEffect(true)
     // setTimeout(() => {
@@ -40,15 +42,25 @@ function Post({ e }) {
     e.Likes.includes(decoded.userId) ? setLiked(false) : setLiked(true);
   }, [decoded.userId, e]);
 
-  const Comments = (postId) => {
-    // require("react-dom");
-    // window.React = require("react");
-
-    addComment(postId, comment).then((data) => {
-      setComment("");
-      console.log(data, "===============commment promise returned data");
-      dispatch(refreshReducer());
-    });
+  const Comments = async (postId) => {
+    try {
+      // require("react-dom");
+      // window.React = require("react");
+      console.log(postId, "commentclicked");
+      // useAddComment(postId, comment).then((data) => {
+      //   setComment("");
+      //   console.log(data, "commentclicked");
+      //   dispatch(refreshReducer());
+      // });
+      const data = await addComment(postId, comment, navigate);
+      if (data) {
+        setComment("");
+        console.log(data, "commentclicked");
+        dispatch(refreshReducer());
+      }
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
   };
 
   return (
@@ -57,7 +69,7 @@ function Post({ e }) {
       className=" flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3  drop-shadow-l"
     >
       <div className="flex justify-between items-center min-h-18 my-[12px] mt-1">
-        <div className="flex">
+        <div className="flex cursor-pointer">
           {e.user.image ? (
             <img
               className="rounded-full w-9 h-9 object-cover"
@@ -120,7 +132,7 @@ function Post({ e }) {
         </div>
       </div>
       <Popup open={open} setOpen={setOpen} posts={e} />
-      <div className="flex flex-col justify-start py-3">
+      <div className="flex flex-row justify-between py-3">
         <div className="flex flex-row ">
           {liked ? (
             <div
@@ -165,7 +177,7 @@ function Post({ e }) {
             </div>
           )}
           <div
-            className="ml-2 flex flex-row cursor-pointer"
+            className="ml-4 flex flex-row cursor-pointer"
             onClick={() => {
               setOpen(!open);
             }}
@@ -174,38 +186,72 @@ function Post({ e }) {
 
             {/* <h1>comment</h1> */}
           </div>
+          <div
+            className="ml-4 flex flex-row cursor-pointer"
+            // onClick={() => {
+            //   setOpen(!open);
+            // }}
+          >
+            {svgIcons.sendGrayIcon}
+
+            {/* <h1>comment</h1> */}
+          </div>
+        </div>
+        <div>
+          <div className="ml-4 flex flex-row cursor-pointer">
+            {svgIcons.saveIcon}
+          </div>
         </div>
       </div>
       <div className="flex justify-start">
-        <h1 className="text-sx font-normal pr-5">{e.Likes.length} likes</h1>
-        <h1
+        <h1 className="text-sm hei font-semibold pr-5 ">
+          {e.Likes.length} likes
+        </h1>
+        {/* <h1
           className="text-sx font-normal cursor-pointer"
           onClick={() => setOpen(!open)}
         >
           {e.comments.length} comments
-        </h1>
+        </h1> */}
       </div>
-      <div className="flex flex-row justify-start pl-7">
-        <h1 className="text-sx font-medium">{e.user.name} </h1>
-        <p className="pl-6 pb-4 font-light text-sx">{e.caption}</p>
+      <div className="flex flex-row justify-start">
+        <h1 className="text-sx font-medium pb-4">{e.user.name} </h1>
+        <p className={`${e.caption ? `` : `mb-4`}pl-1 pb-4 font-light text-sx`}>
+          {e.caption}
+        </p>
       </div>
-      <div className="flex flex-row justify-start pl-7 border-b p-3 w-full">
+      <div className="cursor-pointer">
+        {e.comments.length ? (
+          <h1
+            onClick={() => {
+              setOpen(!open);
+            }}
+            className="text-sm mb-3 text-addcommentText"
+          >
+            View all {e.comments.length} comments
+          </h1>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="flex flex-row justify-start text-sm border-borderColor border-b pb-4 w-full">
         <div className="w-3/4">
           <input
             className="w-full focus:outline-0"
             type="text"
             placeholder="Add a comment..."
-            value={comment}
+            value={comment || ""}
             onChange={(event) => setComment(event.target.value)}
           />
         </div>
-        <div className="w-1/4 flex justify-end">
+        <div className="w-1/4 flex items-center gap-2 justify-end">
           <button
-            className="text-sx font-semibold text-blue-400 "
+            className="text-sx font-semibold text-blue-400 hover:text-sky-900"
             onClick={() => Comments(e._id)}
           >
-            post
+            {comment?.length ? "post" : ""}
           </button>
+          <div>{svgIcons.imojiIcon}</div>
           {/* {comment ?
                         : <p className='text-sx font-semibold text-blue-200 '>post</p>
                     } */}
@@ -213,6 +259,6 @@ function Post({ e }) {
       </div>
     </div>
   );
-}
+};
 
 export default Post;

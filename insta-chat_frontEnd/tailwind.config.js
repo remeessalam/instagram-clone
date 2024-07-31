@@ -8,6 +8,7 @@ module.exports = {
         newinputfieldbg: "#EFEFEF",
         borderColor: "#dbdbdb",
         sideBarMenuBorderColor: "rgb(244, 244, 244, 1)",
+        addcommentText: "#9da4b0",
       },
       boxShadow: {
         custom: "0px 0px 10px 1px rgba(0,0,0,0.1)",
