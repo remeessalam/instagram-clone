@@ -4,7 +4,7 @@ import Lastseen from "../showposttime/Addedtime";
 import jwt_decode from "jwt-decode";
 import { refreshReducer } from "../../reduxgobalState/slices/appSlice";
 import { useDispatch } from "react-redux";
-import addComment from "../../services/addcomment";
+import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
 
@@ -41,8 +41,8 @@ function Post({ e }) {
   }, [decoded.userId, e]);
 
   const Comments = (postId) => {
-    require("react-dom");
-    window.React = require("react");
+    // require("react-dom");
+    // window.React = require("react");
 
     addComment(postId, comment).then((data) => {
       setComment("");

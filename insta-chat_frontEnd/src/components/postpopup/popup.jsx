@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import clickLike from "../../services/like";
-import addComment from "../../services/addcomment";
+import addComment from "../../services/useaddcomment";
 import popcomment from "../../services/popcomment";
 import { refreshReducer } from "../../reduxgobalState/slices/appSlice";
 import { useDispatch } from "react-redux";
