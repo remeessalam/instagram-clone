@@ -20,10 +20,37 @@ const Post = ({ e }) => {
 
   const [bounse, setBounse] = useState({ like: false, liked: false });
 
+  const [caption, setCaption] = useState("");
+
+  const [isTruncated, setIsTruncated] = useState(false);
+
+  const [showFullCaption, setShowFullCaption] = useState(false);
+
   const dispatch = useDispatch();
 
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
+
+  useEffect(() => {
+    e.Likes.includes(decoded.userId) ? setLiked(false) : setLiked(true);
+  }, [decoded.userId, e]);
+
+  useEffect(() => {
+    const truncateText = (text, limit) => {
+      if (text.length <= limit)
+        return { truncatedText: text, truncated: false };
+
+      const truncatedText = text.slice(0, limit) + "... ";
+      return { truncatedText, truncated: true };
+    };
+
+    const limit = 50; // Adjust the limit as needed
+    const { truncatedText, truncated } = truncateText(e.caption, limit);
+
+    setCaption(truncatedText);
+    setIsTruncated(truncated);
+  }, [e.caption]);
+
   console.log(e, "thisise");
   const like = (postId) => {
     // setLikedEffect(true)
@@ -37,10 +64,6 @@ const Post = ({ e }) => {
       dispatch(refreshReducer());
     });
   };
-
-  useEffect(() => {
-    e.Likes.includes(decoded.userId) ? setLiked(false) : setLiked(true);
-  }, [decoded.userId, e]);
 
   const Comments = async (postId) => {
     try {
@@ -214,11 +237,33 @@ const Post = ({ e }) => {
           {e.comments.length} comments
         </h1> */}
       </div>
-      <div className="flex flex-row justify-start">
-        <h1 className="text-sx font-medium pb-4">{e.user.name} </h1>
-        <p className={`${e.caption ? `` : `mb-4`}pl-1 pb-4 font-light text-sx`}>
+      <div className="flex flex-row justify-start w-full">
+        <h1
+          className={`${
+            showFullCaption ? ` ` : `line-clamp-3 bg-red-600 overflow-hidden`
+          }text-sx font-medium pb-4 h-auto  text-left w-full`}
+        >
+          {e.user.name + " "}
+          <span
+            className={`${
+              e.caption ? `` : `mb-4`
+            }w-full pb-4 font-light text-sx`}
+          >
+            {showFullCaption ? e.caption : caption}
+            {isTruncated && !showFullCaption && (
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => setShowFullCaption(true)}
+              >
+                more
+              </span>
+            )}
+          </span>
+        </h1>
+
+        {/* <p className={`${e.caption ? `` : `mb-4`}pl-1 pb-4 font-light text-sx`}>
           {e.caption}
-        </p>
+        </p> */}
       </div>
       <div className="cursor-pointer">
         {e.comments.length ? (
