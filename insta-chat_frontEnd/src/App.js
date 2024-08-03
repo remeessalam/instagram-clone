@@ -18,7 +18,10 @@ const AppLayout = () => {
       <div className={`${bigScreen ? `w-[244px] bg-gray-400 fixed` : `w-0`}`}>
         <SideBar />
       </div>
-      <div className="lg:w-width w-full ml-[244px]">
+      <div
+        className={`lg:w-width w-full 
+        lg:ml-[240px] ml-0`}
+      >
         <Outlet />
       </div>
     </div>

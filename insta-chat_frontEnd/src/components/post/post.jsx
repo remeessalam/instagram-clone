@@ -7,7 +7,8 @@ import { useDispatch } from "react-redux";
 import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { EmailRounded } from "@mui/icons-material";
 
 const Post = ({ e }) => {
   const [liked, setLiked] = useState();
@@ -25,6 +26,8 @@ const Post = ({ e }) => {
   const [isTruncated, setIsTruncated] = useState(false);
 
   const [showFullCaption, setShowFullCaption] = useState(false);
+
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -86,6 +89,13 @@ const Post = ({ e }) => {
     }
   };
 
+  const handleScroll = (event) => {
+    const scrollLeft = event.target.scrollLeft;
+    const width = event.target.clientWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    setCurrentSlide(newIndex);
+  };
+
   return (
     <div
       key={e._id}
@@ -94,29 +104,35 @@ const Post = ({ e }) => {
       <div className="flex justify-between items-center min-h-18 my-[12px] mt-1">
         <div className="flex cursor-pointer">
           {e.user.image ? (
-            <img
-              className="rounded-full w-9 h-9 object-cover"
-              src={e.user.image}
-              alt=""
-            />
-          ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-12 h-12"
-            >
-              <path
-                fillRule="evenodd"
-                d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-                clipRule="evenodd"
+            <Link to={`/showuser/${e?.user?._id}`}>
+              <img
+                className="rounded-full w-9 h-9 object-cover"
+                src={e.user.image}
+                alt=""
               />
-            </svg>
+            </Link>
+          ) : (
+            <Link to={`/showuser/${e?.user?._id}`}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-12 h-12"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </Link>
           )}
           <div className="flex items-center">
-            <h1 className="text-justify font-semibold text-sm ml-3">
-              {e.user.name}
-            </h1>
+            <Link to={`/showuser/${e?.user?._id}`}>
+              <h1 className="text-justify font-semibold text-sm ml-3">
+                {e.user.name}
+              </h1>
+            </Link>
             <span className="pb-[7.5px] mx-[5px] font-bold text-lg text-gray-500">
               .
             </span>
@@ -131,12 +147,14 @@ const Post = ({ e }) => {
         </div>
         <div className="cursor-pointer">{svgIcons.threeDot}</div>
       </div>
-      <div className="rounded-lg overflow-hidden bg-red-300">
+      <div className="relative rounded-lg overflow-hidden bg-red-300">
         <div
           className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
           onDoubleClick={() => {
             like(e._id);
           }}
+          onScroll={handleScroll}
+
           // onClick={() => {
           //     setOpen(!open)
           // }}
@@ -150,6 +168,22 @@ const Post = ({ e }) => {
                   alt=""
                 />
               </div>
+            );
+          })}
+        </div>
+        <div className="flex justify-center absolute gap-1 bottom-5 w-full text-center">
+          {e.image.map((image, index) => {
+            return (
+              <>
+                {e.image.length > 1 && (
+                  <div
+                    key={index}
+                    className={`w-[6px] h-[6px] rounded-full ${
+                      index === currentSlide ? "bg-white" : "bg-imageDotColor"
+                    }`}
+                  ></div>
+                )}
+              </>
             );
           })}
         </div>
@@ -240,7 +274,7 @@ const Post = ({ e }) => {
       <div className="flex flex-row justify-start w-full">
         <h1
           className={`${
-            showFullCaption ? ` ` : `line-clamp-3 bg-red-600 overflow-hidden`
+            showFullCaption ? ` ` : `line-clamp-3 overflow-hidden`
           }text-sx font-medium pb-4 h-auto  text-left w-full`}
         >
           {e.user.name + " "}
@@ -252,7 +286,7 @@ const Post = ({ e }) => {
             {showFullCaption ? e.caption : caption}
             {isTruncated && !showFullCaption && (
               <span
-                className="text-blue-500 cursor-pointer"
+                className="text-gray-400 cursor-pointer"
                 onClick={() => setShowFullCaption(true)}
               >
                 more

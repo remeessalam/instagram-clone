@@ -46,7 +46,7 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
   }
 
   return (
-    <div key={frnd._id} className="flex flex-col m-3 ">
+    <div key={frnd._id} className="flex flex-col">
       <div className="flex flex-row justify-between">
         <Link
           to={`/showuser/${frnd._id}`}
@@ -60,7 +60,7 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
             {frnd.image ? (
               <div>
                 <img
-                  className="w-8 h-8  rounded-full object-cover"
+                  className="w-11 h-11  rounded-full object-cover"
                   src={frnd.image}
                   alt="profile pic"
                 />
@@ -69,9 +69,9 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  viewBox="1 1 23 23"
                   fill="currentColor"
-                  className="w-8 h-8"
+                  className="w-14 h-14"
                 >
                   <path
                     fillRule="evenodd"
@@ -81,9 +81,14 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
                 </svg>
               </div>
             )}
-            <h1 className="text-[14px] ml-2 font-semibold text-gray-500">
-              {frnd.name}
-            </h1>
+            <div>
+              <h1 className="text-[14px] ml-2 font-semibold text-gray-900">
+                {frnd.name}
+              </h1>
+              <h1 className="text-[12px] ml-2 font-normal text-gray-500">
+                Suggested for you
+              </h1>
+            </div>
           </div>
         </Link>
         {!following?.some((element) => element._id === frnd._id) ? (
