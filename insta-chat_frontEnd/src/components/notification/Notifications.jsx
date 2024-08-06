@@ -19,8 +19,8 @@ const NotificationC = ({ open, setOpen }) => {
       <div
         className={`absolute transition-all ease-in-out duration-200 overflow-hidden ${
           !open
-            ? `w-[0px] left-[244px] border-0`
-            : `w-[420px] left-[80px] rounded-r-2xl border-r border-borderColor`
+            ? `w-[0px] left-[244px] border-0 z-50`
+            : `w-[420px] left-[80px] z-50 rounded-r-2xl border-r border-borderColor`
         }  h-screen `}
       >
         <div className="flex h-full flex-col relative  overflow-y-scroll bg-white py-6 shadow-xl">

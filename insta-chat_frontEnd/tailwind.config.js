@@ -3,6 +3,9 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/**/*.{svg}"],
   theme: {
     extend: {
+      zIndex: {
+        100: "10000",
+      },
       borderImageColor: {
         "gradient-violet-orange-red-yellow":
           "linear-gradient(to right, violet, orange, red, yellow)",
@@ -44,7 +47,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("tailwind-scrollbar-hide"),
     require("@tailwindcss/line-clamp"),
+    require("tailwind-scrollbar-hide"),
   ],
 };

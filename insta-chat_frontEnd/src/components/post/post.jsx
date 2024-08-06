@@ -8,11 +8,10 @@ import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
 import { Link, useNavigate } from "react-router-dom";
-import { EmailRounded } from "@mui/icons-material";
 
 const Post = ({ e }) => {
   const [liked, setLiked] = useState();
-  // const [likedEffect, setLikedEffect] = useState(false)
+
   const navigate = useNavigate();
 
   const [comment, setComment] = useState("");
@@ -30,6 +29,8 @@ const Post = ({ e }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const dispatch = useDispatch();
+
+  console.log(e, "thisise");
 
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
@@ -56,28 +57,15 @@ const Post = ({ e }) => {
 
   console.log(e, "thisise");
   const like = (postId) => {
-    // setLikedEffect(true)
-    // setTimeout(() => {
-    //     setLikedEffect(false)
-    // }, 200)
     clickLike(postId).then((data) => {
-      // data.data.msg === 'Liked' && setLiked(false)
-      // data.data.msg === 'Unliked' && setLiked(true)
-      // setLiked(!liked)
       dispatch(refreshReducer());
     });
   };
 
   const Comments = async (postId) => {
     try {
-      // require("react-dom");
-      // window.React = require("react");
       console.log(postId, "commentclicked");
-      // useAddComment(postId, comment).then((data) => {
-      //   setComment("");
-      //   console.log(data, "commentclicked");
-      //   dispatch(refreshReducer());
-      // });
+
       const data = await addComment(postId, comment, navigate);
       if (data) {
         setComment("");
@@ -99,7 +87,7 @@ const Post = ({ e }) => {
   return (
     <div
       key={e._id}
-      className=" flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3  drop-shadow-l"
+      className="flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3 drop-shadow-l"
     >
       <div className="flex justify-between items-center min-h-18 my-[12px] mt-1">
         <div className="flex cursor-pointer">
@@ -139,15 +127,11 @@ const Post = ({ e }) => {
             <h1 className="text-sm text-gray-500">
               <Lastseen time={e.createdAt} />
             </h1>
-            {/* <div className="flex flex-row ml-3">
-            <h1 className="text-justify ml-3 text-sm">
-            </h1>
-          </div> */}
           </div>
         </div>
         <div className="cursor-pointer">{svgIcons.threeDot}</div>
       </div>
-      <div className="relative rounded-lg overflow-hidden bg-red-300">
+      <div className="rounded-lg  overflow-hidden bg-black min-h-[468px]  max-h-[585px]">
         <div
           className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
           onDoubleClick={() => {
@@ -163,7 +147,7 @@ const Post = ({ e }) => {
             return (
               <div key={i} className="flex min-w-full snap-always snap-center ">
                 <img
-                  className=" min-h-[468px] w-full max-h-[585px] object-cover "
+                  className="min-h-[468px] w-full max-h-[585px] object-cover "
                   src={obj.url}
                   alt=""
                 />
@@ -171,7 +155,7 @@ const Post = ({ e }) => {
             );
           })}
         </div>
-        <div className="flex justify-center absolute gap-1 bottom-5 w-full text-center">
+        <div className="flex justify-center relative gap-1 bottom-5 w-full text-center">
           {e.image.map((image, index) => {
             return (
               <>
@@ -188,7 +172,7 @@ const Post = ({ e }) => {
           })}
         </div>
       </div>
-      <Popup open={open} setOpen={setOpen} posts={e} />
+      {open && <Popup open={open} setOpen={setOpen} post={e} />}
       <div className="flex flex-row justify-between py-3">
         <div className="flex flex-row ">
           {liked ? (
@@ -261,9 +245,7 @@ const Post = ({ e }) => {
         </div>
       </div>
       <div className="flex justify-start">
-        <h1 className="text-sm hei font-semibold pr-5 ">
-          {e.Likes.length} likes
-        </h1>
+        <h1 className="text-sm font-semibold pr-5 ">{e.Likes.length} likes</h1>
         {/* <h1
           className="text-sx font-normal cursor-pointer"
           onClick={() => setOpen(!open)}
@@ -331,9 +313,6 @@ const Post = ({ e }) => {
             {comment?.length ? "post" : ""}
           </button>
           <div>{svgIcons.imojiIcon}</div>
-          {/* {comment ?
-                        : <p className='text-sx font-semibold text-blue-200 '>post</p>
-                    } */}
         </div>
       </div>
     </div>

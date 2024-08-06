@@ -14,7 +14,7 @@ import SideBar from "./layout/SideNavBar";
 const socket = "hai";
 const AppLayout = () => {
   return (
-    <div className="flex">
+    <div className="flex ">
       <div className={`${bigScreen ? `w-[244px] bg-gray-400 fixed` : `w-0`}`}>
         <SideBar />
       </div>
