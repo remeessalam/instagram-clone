@@ -92,7 +92,7 @@ const SideBar = () => {
         {IsBigScreen ? (
           <>
             <div
-              className={`relative flex transition-all ease-in-out duration-300 ${
+              className={`flex transition-all ease-in-out duration-300 ${
                 Search || not ? `w-[80px]` : `w-[244px]`
               } fixed border-r h-screen border-slate-300`}
             >

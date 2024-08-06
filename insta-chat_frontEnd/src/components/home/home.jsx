@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import allpost from "../../services/allpost";
 import allusers from "../../services/allusers";
-
 import Post from "../post/Post";
 import Friend from "../suggestion/Suggestion";
 import { useSelector } from "react-redux";
@@ -15,6 +14,8 @@ function Content() {
   const [post, setPost] = useState([]);
 
   const [users, setUsers] = useState([]);
+
+  // const [open, setOpen] = useState(false);
 
   const refresh = useSelector((state) => state.app.refresh);
 
@@ -37,10 +38,10 @@ function Content() {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
 
   return (
-    <div className="flex justify-center flex-row w-full  m-1 p-2">
+    <div className="flex justify-center flex-row w-full h-[99vh] overflow-y-scroll  m-1 p-2 scrollbar-hide">
       {/* POST AND FRIEND DIV  */}
 
-      <div className="flex flex-col w-[630px] ml-4 mr-4 h-5/6">
+      <div className="flex flex-col w-[630px] ml-4 mr-4   ">
         {/* POST DIV */}
         {/* STORY DIV */}
         {IsBigScreen && (
@@ -49,7 +50,7 @@ function Content() {
           </div>
         )}
 
-        <div className="flex flex-col mx-auto  p-2  w-full   overflow-x-auto scrollbar-hide h-100%  ">
+        <div className={`flex flex-col mx-auto  p-2  w-full h-100%  `}>
           {post.map((post) => (
             <Post key={post._id} e={post} />
           ))}
@@ -59,7 +60,7 @@ function Content() {
       </div>
 
       {IsBigScreen && (
-        <div className="flex flex-col pl-16 mt-9  w-1/4  h-100%   overflow-y-auto scrollbar-hide ">
+        <div className="flex flex-col pl-16 mt-9  w-1/4  h-100% overflow-y-auto">
           <div className="flex w-full flex-row justify-between">
             <div className="flex w-full flex-row items-center cursor-pointer">
               <Link className="" to={`/profile`}>
@@ -115,7 +116,7 @@ function Content() {
                 Sell All
               </h1>
             </div>
-            <div className=" flex flex-col gap-4 mt-4 pl-1">
+            <div className=" flex flex-col gap-2 mt-4 pl-1">
               {users?.map((obj) => {
                 console.log(obj, "thisisobj");
                 return <Friend key={obj._id} frnd={obj} />;
