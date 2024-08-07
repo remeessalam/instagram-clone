@@ -15,3 +15,14 @@
   ! collapse the side when some tab's clicked.
 
 # Created new clone to check github
+
+# About Git
+
+- git init 'To initialise'
+- git add . or <filename> 'To make read file to commit .for all or we can give specific file name'
+- git status 'To check the current Status'
+- git commit
+- git push
+- git pull
+- git clone
+-
