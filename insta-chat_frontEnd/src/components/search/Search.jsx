@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import finduser from "../../services/finduser";
 import Friend from "../suggestion/Suggestion";
 import Getuser from "../../services/getuser";
+import Spinner from "../spinner/Spinner";
 const Search = ({ open, setOpen, handleClose }) => {
   const [find, setFind] = useState("");
 
@@ -9,11 +10,15 @@ const Search = ({ open, setOpen, handleClose }) => {
 
   const [accountholder, setAccountholder] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    find && setLoading(true);
     find
       ? finduser(find).then((data) => {
           // console.log(data.data.result)
           setUsers(data.data.result);
+          setLoading(false);
         })
       : setUsers([]);
     Getuser().then((userdata) => {
@@ -49,19 +54,37 @@ const Search = ({ open, setOpen, handleClose }) => {
                 </div>
                 <div className="w-1/4 flex justify-end">
                   {find ? (
-                    <button
-                      className="text-sx font-semibold text-blue-400 "
-                      onClick={() => finduser(find)}
-                    >
-                      Search
-                    </button>
+                    loading ? (
+                      <Spinner />
+                    ) : (
+                      <div
+                        onClick={() => setFind("")}
+                        className="flex justify-center items-center  text-center font-semibold rounded-full w-6 h-6 "
+                      >
+                        <img
+                          src="/svg/gray-close-circle.svg"
+                          alt=""
+                          width={20}
+                          height={20}
+                        />
+                      </div>
+                      // <button
+                      //   className="text-sx flex items-center justify-center bg-c7 text-gray-200 rounded-full w-4 h-4 font-thin"
+                      //   onClick={() => finduser(find)}
+                      // >
+                      //   x
+                      // </button>
+                    )
                   ) : (
-                    <div className="flex justify-center items-center  text-center font-semibold rounded-full w-6 h-6 ">
+                    <div
+                      onClick={() => setFind("")}
+                      className="flex justify-center items-center  text-center font-semibold rounded-full w-6 h-6 "
+                    >
                       <img
                         src="/svg/gray-close-circle.svg"
                         alt=""
-                        width={22}
-                        height={22}
+                        width={20}
+                        height={20}
                       />
                     </div>
                   )}
@@ -69,14 +92,16 @@ const Search = ({ open, setOpen, handleClose }) => {
               </div>
               {users?.map((obj) => {
                 return (
-                  <Friend
-                    handleClose={handleClose}
-                    key={obj._id}
-                    frnd={obj}
-                    userfollowing={accountholder}
-                    setOpen={setOpen}
-                    setFind={setFind}
-                  />
+                  <div className="m-3">
+                    <Friend
+                      handleClose={handleClose}
+                      key={obj._id}
+                      frnd={obj}
+                      userfollowing={accountholder}
+                      setOpen={setOpen}
+                      setFind={setFind}
+                    />
+                  </div>
                 );
               })}
             </div>

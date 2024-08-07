@@ -175,7 +175,7 @@ module.exports = {
     userSchema
       .find({ _id: { $nin: [...user.following, userid] } }, { password: 0 })
       .sort({ createdAt: "-1" })
-      .limit(7)
+      .limit(5)
       .then((data) => {
         res.json({ status: true, user: data });
       })

@@ -17,6 +17,7 @@ module.exports = {
         sideBarMenuBorderColor: "rgb(244, 244, 244, 1)",
         addcommentText: "#9da4b0",
         imageDotColor: "#a89b93",
+        c7: "#c7c7c7",
       },
       boxShadow: {
         custom: "0px 0px 10px 1px rgba(0,0,0,0.1)",
