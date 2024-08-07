@@ -13,3 +13,5 @@
 - Sidebar and right side component also make good.
   ! make selected tab bold.
   ! collapse the side when some tab's clicked.
+
+# Created new clone to check github
