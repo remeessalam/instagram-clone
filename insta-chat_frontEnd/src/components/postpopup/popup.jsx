@@ -13,6 +13,8 @@ export default function Modal({ post, open, setOpen }) {
 
   const [comment, setComment] = useState();
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   const [bounse, setBounse] = useState({ like: false, liked: false });
 
   const dispatch = useDispatch();
@@ -47,6 +49,13 @@ export default function Modal({ post, open, setOpen }) {
     post.Likes.includes(decoded.userId) ? setLiked(false) : setLiked(true);
   }, [decoded.userId, post]);
 
+  const handleScroll = (event) => {
+    const scrollLeft = event.target.scrollLeft;
+    const width = event.target.clientWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    setCurrentSlide(newIndex);
+  };
+
   return (
     <>
       <div className="z-50 fixed top-3 right-3 flex justify-end ">
@@ -58,18 +67,20 @@ export default function Modal({ post, open, setOpen }) {
       <div className="fixed z-40 left-[50%] bg-black bg-opacity-60 top-[50%]  -translate-y-[50%] -translate-x-[50%] w-full h-full p-6 ">
         <div className="flex flex-wrap rounded-r-md  w-[350px] lg:w-[1200px] lg:h-[95vh] h-[650px] bg-white mx-auto brightness-100 overflow-y-auto scrollbar-hide">
           <div className="flex items-center sm:w-1/2 w-full h-1/2 sm:h-full ">
-            <div className="flex items-center w-full">
+            <div className="flex flex-col items-center w-full">
               <div
                 className="flex  h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
                 onClick={() => {
                   setOpen(!open);
                 }}
+                onScroll={handleScroll}
               >
                 {post.image?.map((obj) => {
+                  console.log(post, "thisisimageinpost");
                   return (
-                    <div className="flex min-w-full snap-always snap-center justify-center place-items-center">
+                    <div className="flex min-w-full  snap-always snap-center justify-center place-items-center">
                       <img
-                        className=" h-full max-h-[325px] sm:max-h-[95vh]  object-cover aspect-auto "
+                        className=" h-full max-h-[325px] sm:max-h-[96vh]  object-cover aspect-auto "
                         src={obj.url}
                         alt=""
                       />
@@ -77,15 +88,39 @@ export default function Modal({ post, open, setOpen }) {
                   );
                 })}
               </div>
+              <div className="flex justify-center relative gap-1 bottom-5 w-full text-center">
+                {post.image.map((image, index) => {
+                  return (
+                    <>
+                      {post.image.length > 1 && (
+                        <div
+                          key={index}
+                          className={`w-[6px] h-[6px] rounded-full ${
+                            index === currentSlide
+                              ? "bg-white"
+                              : "bg-imageDotColor"
+                          }`}
+                        ></div>
+                      )}
+                    </>
+                  );
+                })}
+              </div>
             </div>
           </div>
           <div className="flex flex-col bg-white  sm:w-1/2 w-full sm:h-full h-[500px] overflow-x-auto ">
             <div className="flex items-center h-20 border-b">
-              <img
-                className="ml-3 rounded-full w-11 h-11 object-cover"
-                src={post.image[0]?.url}
-                alt=""
-              />
+              {post?.user?.image ? (
+                <img
+                  className="ml-3 rounded-full w-11 h-11 object-cover"
+                  src={post?.user?.image}
+                  alt="noimage"
+                />
+              ) : (
+                <div className="ml-3 rounded-full w-11 h-11">
+                  {svgIcons.userIconBig}
+                </div>
+              )}
               <div className=" item-center">
                 <h1 className="text-md font-medium ml-3">{post.user.name}</h1>
               </div>
@@ -95,13 +130,17 @@ export default function Modal({ post, open, setOpen }) {
                 {post.comments.map((com) => {
                   console.log(com, "thisiscomment");
                   return (
-                    <div className="flex flex-row p-5 w-100%">
+                    <div className="flex justify-between flex-row p-5 w-100%">
                       <div className="flex mr-4">
-                        <img
-                          className="w-8 h-8 rounded-full"
-                          src={com?.commentBy?.image}
-                          alt="c"
-                        />
+                        {com?.commentBy?.image ? (
+                          <img
+                            className="w-8 h-8 rounded-full"
+                            src={com?.commentBy?.image}
+                            alt="noimage"
+                          />
+                        ) : (
+                          <div className="">{svgIcons.userIconMedium}</div>
+                        )}
                         <h1 className="font-semibold mr-1 ml-2 pt-1  cursor-pointer">
                           {com.commentBy.name}
                           <span className="text-sx pl-1 font-normal w-full">
