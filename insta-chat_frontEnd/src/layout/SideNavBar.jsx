@@ -145,7 +145,7 @@ const SideBar = () => {
                     className={`flex m-1 p-3 flex-row items-center ${
                       Search || not ? `w-[50px]` : `w-full`
                     } ${
-                      currentTab.search ? `border` : ` transition-none`
+                      currentTab.search ? `border` : ` `
                     }   hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     onClick={() => {
                       not && closeNotification();
