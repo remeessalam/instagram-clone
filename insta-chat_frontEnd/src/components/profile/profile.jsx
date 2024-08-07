@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { Example } from "../editprofile/ProfileEditModal";
 import Getpost from "../../services/getpost";
 import Getuser from "../../services/getuser";
-import Hover from "../smallmodal/Modal";
+import Hover from "../Smallmodal/ModalSec";
 import { useSelector } from "react-redux";
 import { bigScreen } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";
