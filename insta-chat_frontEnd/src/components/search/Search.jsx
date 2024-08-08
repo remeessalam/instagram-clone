@@ -42,7 +42,7 @@ const Search = ({ open, setOpen, handleClose }) => {
 
           <div className="h-full " aria-hidden="true">
             <div>
-              <div className="flex flex-row m-4 rounded-lg justify-between pl-7  bg-newinputfieldbg   p-3 max-w-full">
+              <div className="flex flex-row m-4  rounded-lg justify-between pl-7  bg-newinputfieldbg   p-3 max-w-full">
                 <div className="w-3/4 ">
                   <input
                     className="w-full focus:outline-0 text-black  bg-newinputfieldbg"
@@ -90,6 +90,7 @@ const Search = ({ open, setOpen, handleClose }) => {
                   )}
                 </div>
               </div>
+              <div className="border-b border-borderColor my-5"></div>
               {users?.map((obj) => {
                 return (
                   <div className="m-3">

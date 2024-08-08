@@ -98,7 +98,8 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
             <button
               className="text-blue-400 font-semibold text-[13px]"
               onClick={() => {
-                return Follow(frnd._id), setFollowed(!followed);
+                Follow(frnd._id);
+                setFollowed(!followed);
               }}
             >
               Follow
@@ -107,7 +108,8 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
             <button
               className="text-blue-400 font-semibold text-[13px]"
               onClick={() => {
-                return Follow(frnd._id), setFollowed(!followed);
+                Follow(frnd._id);
+                setFollowed(!followed);
               }}
             >
               unfollow
@@ -117,7 +119,8 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
           <button
             className="text-blue-400 font-semibold text-[13px]"
             onClick={() => {
-              return Follow2(frnd._id), setFollowed2(!followed2);
+              Follow2(frnd._id);
+              setFollowed2(!followed2);
             }}
           >
             unfollow
@@ -126,7 +129,8 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
           <button
             className="text-blue-400 font-semibold text-[13px]"
             onClick={() => {
-              return Follow2(frnd._id), setFollowed2(!followed2);
+              Follow2(frnd._id);
+              setFollowed2(!followed2);
             }}
           >
             Follow

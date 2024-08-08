@@ -1,7 +1,7 @@
 import React from "react";
 import { formatDistanceToNow } from "date-fns";
 
-export default function Lastseen(props) {
+const Lastseen = (props) => {
   const timeStamp = props.time;
   const duration = formatDistanceToNow(new Date(timeStamp), {
     addSuffix: false,
@@ -20,5 +20,7 @@ export default function Lastseen(props) {
     .replace(" second", "s");
   console.log(shortDuration, "thisisshotDuration");
 
-  return <div>{shortDuration}</div>;
-}
+  return <div className="inline">{shortDuration}</div>;
+};
+
+export default Lastseen;
