@@ -10,7 +10,12 @@ const useChangeTab = () => {
       }
       newTabsState[tab] = true; // only changing the clicked tab true;
       console.log(newTabsState["search"], "thisisipathname");
-      if (tab === "search" || tab === "notification" || tab === "more") {
+      if (
+        tab === "search" ||
+        tab === "notification" ||
+        tab === "more" ||
+        tab === "chat"
+      ) {
         //search tab true
         if (prev["search"] === true && tab === "search") {
           //cheacking prev state of search is true and click on search
@@ -37,6 +42,13 @@ const useChangeTab = () => {
           newTabsState[path] = true;
           return newTabsState;
         } else if (prev["more"] === true && tab === "more") {
+          const path =
+            location.pathname === "/" ? "home" : location.pathname.slice(1);
+          console.log(path, "thisisipathname");
+          newTabsState[tab] = false;
+          newTabsState[path] = true;
+          return newTabsState;
+        } else if (prev["chat"] === true && tab === "chat") {
           const path =
             location.pathname === "/" ? "home" : location.pathname.slice(1);
           console.log(path, "thisisipathname");
