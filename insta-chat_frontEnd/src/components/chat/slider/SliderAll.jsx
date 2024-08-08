@@ -16,7 +16,14 @@ const SliderAll = ({ open, setOpen }) => {
         <div className="relative mt-6 flex-1 px-4 sm:px-6">
           {/* Replace with your content */}
           <div className="absolute inset-0 px-4 sm:px-6">
-            <div className="h-[90vh] bg-gray-500" aria-hidden="true"></div>
+            <div className="h-[90vh] bg-gray-500" aria-hidden="true">
+              <div>
+                <h1>hello world</h1>
+              </div>
+              <div>
+                <h3>we are one</h3>
+              </div>
+            </div>
           </div>
         </div>
       </div>
