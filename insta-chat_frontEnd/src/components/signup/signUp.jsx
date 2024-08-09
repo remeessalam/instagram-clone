@@ -1,6 +1,6 @@
 // import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../services/axioscall";
 import { GoogleLogin } from "@react-oauth/google";
@@ -29,9 +29,9 @@ function Signup() {
     userName: "",
     password: "",
   });
-  const {
-    formState: { errors },
-  } = useForm();
+  // const {
+  //   formState: { errors },
+  // } = useForm();
 
   const emailRef = useRef(null);
   const fullNameRef = useRef(null);
@@ -314,10 +314,10 @@ function Signup() {
                     onFocus={(e) =>
                       setFocus((pre) => ({ ...pre, [e.target.name]: false }))
                     }
-                    onBlur={(e) => (
-                      setFocus((pre) => ({ ...pre, [e.target.name]: true })),
-                      validateUserName(formData.userName)
-                    )}
+                    onBlur={(e) => {
+                      setFocus((pre) => ({ ...pre, [e.target.name]: true }));
+                      validateUserName(formData.userName);
+                    }}
                     onChange={handleInputChange}
                   />
                 </div>
@@ -438,36 +438,3 @@ function Signup() {
 }
 
 export default Signup;
-
-{
-  /** email register 
-  // {...register("email", {
-                    //   required: { value: true, message: "Email is required" },
-                    //   pattern: {
-                    //     value:
-                    //       /^((([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})))$|^([0-9]{10})$/,
-                    //     message: "Enter a valid email",
-                    //   },
-                    FULL NAME REGISTER
-                       // {...register("fullName", {
-                    //   required: { value: true, message: "Enter Full Name" },
-                    //   minLength: { value: 4, message: "Enter Name" },
-                    // })}
-                    USERNAME REGISTER
-                   {...register("username", {
-                      required: { value: true, message: "Username required" },
-                      minLength: {
-                        value: 3,
-                        message: "Enter a valid username",
-                      },
-                    })}
-                    PASSWORD REGISTER
-                    {...register("password", {
-                      required: { value: true, message: "Password required" },
-                      minLength: {
-                        value: 8,
-                        message: "Password should be 8 characters long",
-                      },
-                    })}
-                    // })} */
-}
