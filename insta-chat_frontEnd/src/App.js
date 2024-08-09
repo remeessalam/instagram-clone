@@ -10,8 +10,8 @@ import io from "socket.io-client";
 import { bigScreen } from "./utils/constant";
 import SideBar from "./layout/SideNavBar";
 
-// const socket = io.connect("http://localhost:4000/");
-const socket = "hai";
+const socket = io.connect("http://localhost:4000/");
+// const socket = "hai";
 const AppLayout = () => {
   return (
     <div className="flex ">

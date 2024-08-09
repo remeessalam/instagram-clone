@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/Modal";
@@ -27,7 +27,7 @@ const SideBar = () => {
     more: false,
   });
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [open, setOpen] = useState(false);
 
@@ -35,9 +35,11 @@ const SideBar = () => {
 
   const [not, setNot] = useState(false);
 
+  const [chat, setChat] = useState(false);
+
   const { user } = useSelector((state) => ({ ...state }));
 
-  const menuRef = useRef(null);
+  // const menuRef = useRef(null);
 
   // console.log(user.user, 'userrrrrrrrr')
   useChecktoken();
@@ -56,13 +58,14 @@ const SideBar = () => {
     navigate("/login");
   }
 
-  const handleMenuToggle = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  // const handleMenuToggle = () => {
+  //   setIsMenuOpen(!isMenuOpen);
+  // };
 
   const handleClose = () => {
     Search && closeSearch();
     not && closeNotification();
+    chat && closeChat();
   };
   const closeSearch = () => {
     setSearch((pre) => {
@@ -82,6 +85,17 @@ const SideBar = () => {
       }
     });
   };
+  const closeChat = () => {
+    setChat((pre) => {
+      if (pre === true) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+  };
+
+  const allCondition = Search || not || chat;
 
   const handleTabClick = useChangeTab();
   return (
@@ -93,7 +107,7 @@ const SideBar = () => {
           <>
             <div
               className={`flex transition-all ease-in-out duration-300 ${
-                Search || not ? `w-[80px]` : `w-[244px]`
+                allCondition ? `w-[80px]` : `w-[244px]`
               } fixed border-r h-screen border-slate-300`}
             >
               <div className={`flex justify-between  flex-col px-3 pt-2 pb-5`}>
@@ -103,7 +117,7 @@ const SideBar = () => {
                       Search || not ? `block` : `block`
                     } mb-5 px-4 pt-6 pb-3`}
                   >
-                    {Search || not ? (
+                    {allCondition ? (
                       svgIcons.instagramSidebaricon
                     ) : (
                       <img
@@ -114,14 +128,14 @@ const SideBar = () => {
                     )}
                   </div>
 
-                  <Link to={"/"}>
+                  <Link className="bg-red-100" to={"/"}>
                     <div
                       onClick={() => {
                         handleClose();
                         handleTabClick("home", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 flex-row items-center ${
-                        Search || not ? `w-[50px]` : `w-full`
+                        allCondition ? `w-[50px]` : `w-full`
                       }  h-12 hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
                       <div className=" w-6">
@@ -129,7 +143,7 @@ const SideBar = () => {
                           ? svgIcons.homeIcon
                           : svgIcons.homeIconOutline}
                       </div>
-                      <div className={`${Search || not ? `hidden` : `block`}`}>
+                      <div className={`${allCondition ? `hidden` : `block`}`}>
                         <h1
                           className={`${
                             currentTab.home ? `font-bold ` : ` `
@@ -143,7 +157,7 @@ const SideBar = () => {
 
                   <div
                     className={`flex m-1 p-3 flex-row items-center ${
-                      Search || not ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[50px]` : `w-full`
                     } ${
                       currentTab.search ? `border` : ` `
                     }   hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
@@ -158,7 +172,7 @@ const SideBar = () => {
                         ? svgIcons.boldSearchIcon
                         : svgIcons.searchIcon}
                     </div>
-                    <div className={`${Search || not ? `hidden` : `block`}`}>
+                    <div className={`${allCondition ? `hidden` : `block`}`}>
                       <h1 className="flex  ml-4">Search</h1>
                     </div>
                   </div>
@@ -166,12 +180,15 @@ const SideBar = () => {
                   <Link to={"/chat"}>
                     <div
                       onClick={() => {
+                        setChat(!chat);
                         handleClose();
                         handleTabClick("chat", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
-                        Search || not ? `w-[50px]` : `w-full`
-                      }   flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
+                        allCondition ? `w-[50px]` : `w-full`
+                      }  ${
+                        currentTab.chat ? `border` : ``
+                      } flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
                       <div className="">
                         {currentTab.chat
@@ -179,7 +196,7 @@ const SideBar = () => {
                           : svgIcons.messengerIcon}
                         {console.log(currentTab.chat, "thisisfillms")}
                       </div>
-                      <div className={`${Search || not ? `hidden` : `block`}`}>
+                      <div className={`${allCondition ? `hidden` : `block`}`}>
                         <h1
                           className={`flex ml-4 text-[16px] ${
                             currentTab.chat ? `font-bold ` : ` `
@@ -193,7 +210,7 @@ const SideBar = () => {
 
                   <div
                     className={`flex m-1 p-3 ${
-                      Search || not ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[50px]` : `w-full`
                     } ${
                       currentTab.notification ? `border` : ``
                     } cursor-pointer flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
@@ -208,7 +225,7 @@ const SideBar = () => {
                         ? svgIcons.fillnotificationIcon
                         : svgIcons.notificationIcon}
                     </div>
-                    <div className={`${Search || not ? `hidden` : `block`}`}>
+                    <div className={`${allCondition ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4">Notifications</h1>
                     </div>
                   </div>
@@ -219,12 +236,12 @@ const SideBar = () => {
                       handleClose();
                     }}
                     className={`flex flex-row m-1 p-3 ${
-                      Search || not ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[50px]` : `w-full`
                     }   items-center hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300 `}
                   >
                     <div className="">{svgIcons.createIcon}</div>
 
-                    <div className={`${Search || not ? `hidden` : `block`}`}>
+                    <div className={`${allCondition ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4 text-[16px]">Create</h1>
                     </div>
                   </div>
@@ -236,7 +253,7 @@ const SideBar = () => {
                         handleTabClick("profile", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
-                        Search || not ? `w-[50px]` : `w-full`
+                        allCondition ? `w-[50px]` : `w-full`
                       }    flex-row items-center  hover:bg-gray-100 rounded-lg hover:scale-110  duration-300`}
                     >
                       <div className="">
@@ -254,7 +271,7 @@ const SideBar = () => {
                           svgIcons.userIcon
                         )}
                       </div>
-                      <div className={`${Search || not ? `hidden` : `block`}`}>
+                      <div className={`${allCondition ? `hidden` : `block`}`}>
                         <h1
                           className={`flex ml-4 text-[16px] ${
                             currentTab.profile ? `font-bold` : ``
@@ -273,6 +290,7 @@ const SideBar = () => {
                   setCurrentTab={setCurrentTab}
                   Search={Search}
                   not={not}
+                  chat={chat}
                 />
               </div>
               <SearchBar

@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import useChangeTab from "../hooks/useChangeTab";
 import { useNavigate } from "react-router-dom";
 
-const SideBarMenu = ({ currentTab, setCurrentTab, Search, not }) => {
+const SideBarMenu = ({ currentTab, setCurrentTab, Search, not, chat }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -18,7 +18,7 @@ const SideBarMenu = ({ currentTab, setCurrentTab, Search, not }) => {
     navigate("/login");
   }
   return (
-    <div>
+    <div className="z-100">
       {" "}
       <div className="flex w-full h-40 pt-16">
         <div
@@ -49,7 +49,7 @@ const SideBarMenu = ({ currentTab, setCurrentTab, Search, not }) => {
               </svg>
             </div>
             <div className="w-full  ml-3">
-              {Search || not ? (
+              {Search || not || chat ? (
                 ""
               ) : (
                 <button

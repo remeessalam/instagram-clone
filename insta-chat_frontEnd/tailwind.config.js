@@ -24,6 +24,9 @@ module.exports = {
       },
       spacing: {
         width: "calc(100% - 244px)",
+        chatPageContainer: "calc(100wv - 50px)",
+        chatPageMsgContentHight: "calc(100vh - 130px)",
+        chatPageMsgContentHightMedium: "calc(100vh - 176px)",
       },
       keyframes: {
         bouncing: {
