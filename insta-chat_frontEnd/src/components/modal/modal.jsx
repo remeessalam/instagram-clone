@@ -11,6 +11,8 @@ export default memo(function Modal({ open, setOpen }) {
 
   const [caption, setCaption] = useState("");
 
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   // const cancelButtonRef = useRef(true);
 
   const [error, setError] = useState("");
@@ -40,10 +42,19 @@ export default memo(function Modal({ open, setOpen }) {
       };
     });
   }
+
+  const handleScroll = (event) => {
+    const scrollLeft = event.target.scrollLeft;
+    const width = event.target.clientWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    setCurrentSlide(newIndex);
+  };
+
+  console.log(images, "thisisimagesholding");
   return (
     <>
       {open && (
-        <div className="fixed inset-0 w-full h-[100vh] z-10 overflow-y-auto bg-black bg-opacity-60">
+        <div className="fixed inset-0 w-full h-[100vh] z-100 overflow-y-auto bg-black bg-opacity-60">
           <div className="fixed right-2 top-2 sm:p-1 p-6">
             <button
               type="button"
@@ -56,7 +67,7 @@ export default memo(function Modal({ open, setOpen }) {
               {svgIcons.whiteXCloseIcon}
             </button>
           </div>
-          <div className="flex min-h-full justify-center w-full  items-center ">
+          <div className="z-500 flex min-h-full justify-center w-full  items-center ">
             <div className="bg-white rounded-xl overflow-hidden md:w-[634px] w-[290px] h-[677px] ">
               <div className="flex items-center  py-5 justify-center w-full h-8 border-b border-borderColor">
                 <h3 className="font-semibold">Create new post</h3>
@@ -91,8 +102,11 @@ export default memo(function Modal({ open, setOpen }) {
                     </div>
                     <div className="flex flex-col mx-auto md:w-full h-full w-full ">
                       {!error ? (
-                        <div className=" w-full h-full">
-                          <div className="flex mb-3 overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide">
+                        <div className="relative w-full h-full">
+                          <div
+                            onScroll={handleScroll}
+                            className="flex mb-3 overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide"
+                          >
                             {images.map((img) => (
                               <div className="min-w-[634px]  h-full min-h-[500px] max-h-[550px]">
                                 <img
@@ -103,6 +117,27 @@ export default memo(function Modal({ open, setOpen }) {
                               </div>
                             ))}
                           </div>
+                          {images.length > 1 && (
+                            <div className="flex justify-center absolute gap-1 bottom-20 w-full text-center">
+                              {images.map((image, index) => {
+                                console.log("kasdflasldkfjlkdjflkonetow");
+                                return (
+                                  <>
+                                    {images.length > 1 && (
+                                      <div
+                                        key={index}
+                                        className={`w-[6px] h-[6px] rounded-full ${
+                                          index === currentSlide
+                                            ? "bg-white"
+                                            : "bg-imageDotColor"
+                                        }`}
+                                      ></div>
+                                    )}
+                                  </>
+                                );
+                              })}
+                            </div>
+                          )}
                           <input
                             className="w-full pl-2 h-8 focus:outline-0"
                             type="text"

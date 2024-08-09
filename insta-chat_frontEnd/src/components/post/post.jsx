@@ -133,7 +133,7 @@ const Post = ({ e }) => {
       </div>
       <div className="rounded-lg  overflow-hidden bg-black min-h-[468px]  max-h-[585px]">
         <div
-          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
+          className="flex h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
           onDoubleClick={() => {
             like(e._id);
           }}
@@ -155,7 +155,7 @@ const Post = ({ e }) => {
             );
           })}
         </div>
-        <div className="flex justify-center relative gap-1 bottom-5 w-full text-center">
+        <div className="flex justify-center -z-0 relative  gap-1 bottom-5 w-full text-center">
           {e.image.map((image, index) => {
             return (
               <>

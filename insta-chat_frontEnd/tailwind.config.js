@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       zIndex: {
         100: "10000",
+        500: "500",
       },
       borderImageColor: {
         "gradient-violet-orange-red-yellow":
