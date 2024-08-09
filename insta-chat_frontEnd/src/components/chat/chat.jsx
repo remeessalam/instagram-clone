@@ -18,6 +18,7 @@ export default function Chat({ Socket }) {
   // useEffect(() => {
   //     console.log(chat, 'chat chateeeee')
   // }, [chat])
+
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
     !token && navigate("/login");

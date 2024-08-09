@@ -61,6 +61,9 @@ const SideBar = () => {
   // const handleMenuToggle = () => {
   //   setIsMenuOpen(!isMenuOpen);
   // };
+  useEffect(() => {
+    location?.pathname === "/chat" ? setChat(true) : setChat(false);
+  }, []);
 
   const handleClose = () => {
     Search && closeSearch();
