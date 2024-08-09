@@ -140,11 +140,11 @@ export default function Chat({ Socket }) {
         ) : (
           <div className="w-3/4 bg-white ">
             <div className="flex flex-wrap w-full h-[75px] items-center  border-b">
-              <div className="flex felx-row items-center w-1/4 h-16 ">
-                <div className="sm:w-[56px] w-full m-1">
+              <div className="flex felx-row items-center w-1/4 h-16 pl-2">
+                <div className="sm:w-[56px] w-full ">
                   {chat[0].image ? (
                     <img
-                      className="w-12 h-12 rounded-full object-cover"
+                      className="w-14 h-14 rounded-full object-cover"
                       src={chat[0].image}
                       alt={chat[0].name}
                     />
@@ -167,7 +167,7 @@ export default function Chat({ Socket }) {
                     // </svg>
                   )}
                 </div>
-                <div className="sm:w-3/4 w-1 md:visible invisible text-lg font-medium text-black">
+                <div className="sm:w-3/4 w-1 ml-2 md:visible invisible text-lg font-medium text-black">
                   <h1>{chat[0].name}</h1>
                 </div>
               </div>
