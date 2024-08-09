@@ -58,7 +58,7 @@ export default function Modal({ post, open, setOpen }) {
 
   return (
     <>
-      <div className="z-50 fixed top-3 right-3 flex justify-end ">
+      <div className="z-50 fixed top-3 right-3 flex justify-end">
         <button className="text-white" onClick={() => setOpen(!open)}>
           {svgIcons.whiteXCloseIcon}
           {/* <ClearSharpIcon /> */}
