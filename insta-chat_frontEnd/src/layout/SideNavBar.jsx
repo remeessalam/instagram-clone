@@ -68,7 +68,7 @@ const SideBar = () => {
   const handleClose = () => {
     Search && closeSearch();
     not && closeNotification();
-    chat && closeChat();
+    // chat || (!location?.pathname === "/chat" && closeChat());
   };
   const closeSearch = () => {
     setSearch((pre) => {
@@ -183,7 +183,7 @@ const SideBar = () => {
                   <Link to={"/chat"}>
                     <div
                       onClick={() => {
-                        setChat(!chat);
+                        // setChat(!chat);
                         handleClose();
                         handleTabClick("chat", setCurrentTab);
                       }}
