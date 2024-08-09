@@ -63,8 +63,8 @@ const SideBar = () => {
   // };
   useEffect(() => {
     location?.pathname === "/chat" ? setChat(true) : setChat(false);
-  }, []);
-
+  }, [location?.pathname]);
+  console.log(chat, "thsiiscaht");
   const handleClose = () => {
     Search && closeSearch();
     not && closeNotification();
