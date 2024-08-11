@@ -144,8 +144,12 @@ const Post = ({ e }) => {
           // }}
         >
           {e.image.map((obj, i) => {
+            console.log(obj, "thiasdfkasdfjasdf");
             return (
-              <div key={i} className="flex min-w-full snap-always snap-center ">
+              <div
+                key={obj.url}
+                className="flex min-w-full snap-always snap-center "
+              >
                 <img
                   className="min-h-[468px] w-full max-h-[585px] object-cover "
                   src={obj.url}
@@ -157,17 +161,17 @@ const Post = ({ e }) => {
         </div>
         <div className="flex justify-center -z-0 relative  gap-1 bottom-5 w-full text-center">
           {e.image.map((image, index) => {
+            console.log(image, "thisisiisif");
             return (
-              <>
+              <div key={image.url}>
                 {e.image.length > 1 && (
                   <div
-                    key={index}
                     className={`w-[6px] h-[6px] rounded-full ${
                       index === currentSlide ? "bg-white" : "bg-imageDotColor"
                     }`}
                   ></div>
                 )}
-              </>
+              </div>
             );
           })}
         </div>

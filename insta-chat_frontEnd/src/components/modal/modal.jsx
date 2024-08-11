@@ -54,7 +54,7 @@ export default memo(function Modal({ open, setOpen }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 w-full h-[100vh] z-100 overflow-y-auto bg-black bg-opacity-60">
+        <div className="fixed inset-0 w-full h-[100vh] !z-100 overflow-y-auto bg-black bg-opacity-60">
           <div className="fixed right-2 top-2 sm:p-1 p-6">
             <button
               type="button"
@@ -108,7 +108,10 @@ export default memo(function Modal({ open, setOpen }) {
                             className="flex mb-3 overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide"
                           >
                             {images.map((img) => (
-                              <div className="min-w-[634px]  h-full min-h-[500px] max-h-[550px]">
+                              <div
+                                key={img}
+                                className="min-w-[634px]  h-full min-h-[500px] max-h-[550px]"
+                              >
                                 <img
                                   className="p-2 rounded-2xl w-full min-h-[550px] object-cover "
                                   src={img}
@@ -120,12 +123,14 @@ export default memo(function Modal({ open, setOpen }) {
                           {images.length > 1 && (
                             <div className="flex justify-center absolute gap-1 bottom-20 w-full text-center">
                               {images.map((image, index) => {
-                                console.log("kasdflasldkfjlkdjflkonetow");
+                                console.log(
+                                  image,
+                                  "kasdflasldkfjlkdjflkonetow"
+                                );
                                 return (
-                                  <>
+                                  <div key={index}>
                                     {images.length > 1 && (
                                       <div
-                                        key={index}
                                         className={`w-[6px] h-[6px] rounded-full ${
                                           index === currentSlide
                                             ? "bg-white"
@@ -133,7 +138,7 @@ export default memo(function Modal({ open, setOpen }) {
                                         }`}
                                       ></div>
                                     )}
-                                  </>
+                                  </div>
                                 );
                               })}
                             </div>
