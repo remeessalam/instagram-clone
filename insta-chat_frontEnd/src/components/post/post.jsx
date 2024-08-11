@@ -3,7 +3,7 @@ import clickLike from "../../services/like";
 import Lastseen from "../showposttime/Addedtime";
 import jwt_decode from "jwt-decode";
 import { refreshReducer } from "../../reduxgobalState/slices/appSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
@@ -34,6 +34,8 @@ const Post = ({ e }) => {
 
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
+
+  const openModalState = useSelector((state) => state.modal.openModalState);
 
   useEffect(() => {
     e.Likes.includes(decoded.userId) ? setLiked(false) : setLiked(true);
@@ -83,12 +85,13 @@ const Post = ({ e }) => {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-
+  console.log(open, "thisisidfajsdfnkjasndkjenr");
   return (
     <div
       key={e._id}
-      className="flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3 drop-shadow-l"
+      className=" flex flex-col  mx-auto rounded-md lg:w-[468px] w-full mb-3 drop-shadow-l"
     >
+      {open && <Popup open={open} setOpen={setOpen} post={e} />}
       <div className="flex justify-between items-center min-h-18 my-[12px] mt-1">
         <div className="flex cursor-pointer">
           {e.user.image ? (
@@ -138,10 +141,6 @@ const Post = ({ e }) => {
             like(e._id);
           }}
           onScroll={handleScroll}
-
-          // onClick={() => {
-          //     setOpen(!open)
-          // }}
         >
           {e.image.map((obj, i) => {
             console.log(obj, "thiasdfkasdfjasdf");
@@ -159,24 +158,33 @@ const Post = ({ e }) => {
             );
           })}
         </div>
-        <div className="flex justify-center -z-0 relative  gap-1 bottom-5 w-full text-center">
-          {e.image.map((image, index) => {
-            console.log(image, "thisisiisif");
-            return (
-              <div key={image.url}>
-                {e.image.length > 1 && (
-                  <div
-                    className={`w-[6px] h-[6px] rounded-full ${
-                      index === currentSlide ? "bg-white" : "bg-imageDotColor"
-                    }`}
-                  ></div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        {e.image.length > 1 && (
+          <div
+            className={`flex justify-center ${
+              openModalState ? `!hidden` : `relative`
+            } z-0   gap-1 bottom-5 w-full text-center`}
+          >
+            {e.image.map((image, index) => {
+              console.log(open, "thisisiisif");
+              return (
+                <div
+                  // className={`${open ? "hidden" : "relative"}`}
+                  key={image.url}
+                >
+                  {e.image.length > 1 && (
+                    <div
+                      className={`w-[6px] h-[6px] rounded-full ${
+                        index === currentSlide ? "bg-white" : "bg-imageDotColor"
+                      }`}
+                    ></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
-      {open && <Popup open={open} setOpen={setOpen} post={e} />}
+
       <div className="flex flex-row justify-between py-3">
         <div className="flex flex-row ">
           {liked ? (

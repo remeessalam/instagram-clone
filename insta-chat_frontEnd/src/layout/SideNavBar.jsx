@@ -3,12 +3,13 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/Modal";
 import SearchBar from "../components/search/Search";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bigScreen, svgIcons } from "../utils/constant";
 import useChecktoken from "../hooks/useChecktoken";
 import Notification from "../components/notification/Notifications";
 import useChangeTab from "../hooks/useChangeTab";
 import SideBarMenu from "./SideBarMenu";
+import { closeModal, openModal } from "../reduxgobalState/slices/modalslice";
 
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
@@ -29,7 +30,7 @@ const SideBar = () => {
 
   // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   const [Search, setSearch] = useState(false);
 
@@ -40,7 +41,8 @@ const SideBar = () => {
   const { user } = useSelector((state) => ({ ...state }));
 
   // const menuRef = useRef(null);
-
+  // const open = useSelector((state) => state.modal.open);
+  const dispatch = useDispatch();
   // console.log(user.user, 'userrrrrrrrr')
   useChecktoken();
 
@@ -235,10 +237,11 @@ const SideBar = () => {
 
                   <div
                     onClick={() => {
-                      setOpen(true);
+                      dispatch(openModal());
+                      // setOpen(true);
                       handleClose();
                     }}
-                    className={`flex flex-row m-1 p-3 ${
+                    className={`flex flex-row m-1 p-3 cursor-pointer ${
                       allCondition ? `w-[50px]` : `w-full`
                     }   items-center hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300 `}
                   >
@@ -336,7 +339,7 @@ const SideBar = () => {
                 </div>
                 <div
                   className="flex  items-center"
-                  onClick={() => setOpen(true)}
+                  onClick={() => dispatch(closeModal())}
                 >
                   {/* create */}
                   {svgIcons.createIcon}
@@ -387,7 +390,7 @@ const SideBar = () => {
           </div>
         )}
       </div>
-      <Modal open={open} setOpen={setOpen} />
+      <Modal />
     </>
   );
 };
