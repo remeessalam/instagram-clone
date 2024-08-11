@@ -3,7 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import uploadImage from "../../services/imageUpload";
 import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
-
+import Carousal from "../imageCarousal/Carousal";
+import "./modal.css";
 export default memo(function Modal({ open, setOpen }) {
   const [urls, setUrls] = useState([]);
 
@@ -54,8 +55,8 @@ export default memo(function Modal({ open, setOpen }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 w-full h-[100vh] z-100 overflow-y-auto bg-black bg-opacity-60">
-          <div className="fixed right-2 top-2 sm:p-1 p-6">
+        <div className="modalcontainer  h-[100vh] overflow-y-auto bg-black bg-opacity-60">
+          <div className="absolute right-2 top-2 sm:p-1 p-6">
             <button
               type="button"
               className="inline-flex p-1  text-base font-medium text-white  "
@@ -67,7 +68,7 @@ export default memo(function Modal({ open, setOpen }) {
               {svgIcons.whiteXCloseIcon}
             </button>
           </div>
-          <div className="z-500 flex min-h-full justify-center w-full  items-center ">
+          <div className=" flex min-h-full !z-100 justify-center w-full  items-center ">
             <div className="bg-white rounded-xl overflow-hidden md:w-[634px] w-[290px] h-[677px] ">
               <div className="flex items-center  py-5 justify-center w-full h-8 border-b border-borderColor">
                 <h3 className="font-semibold">Create new post</h3>
@@ -102,23 +103,32 @@ export default memo(function Modal({ open, setOpen }) {
                     </div>
                     <div className="flex flex-col mx-auto md:w-full h-full w-full ">
                       {!error ? (
-                        <div className="relative w-full h-full">
-                          <div
-                            onScroll={handleScroll}
-                            className="flex mb-3 overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide"
-                          >
-                            {images.map((img) => (
-                              <div className="min-w-[634px]  h-full min-h-[500px] max-h-[550px]">
-                                <img
-                                  className="p-2 rounded-2xl w-full min-h-[550px] object-cover "
-                                  src={img}
-                                  alt="post"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                          {images.length > 1 && (
-                            <div className="flex justify-center absolute gap-1 bottom-20 w-full text-center">
+                        <>
+                          {/* <Carousal image={images} type={"modal"} />
+                          <input
+                            className="w-full pl-2 h-8 focus:outline-0"
+                            type="text"
+                            value={caption}
+                            onChange={(e) => setCaption(e.target.value)}
+                            placeholder="Write a caption"
+                          /> */}
+
+                          <div className=" w-full h-full">
+                            <div
+                              onScroll={handleScroll}
+                              className="flex mb-3 overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide"
+                            >
+                              {images.map((img) => (
+                                <div className="min-w-[634px]  h-full min-h-[500px] max-h-[550px]">
+                                  <img
+                                    className="p-2 rounded-2xl w-full min-h-[550px] object-cover "
+                                    src={img}
+                                    alt="post"
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                            <div className="flex justify-center relative gap-1 bottom-20 w-full text-center">
                               {images.map((image, index) => {
                                 console.log("kasdflasldkfjlkdjflkonetow");
                                 return (
@@ -137,15 +147,15 @@ export default memo(function Modal({ open, setOpen }) {
                                 );
                               })}
                             </div>
-                          )}
-                          <input
-                            className="w-full pl-2 h-8 focus:outline-0"
-                            type="text"
-                            value={caption}
-                            onChange={(e) => setCaption(e.target.value)}
-                            placeholder="Write a caption"
-                          />
-                        </div>
+                            <input
+                              className="w-full pl-2 h-8 focus:outline-0"
+                              type="text"
+                              value={caption}
+                              onChange={(e) => setCaption(e.target.value)}
+                              placeholder="Write a caption"
+                            />
+                          </div>
+                        </>
                       ) : (
                         <div className="mx-auto min-w-full">
                           <h1>please select another image!</h1>

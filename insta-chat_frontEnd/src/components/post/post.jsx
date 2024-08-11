@@ -8,6 +8,7 @@ import addComment from "../../services/useaddcomment";
 import Popup from "../postpopup/Popup";
 import { svgIcons } from "../../utils/constant";
 import { Link, useNavigate } from "react-router-dom";
+import Carousal from "../imageCarousal/Carousal";
 
 const Post = ({ e }) => {
   const [liked, setLiked] = useState();
@@ -26,7 +27,7 @@ const Post = ({ e }) => {
 
   const [showFullCaption, setShowFullCaption] = useState(false);
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
 
   const dispatch = useDispatch();
 
@@ -77,12 +78,12 @@ const Post = ({ e }) => {
     }
   };
 
-  const handleScroll = (event) => {
-    const scrollLeft = event.target.scrollLeft;
-    const width = event.target.clientWidth;
-    const newIndex = Math.round(scrollLeft / width);
-    setCurrentSlide(newIndex);
-  };
+  // const handleScroll = (event) => {
+  //   const scrollLeft = event.target.scrollLeft;
+  //   const width = event.target.clientWidth;
+  //   const newIndex = Math.round(scrollLeft / width);
+  //   setCurrentSlide(newIndex);
+  // };
 
   return (
     <div
@@ -131,7 +132,7 @@ const Post = ({ e }) => {
         </div>
         <div className="cursor-pointer">{svgIcons.threeDot}</div>
       </div>
-      <div className="rounded-lg  overflow-hidden bg-black min-h-[468px]  max-h-[585px]">
+      {/* <div className="rounded-lg  overflow-hidden bg-black min-h-[468px]  max-h-[585px]">
         <div
           className="flex h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
           onDoubleClick={() => {
@@ -171,7 +172,8 @@ const Post = ({ e }) => {
             );
           })}
         </div>
-      </div>
+      </div> */}
+      <Carousal image={e.image} id={e._id} fun={like} type={"post"} />
       {open && <Popup open={open} setOpen={setOpen} post={e} />}
       <div className="flex flex-row justify-between py-3">
         <div className="flex flex-row ">

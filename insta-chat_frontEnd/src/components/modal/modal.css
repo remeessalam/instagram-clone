@@ -1,0 +1,5 @@
+.modalcontainer {
+  position: fixed;
+  z-index: 10000 !important;
+  width: 100vw !important;
+}
