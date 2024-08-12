@@ -45,18 +45,20 @@ function Profile() {
   return (
     <>
       <div className="w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-x-auto scrollbar-hide">
-        <div className="flex-col w-full h-full mx-auto ">
+        <div className="flex-col w-[975px] h-full mx-auto ">
           {IsBigScreen ? (
-            <div className="flex flex-row  h-1/2 p-1 sm:p-4">
-              <div className="sm:w-1/2 w-screen pl-16 ">
+            <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
+              <div className="sm:w-1/2 w-screen cursor-pointer flex justify-center ">
                 {user?.user?.image ? (
                   <img
+                    onClick={() => hovercontant(post, "Update profile picture")}
                     className="rounded-full  h-56 w-56 border-red-400 object-cover"
                     src={user?.user?.image}
                     alt=""
                   />
                 ) : (
                   <svg
+                    onClick={() => hovercontant(post, "Update profile picture")}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
@@ -69,7 +71,7 @@ function Profile() {
                     />
                   </svg>
                 )}
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -88,9 +90,9 @@ function Profile() {
                     strokeLinejoin="round"
                     d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
                   />
-                </svg>
+                </svg> */}
               </div>
-              <div className="flex flex-col w-3/4 m-5 pl-9 ">
+              <div className="flex flex-col w-3/4">
                 <div className="flex flex-row m-4">
                   <div>
                     <h1 className="mr-7 font-normal text-3xl cursor-default">
@@ -99,20 +101,31 @@ function Profile() {
                   </div>
                   <div
                     onClick={() => setOpen(true)}
-                    className="flex rounded bg-gray-200 hover:bg-gray-300 cursor-pointer justify-items-center p-2 md:3"
+                    className="flex rounded-lg bg-gray-200 hover:bg-gray-300 cursor-pointer justify-items-center px-3 py-0 md:3"
                   >
-                    <h1 className="self-center text-sm">Edit profile</h1>
+                    <h1 className="self-center text-sm font-semibold">
+                      Edit profile
+                    </h1>
                   </div>
                 </div>
                 <div className="flex flex-row  m-4">
-                  <h1 className="mr-7 cursor-default">post {post?.length}</h1>
+                  <h1 className="mr-7 cursor-default">
+                    <span className="font-semibold text-lg">
+                      {post?.length}{" "}
+                    </span>{" "}
+                    posts
+                  </h1>
                   <h1
                     className="mr-7 cursor-pointer"
                     onClick={() =>
                       hovercontant(userDetails?.followers, "Followers")
                     }
                   >
-                    followers {userDetails?.followers?.length}
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      {userDetails?.followers?.length}{" "}
+                    </span>
+                    followers
                   </h1>
                   <h1
                     className="cursor-pointer"
@@ -120,7 +133,11 @@ function Profile() {
                       hovercontant(userDetails?.following, "Following")
                     }
                   >
-                    following {userDetails?.following?.length}
+                    <span className="font-semibold text-lg">
+                      {" "}
+                      {userDetails?.following?.length}{" "}
+                    </span>
+                    following
                   </h1>
                 </div>
                 <div className="flex flex-row  m-4">
