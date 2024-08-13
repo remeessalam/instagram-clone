@@ -5,7 +5,7 @@ import Getpost from "../../services/getpost";
 import Getuser from "../../services/getuser";
 import Hover from "../Smallmodal/ModalSec";
 import { useSelector } from "react-redux";
-import { bigScreen } from "../../utils/constant";
+import { bigScreen, svgIcons } from "../../utils/constant";
 import useChecktoken from "../../hooks/useChecktoken";
 
 function Profile() {
@@ -22,6 +22,8 @@ function Profile() {
   const [heading, setHeading] = useState("");
 
   const [hoverdata, setHoverdata] = useState([]);
+
+  const [tab, setTab] = useState("post");
 
   useChecktoken("/profile");
 
@@ -48,11 +50,11 @@ function Profile() {
         <div className="flex-col w-[975px] h-full mx-auto ">
           {IsBigScreen ? (
             <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
-              <div className="sm:w-1/2 w-screen cursor-pointer flex justify-center ">
+              <div className="sm:w-1/2 w-screen cursor-pointer flex justify-center items-center">
                 {user?.user?.image ? (
                   <img
                     onClick={() => hovercontant(post, "Update profile picture")}
-                    className="rounded-full  h-56 w-56 border-red-400 object-cover"
+                    className="rounded-full border border-borderColor h-[150px] w-[150px] object-cover"
                     src={user?.user?.image}
                     alt=""
                   />
@@ -150,7 +152,7 @@ function Profile() {
               <div className="sm:w-1/4 w-full m-1">
                 {userDetails.image ? (
                   <img
-                    className="rounded-full  h-56 w-56 border-red-400 object-cover"
+                    className="rounded-full h-56 w-56 border-red-400 object-cover"
                     src={userDetails.image}
                     alt=""
                   />
@@ -229,54 +231,100 @@ function Profile() {
               </div>
             </div>
           )}
-          <div className="p-3 pb- grid grid-cols-3 md:grid-cols-3 md:gap-8 gap-1 ">
+
+          <div className="flex w-full justify-center border-t">
+            <div
+              className={`cursor-pointer mx-8 h-14 border-t border-t-transparent   flex items-center font-semibold text-sm  ${
+                tab === "post"
+                  ? `border-t border-t-black text-black`
+                  : `text-gray-500 `
+              }`}
+              onClick={() => setTab("post")}
+            >
+              <span className="mr-2 ">{svgIcons.postsIcon}</span> POST
+            </div>
+            <div
+              className={`cursor-pointer mx-8 h-14 font-semibold text-sm border-t border-t-transparent flex items-center  ${
+                tab === "saved"
+                  ? `border-t border-t-black text-black`
+                  : `text-gray-500`
+              }`}
+              onClick={() => setTab("saved")}
+            >
+              <span className="mr-2">{svgIcons.savedIcon}</span>
+              SAVED
+            </div>
+            <div
+              className={`cursor-pointer mx-8 h-14 font-semibold text-sm border-t border-t-transparent flex items-center  ${
+                tab === "tagged"
+                  ? `border-t border-t-black text-black`
+                  : `text-gray-500`
+              }`}
+              onClick={() => setTab("tagged")}
+            >
+              <span className="mr-2">{svgIcons.tagedIcon}</span>
+              TAGGED
+            </div>
+          </div>
+
+          <div className="p-3 grid grid-cols-3 gap-1 min-h-[670px] w-full">
             {post.map((e, i) => {
               return (
                 <div
                   key={i}
-                  className=" cursor-pointer grid justify-items-start group"
+                  className="cursor-pointer max-w-80 min-w-80 h-80 justify-items-start group"
                 >
-                  <div className="justify-self-center min-w-80 min-h-80 max-h-80 max-w-80 ">
+                  <div className="justify-self-center   w-full h-full">
                     <img
-                      className="justify-self-center object-cover sm:h-80 h-[100px]  w-80 "
+                      className="justify-self-center  w-full h-full group-hover:brightness-50 object-cover  "
                       src={e.image[0]?.url}
                       alt=""
                     />
-                    <div className="flex flex-row md:visible invisible absolute bottom-32 left-24 opacity-0 group-hover:opacity-100 ">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                      </svg>
+                    <div className="w-4 h-4 -mt-[315px] ml-[287px]">
+                      {svgIcons.stackIcon}
+                    </div>
 
-                      {e.Likes.length ? (
-                        <h1 className="text-lg font-bold ml-2 mr-2">
-                          {e.Likes.length}
-                        </h1>
-                      ) : (
-                        <h1 className="text-lg font-bold"> 0</h1>
-                      )}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.337 21.718a6.707 6.707 0 01-.533-.074.75.75 0 01-.44-1.223 3.73 3.73 0 00.814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 01-4.246.997z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                    <div
+                      className={`flex text-white flex-row  mt-[130px] mx-[110px] z-100  opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
+                    >
+                      <div className="flex flex-row">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="white"
+                          className="w-6 h-6"
+                        >
+                          <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                        </svg>
 
-                      {
-                        <h1 className="text-lg font-bold ml-2">
-                          {e.comments.length}
-                        </h1>
-                      }
+                        {e.Likes.length ? (
+                          <h1 className="text-lg text-white font-bold ml-2 mr-2">
+                            {e.Likes.length}
+                          </h1>
+                        ) : (
+                          <h1 className="text-lg font-bold ml-2 mr-2"> 0</h1>
+                        )}
+                      </div>
+                      <div className="flex flex-row">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.337 21.718a6.707 6.707 0 01-.533-.074.75.75 0 01-.44-1.223 3.73 3.73 0 00.814-1.686c.023-.115-.022-.317-.254-.543C3.274 16.587 2.25 14.41 2.25 12c0-5.03 4.428-9 9.75-9s9.75 3.97 9.75 9c0 5.03-4.428 9-9.75 9-.833 0-1.643-.097-2.417-.279a6.721 6.721 0 01-4.246.997z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+
+                        {
+                          <h1 className="text-lg font-bold ml-2">
+                            {e.comments.length}
+                          </h1>
+                        }
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -290,6 +338,7 @@ function Profile() {
               Heading={heading}
             />
           </div>
+          <div className="h-5"></div>
         </div>
       </div>
     </>
