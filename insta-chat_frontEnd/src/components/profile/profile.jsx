@@ -50,7 +50,7 @@ function Profile() {
         <div className="flex-col w-[975px] h-full mx-auto ">
           {IsBigScreen ? (
             <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
-              <div className="sm:w-1/2 w-screen cursor-pointer flex justify-center items-center">
+              <div className="sm:w-[283px] w-screen cursor-pointer flex justify-center items-center">
                 {user?.user?.image ? (
                   <img
                     onClick={() => hovercontant(post, "Update profile picture")}
@@ -94,7 +94,7 @@ function Profile() {
                   />
                 </svg> */}
               </div>
-              <div className="flex flex-col w-3/4">
+              <div className="flex flex-col w-[623px]">
                 <div className="flex flex-row m-4">
                   <div>
                     <h1 className="mr-7 font-normal text-3xl cursor-default">
@@ -231,7 +231,7 @@ function Profile() {
               </div>
             </div>
           )}
-
+          {/** TAB */}
           <div className="flex w-full justify-center border-t">
             <div
               className={`cursor-pointer mx-8 h-14 border-t border-t-transparent   flex items-center font-semibold text-sm  ${
@@ -267,6 +267,7 @@ function Profile() {
             </div>
           </div>
 
+          {/** POST  */}
           <div className="p-3 grid grid-cols-3 gap-1 min-h-[670px] w-full">
             {post.map((e, i) => {
               return (
