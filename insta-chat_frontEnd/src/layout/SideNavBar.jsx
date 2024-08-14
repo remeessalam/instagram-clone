@@ -4,7 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import Modal from "../components/modal/Modal";
 import SearchBar from "../components/search/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { bigScreen, svgIcons } from "../utils/constant";
+import { bigScreen, forSideBar, svgIcons } from "../utils/constant";
 import useChecktoken from "../hooks/useChecktoken";
 import Notification from "../components/notification/Notifications";
 import useChangeTab from "../hooks/useChangeTab";
@@ -13,6 +13,7 @@ import { closeModal, openModal } from "../reduxgobalState/slices/modalslice";
 
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
+  const forSide = useMediaQuery({ query: forSideBar });
 
   const navigate = useNavigate();
 
@@ -100,20 +101,21 @@ const SideBar = () => {
     });
   };
 
-  const allCondition = Search || not || chat;
+  console.log(forSideBar, "thisisforsidebar");
+  const allCondition = Search || not || chat || !forSide;
 
   const handleTabClick = useChangeTab();
   return (
     <>
       {/* MAIN DIV */}
-      <div className={`flex fixed  h-screen`}>
+      <div className={`flex   h-screen`}>
         {/* SIDEBAR DIV */}
         {IsBigScreen ? (
           <>
             <div
               className={`flex transition-all ease-in-out duration-300 ${
                 allCondition ? `w-[80px]` : `w-[244px]`
-              } fixed border-r h-screen border-slate-300`}
+              }  border-r h-screen border-slate-300`}
             >
               <div className={`flex justify-between  flex-col px-3 pt-2 pb-5`}>
                 <div>
@@ -133,7 +135,7 @@ const SideBar = () => {
                     )}
                   </div>
 
-                  <Link className="bg-red-100" to={"/"}>
+                  <Link className="" to={"/"}>
                     <div
                       onClick={() => {
                         handleClose();

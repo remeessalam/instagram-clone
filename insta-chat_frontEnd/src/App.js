@@ -7,20 +7,29 @@ import Chatpage from "./pages/Chatpage";
 import Error from "./pages/Error";
 import Showuser from "./pages/ShowProfile";
 import io from "socket.io-client";
-import { bigScreen } from "./utils/constant";
+import { bigScreen, forSideBar } from "./utils/constant";
 import SideBar from "./layout/SideNavBar";
+import Edit from "./pages/Edit";
+import { useMediaQuery } from "react-responsive";
 
 const socket = io.connect("http://localhost:4000/");
 // const socket = "hai";
 const AppLayout = () => {
+  const IsBigScreen = useMediaQuery({ query: bigScreen });
+  const forSide = useMediaQuery({ query: forSideBar });
   return (
     <div className="flex ">
-      <div className={`${bigScreen ? `w-[244px] bg-gray-400 fixed` : `w-0`}`}>
+      <div
+        className={`${
+          IsBigScreen ? (!forSide ? `w-[80px]` : `w-[244px]  `) : `w-0`
+        }`}
+      >
         <SideBar />
       </div>
       <div
-        className={`lg:w-width w-full 
-        lg:ml-[240px] ml-0`}
+        className={` w-full 
+        ml-0`}
+        // lg:ml-[240px]
       >
         <Outlet />
       </div>
@@ -62,6 +71,10 @@ const appRouter = createBrowserRouter([
     path: "/signup",
     element: <Signup />,
     error: <Error />,
+  },
+  {
+    path: "/edit",
+    element: <Edit />,
   },
 ]);
 export default appRouter;

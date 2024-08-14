@@ -46,11 +46,12 @@ function Profile() {
 
   return (
     <>
-      <div className="w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-x-auto scrollbar-hide">
-        <div className="flex-col w-[975px] h-full mx-auto ">
+      <div className="flex justify-center w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-y-auto scrollbar-hide">
+        <div className="flex flex-col w-[975px] shrink h-full m-2">
+          {/**PROFILE details area */}
           {IsBigScreen ? (
             <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
-              <div className="sm:w-[283px] w-screen cursor-pointer flex justify-center items-center">
+              <div className="sm:w-[283px] shrink w-screen cursor-pointer flex justify-center items-center">
                 {user?.user?.image ? (
                   <img
                     onClick={() => hovercontant(post, "Update profile picture")}
@@ -94,7 +95,7 @@ function Profile() {
                   />
                 </svg> */}
               </div>
-              <div className="flex flex-col w-[623px]">
+              <div className="flex flex-col shrink w-[623px]">
                 <div className="flex flex-row m-4">
                   <div>
                     <h1 className="mr-7 font-normal text-3xl cursor-default">
@@ -268,21 +269,23 @@ function Profile() {
           </div>
 
           {/** POST  */}
-          <div className="p-3 grid grid-cols-3 gap-1 min-h-[670px] w-full">
+          {/* <div className="w-[975px] shrink"> */}
+          <div className=" grid grid-cols-3 gap-1 min-h-full">
             {post.map((e, i) => {
+              console.log(e, "thisidsfsdf");
               return (
                 <div
                   key={i}
-                  className="cursor-pointer max-w-80 min-w-80 h-80 justify-items-start group"
+                  className="flex bg-green-300 cursor-pointer aspect-square group"
                 >
-                  <div className="justify-self-center   w-full h-full">
+                  <div className="">
                     <img
-                      className="justify-self-center  w-full h-full group-hover:brightness-50 object-cover  "
+                      className="aspect-square h-full group-hover:brightness-50 object-cover  "
                       src={e.image[0]?.url}
                       alt=""
                     />
                     <div className="w-4 h-4 -mt-[315px] ml-[287px]">
-                      {svgIcons.stackIcon}
+                      {e.image.length > 1 && svgIcons.stackIcon}
                     </div>
 
                     <div
@@ -331,16 +334,17 @@ function Profile() {
                 </div>
               );
             })}
-            <Example open={open} setOpen={setOpen} />
-            <Hover
-              change={hopen}
-              setChange={setHopen}
-              Contant={hoverdata}
-              Heading={heading}
-            />
           </div>
+          {/* </div> */}
           <div className="h-5"></div>
         </div>
+        <Example open={open} setOpen={setOpen} />
+        <Hover
+          change={hopen}
+          setChange={setHopen}
+          Contant={hoverdata}
+          Heading={heading}
+        />
       </div>
     </>
   );

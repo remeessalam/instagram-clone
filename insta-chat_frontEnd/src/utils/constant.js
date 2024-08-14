@@ -6,6 +6,7 @@ export const loginPageImage = [
 ];
 
 export const bigScreen = "(min-width: 1024px)";
+export const forSideBar = "(min-width: 1205px)";
 
 export const svgIcons = {
   homeIcon: (
@@ -629,7 +630,7 @@ export const svgIcons = {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      className="size-6 text-white w-5 h-5 opacity-80 z-50 transform scale-y-[-1] scale-x-[-1]"
+      className="size-6 text-gray-200 w-5 h-5 opacity-80 z-50 transform scale-y-[-1] scale-x-[-1]"
     >
       <path d="M16.5 6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v7.5a3 3 0 0 0 3 3v-6A4.5 4.5 0 0 1 10.5 6h6Z" />
       <path d="M18 7.5a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3H18Z" />
