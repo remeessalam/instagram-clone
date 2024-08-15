@@ -19,7 +19,7 @@ const AppLayout = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
   const forSide = useMediaQuery({ query: forSideBar });
   return (
-    <div className="flex ">
+    <div className="flex w-screen overflow-hidden shrink">
       <div
         className={`${IsBigScreen ? `` : `w-0`}${
           forSide

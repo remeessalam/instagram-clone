@@ -99,22 +99,34 @@ const SideBar = () => {
                 allCondition ? `w-[80px]` : `w-[244px]`
               }  border-r h-screen border-slate-300`}
             >
-              <div className={`flex justify-between  flex-col pl-3 pt-2 pb-5`}>
+              <div className={`flex justify-between  flex-col pt-2 pb-5`}>
                 <div>
                   <div
                     className={`${
                       Search || not ? `block` : `block`
-                    } mb-5 px-4 pt-6 pb-3`}
+                    } mb-5 px-4 pt-6 pb-3 text-center ${
+                      allCondition ? `mx-auto` : ``
+                    }`}
                   >
-                    {allCondition ? (
-                      svgIcons.instagramSidebaricon
-                    ) : (
-                      <img
-                        className="max-w-[103px] h-9"
-                        src="/file.png"
-                        alt="site name"
-                      />
-                    )}
+                    <Link className="" to={"/"}>
+                      {allCondition ? (
+                        <div
+                          className={`${
+                            allCondition
+                              ? `flex justify-center h-9 w-[70px]`
+                              : ``
+                          }`}
+                        >
+                          {svgIcons.instagramSidebaricon}{" "}
+                        </div>
+                      ) : (
+                        <img
+                          className="max-w-[103px] h-9 mx-auto"
+                          src="/file.png"
+                          alt="site name"
+                        />
+                      )}
+                    </Link>
                   </div>
 
                   <Link className="" to={"/"}>
@@ -124,10 +136,10 @@ const SideBar = () => {
                         handleTabClick("home", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 flex-row items-center ${
-                        allCondition ? `w-[50px]` : `w-full`
+                        allCondition ? `w-[70px]` : `w-full`
                       }  h-12 hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
-                      <div className=" w-6">
+                      <div className={`${allCondition ? `mx-auto` : ``} w-6`}>
                         {currentTab.home
                           ? svgIcons.homeIcon
                           : svgIcons.homeIconOutline}
@@ -146,7 +158,7 @@ const SideBar = () => {
 
                   <div
                     className={`flex m-1 p-3 flex-row items-center ${
-                      allCondition ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[70px]` : `w-full`
                     } ${
                       currentTab.search ? `border` : ` `
                     }   hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
@@ -156,7 +168,7 @@ const SideBar = () => {
                       handleTabClick("search", setCurrentTab);
                     }}
                   >
-                    <div className="">
+                    <div className={`${allCondition ? `mx-auto` : ``}`}>
                       {currentTab.search
                         ? svgIcons.boldSearchIcon
                         : svgIcons.searchIcon}
@@ -174,12 +186,12 @@ const SideBar = () => {
                         handleTabClick("chat", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
-                        allCondition ? `w-[50px]` : `w-full`
+                        allCondition ? `w-[70px]` : `w-full`
                       }  ${
                         currentTab.chat ? `border` : ``
                       } flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
                     >
-                      <div className="">
+                      <div className={`${allCondition ? `mx-auto` : ``}`}>
                         {currentTab.chat
                           ? svgIcons.filledMessengerIcon
                           : svgIcons.messengerIcon}
@@ -198,7 +210,7 @@ const SideBar = () => {
 
                   <div
                     className={`flex m-1 p-3 ${
-                      allCondition ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[70px]` : `w-full`
                     } ${
                       currentTab.notification ? `border` : ``
                     } cursor-pointer flex-row items-center  hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300`}
@@ -208,7 +220,7 @@ const SideBar = () => {
                       handleTabClick("notification", setCurrentTab);
                     }}
                   >
-                    <div className="">
+                    <div className={`${allCondition ? `mx-auto` : ``}`}>
                       {currentTab.notification
                         ? svgIcons.fillnotificationIcon
                         : svgIcons.notificationIcon}
@@ -225,10 +237,12 @@ const SideBar = () => {
                       handleClose();
                     }}
                     className={`flex flex-row m-1 p-3 cursor-pointer ${
-                      allCondition ? `w-[50px]` : `w-full`
+                      allCondition ? `w-[70px]` : `w-full`
                     }   items-center hover:bg-gray-100 rounded-lg  hover:scale-110  duration-300 `}
                   >
-                    <div className="">{svgIcons.createIcon}</div>
+                    <div className={`${allCondition ? `mx-auto` : ``}`}>
+                      {svgIcons.createIcon}
+                    </div>
 
                     <div className={`${allCondition ? `hidden` : `block`}`}>
                       <h1 className="flex ml-4 text-[16px]">Create</h1>
@@ -242,10 +256,10 @@ const SideBar = () => {
                         handleTabClick("profile", setCurrentTab);
                       }}
                       className={`flex m-1 p-3 ${
-                        allCondition ? `w-[50px]` : `w-full`
+                        allCondition ? `w-[70px]` : `w-full`
                       }    flex-row items-center  hover:bg-gray-100 rounded-lg hover:scale-110  duration-300`}
                     >
-                      <div className="">
+                      <div className={`${allCondition ? `mx-auto` : ``}`}>
                         {user?.user?.image ? (
                           <img
                             className={`h-6 w-6 rounded-full aspect-square object-cover ${
