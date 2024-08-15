@@ -30,8 +30,6 @@ const Post = ({ e }) => {
 
   const dispatch = useDispatch();
 
-  console.log(e, "thisise");
-
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
 
@@ -57,7 +55,6 @@ const Post = ({ e }) => {
     setIsTruncated(truncated);
   }, [e.caption]);
 
-  console.log(e, "thisise");
   const like = (postId) => {
     clickLike(postId).then((data) => {
       dispatch(refreshReducer());
@@ -66,12 +63,9 @@ const Post = ({ e }) => {
 
   const Comments = async (postId) => {
     try {
-      console.log(postId, "commentclicked");
-
       const data = await addComment(postId, comment, navigate);
       if (data) {
         setComment("");
-        console.log(data, "commentclicked");
         dispatch(refreshReducer());
       }
     } catch (error) {
@@ -85,7 +79,6 @@ const Post = ({ e }) => {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  console.log(open, "thisisidfajsdfnkjasndkjenr");
   return (
     <div
       key={e._id}
@@ -143,7 +136,6 @@ const Post = ({ e }) => {
           onScroll={handleScroll}
         >
           {e.image.map((obj, i) => {
-            console.log(obj, "thiasdfkasdfjasdf");
             return (
               <div
                 key={obj.url}
@@ -165,7 +157,6 @@ const Post = ({ e }) => {
             } z-0   gap-1 bottom-5 w-full text-center`}
           >
             {e.image.map((image, index) => {
-              console.log(open, "thisisiisif");
               return (
                 <div
                   // className={`${open ? "hidden" : "relative"}`}

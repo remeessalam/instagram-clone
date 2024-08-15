@@ -18,7 +18,6 @@ const AppLayout = () => {
   const location = useLocation();
   const IsBigScreen = useMediaQuery({ query: bigScreen });
   const forSide = useMediaQuery({ query: forSideBar });
-  console.log(forSide, IsBigScreen, "thisisforside");
   return (
     <div className="flex ">
       <div

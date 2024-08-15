@@ -1,9 +1,6 @@
 import axios from "./axioscall";
 
 const addComment = async (postId, text, navigate) => {
-  // const navigate = useNavigate();
-  console.log(postId, "commentclicked");
-
   let token = JSON.parse(localStorage.getItem("userToken"));
 
   if (!token) {

@@ -29,10 +29,6 @@ const SideBar = () => {
     more: false,
   });
 
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // const [open, setOpen] = useState(false);
-
   const [Search, setSearch] = useState(false);
 
   const [not, setNot] = useState(false);
@@ -41,10 +37,7 @@ const SideBar = () => {
 
   const { user } = useSelector((state) => ({ ...state }));
 
-  // const menuRef = useRef(null);
-  // const open = useSelector((state) => state.modal.open);
   const dispatch = useDispatch();
-  // console.log(user.user, 'userrrrrrrrr')
   useChecktoken();
 
   useEffect(() => {
@@ -67,7 +60,6 @@ const SideBar = () => {
   useEffect(() => {
     location?.pathname === "/chat" ? setChat(true) : setChat(false);
   }, [location?.pathname]);
-  console.log(chat, "thsiiscaht");
   const handleClose = () => {
     Search && closeSearch();
     not && closeNotification();
@@ -91,17 +83,7 @@ const SideBar = () => {
       }
     });
   };
-  const closeChat = () => {
-    setChat((pre) => {
-      if (pre === true) {
-        return false;
-      } else {
-        return true;
-      }
-    });
-  };
 
-  console.log(forSideBar, "thisisforsidebar");
   const allCondition = Search || not || chat || !forSide;
 
   const handleTabClick = useChangeTab();
@@ -201,7 +183,6 @@ const SideBar = () => {
                         {currentTab.chat
                           ? svgIcons.filledMessengerIcon
                           : svgIcons.messengerIcon}
-                        {console.log(currentTab.chat, "thisisfillms")}
                       </div>
                       <div className={`${allCondition ? `hidden` : `block`}`}>
                         <h1

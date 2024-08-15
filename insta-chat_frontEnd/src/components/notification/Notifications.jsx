@@ -8,10 +8,6 @@ const NotificationC = ({ open, setOpen }) => {
   useEffect(() => {
     notification().then((data) => {
       setNotifications(data.data.data);
-      console.log(
-        notifications,
-        "jsx notification================================================================"
-      );
     });
   }, [open]);
   return (

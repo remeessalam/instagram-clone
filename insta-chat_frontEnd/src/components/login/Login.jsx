@@ -34,34 +34,8 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  // const handleSubmit = ()=>{
-
-  //   useOnSubmit({ email: inputValue,
-  //     password: inputPassword}, setError, '/login');
-  // }
-
   const handleSubmit = useOnSubmit();
 
-  const onSubmit = async (formData) => {
-    // try {
-    //   console.log(formData, "onsubmitiscalled", inputValue, inputPassword);
-    //   const { data } = await axios.post("/login", {
-    //     email: inputValue,
-    //     password: inputPassword,
-    //   });
-    //   if (data.status === true) {
-    //     localStorage.setItem("userToken", JSON.stringify(data.token));
-    //     localStorage.setItem("userid", JSON.stringify(data?.userid));
-    //     localStorage.setItem("user", JSON.stringify(data?.user));
-    //     dispatch(userReducer());
-    //     navigate("/");
-    //   } else {
-    //     setError(data.error);
-    //   }
-    // } catch (err) {
-    //   // console.log(err, 'login error')
-    // }
-  };
   const response = async (credentialResponse) => {
     var token = credentialResponse.credential;
     var decoded = jwt_decode(token);
@@ -80,7 +54,6 @@ function Login() {
   };
 
   const handleInputChange = (event) => {
-    console.log(event.target.name);
     event.target.name === "email"
       ? setInputValue(event.target.value)
       : setInputPassword(event.target.value);
@@ -191,7 +164,7 @@ function Login() {
 
                 <div>
                   <button
-                    onClick={onSubmit}
+                    // onClick={onSubmit}
                     type="submit"
                     className="group relative flex w-full justify-center rounded-md border border-transparent bg-[#67B5FA] py-2 px-4 text-sm font-semibold text-white hover:bg-[#0064e0] "
                   >

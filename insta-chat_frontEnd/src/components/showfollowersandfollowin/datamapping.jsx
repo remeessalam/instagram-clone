@@ -11,18 +11,13 @@ export default function Maping({ friends, Heading, change, setChange }) {
   const [followed, setFollowed] = useState(false);
   function Follow(id) {
     if (followed) {
-      follow(id).then((data) => {
-        console.log("followed");
-      });
+      follow(id).then((data) => {});
     } else {
-      unfollow(id).then((data) => {
-        console.log("unfollowed");
-      });
+      unfollow(id).then((data) => {});
     }
   }
   function setprofilepic(image) {
     profilepicture(image).then(({ data }) => {
-      // console.log(data, 'setprofilepic')
       localStorage.setItem("user", JSON.stringify(data?.user));
       dispatch(userImage(data.user.image));
       setChange(!change);

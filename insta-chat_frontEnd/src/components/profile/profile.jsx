@@ -42,7 +42,6 @@ function Profile() {
     setHeading(text);
   }
   const { user } = useSelector((state) => ({ ...state }));
-  console.log(user, "in profile page ");
 
   return (
     <>
@@ -272,7 +271,6 @@ function Profile() {
           {/* <div className="w-[975px] shrink"> */}
           <div className=" grid grid-cols-3 gap-1 min-h-full">
             {post.map((e, i) => {
-              console.log(e, "thisidsfsdf");
               return (
                 <div
                   key={i}

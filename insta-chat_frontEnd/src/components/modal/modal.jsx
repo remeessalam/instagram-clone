@@ -40,7 +40,6 @@ export default memo(function Modal() {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  console.log(openModalState, "thisisopen");
   return (
     <>
       {openModalState && (
@@ -109,7 +108,6 @@ export default memo(function Modal() {
                           {images.length > 1 && (
                             <div className="flex  justify-center absolute gap-1 bottom-20 w-full text-center">
                               {images.map((_, index) => {
-                                console.log(_, "thisisiisif");
                                 return (
                                   <div
                                     key={index}

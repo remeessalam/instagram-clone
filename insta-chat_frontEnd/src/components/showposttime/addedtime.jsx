@@ -6,7 +6,6 @@ const Lastseen = (props) => {
   const duration = formatDistanceToNow(new Date(timeStamp), {
     addSuffix: false,
   });
-  console.log(duration, timeStamp + "<- props time", "thisisshotDuration");
   const shortDuration = duration
     .replace("less than a minute", "just now")
     .replace("about ", "")
@@ -18,7 +17,6 @@ const Lastseen = (props) => {
     .replace(" minute", "min")
     .replace(" seconds", "s")
     .replace(" second", "s");
-  console.log(shortDuration, "thisisshotDuration");
 
   return <div className="inline">{shortDuration}</div>;
 };

@@ -14,11 +14,6 @@ export default function Chat({ Socket }) {
   const [message, setMessage] = useState([]);
   const navigate = useNavigate();
 
-  // const IsBigScreen = useMediaQuery({ query: '(min-width: 1024px)' })
-  // useEffect(() => {
-  //     console.log(chat, 'chat chateeeee')
-  // }, [chat])
-
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("userToken"));
     !token && navigate("/login");
@@ -26,19 +21,15 @@ export default function Chat({ Socket }) {
 
   useEffect(() => {
     getfollowing().then((data) => {
-      // console.log(data.data.user, '=====----====')
       setUser(data?.data?.user);
     });
   }, []);
 
   const createchat = (id) => {
     getchat(id).then((data) => {
-      // console.log(data.data.chatdetail)
       Socket.emit("join_room", { roomId: data?.data?.chatdetail?._id });
       setChatroom(data?.data?.chatdetail);
-      // console.log(chatroom ,'data in create chatroom')
       setMessage(data?.data?.chatdetail?.messages);
-      // console.log(message,'message')
       setTopic("");
     });
   };
@@ -49,7 +40,6 @@ export default function Chat({ Socket }) {
       time: new Date(),
       author: user[0]._id,
     };
-    // console.log(user[0]._id,'jalsdjflajsvlhasvhfljflvsjvcskvbf')
     Socket.emit("client-to-server", chat);
     addmessage(chat);
     setMessage([chat, ...message]);
@@ -58,7 +48,6 @@ export default function Chat({ Socket }) {
 
   useEffect(() => {
     Socket.on("server-to-client", (data) => {
-      // console.log(data, 'return messagesssss')
       setMessage((message) => [data, ...message]);
     });
     return () => Socket.off("server-to-client");

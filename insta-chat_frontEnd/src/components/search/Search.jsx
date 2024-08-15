@@ -16,14 +16,12 @@ const Search = ({ open, setOpen, handleClose }) => {
     find && setLoading(true);
     find
       ? finduser(find).then((data) => {
-          // console.log(data.data.result)
           setUsers(data.data.result);
           setLoading(false);
         })
       : setUsers([]);
     Getuser().then((userdata) => {
       setAccountholder(userdata.data.user);
-      // console.log(accountholder, 'holder=============')
     });
   }, [find]);
   return (

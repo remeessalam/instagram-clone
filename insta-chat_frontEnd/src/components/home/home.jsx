@@ -15,22 +15,17 @@ function Content() {
 
   const [users, setUsers] = useState([]);
 
-  // const [open, setOpen] = useState(false);
-
   const refresh = useSelector((state) => state.app.refresh);
 
   const { user } = useSelector((state) => ({ ...state }));
 
-  console.log(user, "thisisuserinhand");
   useChecktoken("/");
 
   useEffect(() => {
     allpost().then((data) => {
       setPost(data.data.post);
-      // console.log(data, 'home useEffect')
     });
     allusers().then((data) => {
-      console.log(data.data.user, 'user data"s multiple');
       setUsers(data.data.user);
     });
   }, [refresh]);
@@ -118,7 +113,6 @@ function Content() {
             </div>
             <div className=" flex flex-col gap-2 mt-4 pl-1">
               {users?.map((obj) => {
-                console.log(obj, "thisisobj");
                 return <Friend key={obj._id} frnd={obj} />;
               })}
             </div>

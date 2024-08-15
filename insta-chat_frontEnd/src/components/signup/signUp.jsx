@@ -77,7 +77,6 @@ function Signup() {
       navigate("/");
     } else {
       setError(data.error);
-      console.log(data.error);
     }
   };
   const validateUserName = async (userName) => {
@@ -88,7 +87,6 @@ function Signup() {
       setIsUserNameValid(false);
       return;
     }
-    console.log(data, isUserNameValid, "thisisdata");
     setIsUserNameValid(true);
   };
 
@@ -116,11 +114,9 @@ function Signup() {
 
     if (name === "email") {
       const isValidEmail = validate(name, value);
-      console.log(isValidEmail, "validty");
       setIsEmailValid(isValidEmail);
     } else if (name === "fullName") {
       const isValidFullName = validate(name, value);
-      console.log(isValidFullName, value, "fullnamevalided");
       setIsfullNameValid(isValidFullName);
     } else if (name === "password") {
       const isValidPassword = validate(name, value);
@@ -150,12 +146,7 @@ function Signup() {
               className="group relative flex w-full justify-center rounded-md border border-transparent  py-2 px-4 text-sm font-medium text-white  "
             >
               <span className="flex justify-center">
-                <GoogleLogin
-                  onSuccess={response}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
+                <GoogleLogin onSuccess={response} onError={() => {}} />
               </span>
             </button>
           </div>
@@ -189,7 +180,6 @@ function Signup() {
                 onClick={() => {
                   emailRef.current.focus();
                   emailRef.current.click();
-                  console.log("clicked");
                 }}
               >
                 <div className="flex flex-col justify-between w-full  ">
@@ -246,7 +236,6 @@ function Signup() {
                 onClick={() => {
                   fullNameRef.current.focus();
                   fullNameRef.current.click();
-                  console.log("clicked");
                 }}
               >
                 <div className="flex flex-col justify-between w-full">
@@ -298,7 +287,6 @@ function Signup() {
                 onClick={() => {
                   userNameRef.current.focus();
                   userNameRef.current.click();
-                  console.log("clicked");
                 }}
               >
                 <div className="flex flex-col justify-between w-full">
@@ -351,7 +339,6 @@ function Signup() {
                   onClick={() => {
                     passwordRef.current.focus();
                     passwordRef.current.click();
-                    console.log("clicked");
                   }}
                 >
                   <span className=" px-3  text-gray-500 transition-all ease-in-out delay-0 text-xs ">

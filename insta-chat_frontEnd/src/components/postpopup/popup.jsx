@@ -21,10 +21,8 @@ export default function Modal({ post, open, setOpen }) {
 
   const token = localStorage.getItem("userToken");
   const decoded = jwt_decode(token);
-  console.log(post, "thisispost");
   const like = (postId) => {
     clickLike(postId).then((data) => {
-      // console.log(data, 'likedta')
       data.data.msg === "Liked" && setLiked(false);
       data.data.msg === "Unliked" && setLiked(true);
       setLiked(!liked);
@@ -76,7 +74,6 @@ export default function Modal({ post, open, setOpen }) {
                 onScroll={handleScroll}
               >
                 {post.image?.map((obj) => {
-                  console.log(post, "thisisimageinpost");
                   return (
                     <div className="flex min-w-full  snap-always snap-center justify-center place-items-center">
                       <img
@@ -128,7 +125,6 @@ export default function Modal({ post, open, setOpen }) {
             <div className="flex sm:h-[553px] h-[250px] border-b">
               <div className="text-sx w-full font-semibold overflow-y-scroll scrollbar-hide text-black-400 ">
                 {post.comments.map((com) => {
-                  console.log(com, "thisiscomment");
                   return (
                     <div className="flex justify-between flex-row p-5 w-100%">
                       <div className="flex mr-4">

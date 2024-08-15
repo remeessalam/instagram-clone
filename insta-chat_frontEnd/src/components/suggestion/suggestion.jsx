@@ -12,37 +12,21 @@ function Friend({ frnd, userfollowing, setOpen, setFind, handleClose }) {
   const [following, setFollowing] = useState([]);
 
   useEffect(() => {
-    // console.log(userfollowing, 'userfoollloewoi==========sugg')
     setFollowing(userfollowing?.following);
-    // console.log(following, frnd._id, 'folloeiwn======')
-    // console.log(following?.some((element) => element._id  === frnd._id) )
   }, [following, userfollowing?.following]);
-
-  // const click = () => {
-  //     setFollowed2(!followed2)
-  //     Follow2(frnd._id)
-  // }
 
   function Follow(id) {
     if (followed) {
-      follow(id).then((data) => {
-        console.log("followed");
-      });
+      follow(id).then((data) => {});
     } else {
-      unfollow(id).then((data) => {
-        console.log("unfollowed");
-      });
+      unfollow(id).then((data) => {});
     }
   }
   function Follow2(id) {
     if (followed2) {
-      follow(id).then((data) => {
-        console.log("followed");
-      });
+      follow(id).then((data) => {});
     } else {
-      unfollow(id).then((data) => {
-        console.log("unfollowed");
-      });
+      unfollow(id).then((data) => {});
     }
   }
 

@@ -9,21 +9,19 @@ const maxAge = 60 * 60 * 24;
 
 module.exports = {
   register: asyncwrappe(async (req, res) => {
-    console.log(req.body);
     const { formData } = req.body;
     const { fullName, email, password, userName } = formData;
     let sameEmail;
     let mobuse;
     if (/^\d+$/.test(email)) {
       sameEmail = await userSchema.findOne({ mobile: email });
-      console.log("hai1");
+
       mobuse = "mobile";
     } else if (/\S+@\S+\.\S+/.test(email)) {
-      console.log("hai2");
       mobuse = "email";
       sameEmail = await userSchema.findOne({ email: email });
     }
-    console.log("thisispass");
+
     const pass = await bcrypt.hash(password, 10);
     if (sameEmail) {
       throw Error(
@@ -49,11 +47,10 @@ module.exports = {
 
   checkusername: asyncwrappe(async (req, res) => {
     const { username } = req.body;
-    console.log(username);
+
     const checkusername = await userSchema.findOne({
       username: username,
     });
-    console.log(checkusername, "thisischeckusername");
     if (checkusername) {
       res.status(201).json({ msg: "user" });
     }
@@ -61,7 +58,6 @@ module.exports = {
   }),
 
   login: asyncwrappe(async (req, res) => {
-    console.log(req.body, "thisisreqbody");
     if (req.body.email_verified) {
       const googledata = req.body;
       const guser = await userSchema.findOne({ email: googledata.email });
@@ -97,19 +93,15 @@ module.exports = {
     } else {
       const { formData } = req.body;
       const { email, password } = formData;
-      console.log(email, password, "thisisemailandpassword");
       // res.status(200).json({ status: "ok" });
       // return;
       let user;
       if (/^\d+$/.test(email)) {
         user = await userSchema.findOne({ mobile: email });
-        console.log("hai1");
       } else if (/\S+@\S+\.\S+/.test(email)) {
-        console.log("hai2");
         user = await userSchema.findOne({ email: email });
       } else {
         user = await userSchema.findOne({ username: email });
-        console.log("hai3", user);
       }
       if (user) {
         const use = await bcrypt.compare(password, user.password);
@@ -160,13 +152,11 @@ module.exports = {
 
   getfriend: asyncwrappe(async (req, res) => {
     const user = req.body.id;
-    console.log(user, "user id reached in get friend request");
     const frienddetails = await userSchema
       .findOne({ _id: user })
       .populate("followers")
       .populate("following");
     res.json({ status: true, frienddetails });
-    console.log(frienddetails, "=============frienddetails============");
   }),
 
   users: asyncwrappe(async (req, res) => {
@@ -193,7 +183,6 @@ module.exports = {
             .findByIdAndUpdate(frndId, { $addToSet: { followers: userid } })
             .then((data) => {
               resolve(data);
-              console.log("follow");
               res.json({ status: true, resolve });
             })
             .catch((err) => reject(err));
@@ -213,7 +202,6 @@ module.exports = {
             .findByIdAndUpdate(frndId, { $pull: { followers: userid } })
             .then((data) => {
               resolve(data);
-              console.log("unfollow");
               res.json({ status: true, resolve });
             })
             .catch((err) => reject(err));
@@ -235,7 +223,6 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const userid = req.userId;
       let user = await userSchema.find({ _id: userid }).populate("following");
-      console.log(user);
       res.json({ user });
     });
   }),
@@ -244,12 +231,10 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const userid = req.userId;
       const image = req.body.image;
-      console.log(image, "image in req");
       userSchema
         .findByIdAndUpdate(userid, { $set: { image: image } })
         .then((data) => {
           userSchema.findById(userid).then((data) => {
-            console.log(data, "image changed");
             res.json({ status: true, user: data });
           });
         });
