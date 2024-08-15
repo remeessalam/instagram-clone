@@ -117,7 +117,7 @@ const SideBar = () => {
                 allCondition ? `w-[80px]` : `w-[244px]`
               }  border-r h-screen border-slate-300`}
             >
-              <div className={`flex justify-between  flex-col px-3 pt-2 pb-5`}>
+              <div className={`flex justify-between  flex-col pl-3 pt-2 pb-5`}>
                 <div>
                   <div
                     className={`${
@@ -299,6 +299,8 @@ const SideBar = () => {
                   Search={Search}
                   not={not}
                   chat={chat}
+                  forSide={forSide}
+                  allCondition={allCondition}
                 />
               </div>
               <SearchBar

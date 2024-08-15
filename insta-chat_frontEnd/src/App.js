@@ -1,4 +1,4 @@
-import { Outlet, createBrowserRouter } from "react-router-dom";
+import { Outlet, createBrowserRouter, useLocation } from "react-router-dom";
 import Login from "./components/login/Login";
 import Signup from "./components/signup/SignUp";
 import HomePage from "./pages/Homepage";
@@ -15,13 +15,19 @@ import { useMediaQuery } from "react-responsive";
 const socket = io.connect("http://localhost:4000/");
 // const socket = "hai";
 const AppLayout = () => {
+  const location = useLocation();
   const IsBigScreen = useMediaQuery({ query: bigScreen });
   const forSide = useMediaQuery({ query: forSideBar });
+  console.log(forSide, IsBigScreen, "thisisforside");
   return (
     <div className="flex ">
       <div
-        className={`${
-          IsBigScreen ? (!forSide ? `w-[80px]` : `w-[244px]  `) : `w-0`
+        className={`${IsBigScreen ? `` : `w-0`}${
+          forSide
+            ? location?.pathname === "/chat"
+              ? `w-[80px]`
+              : `w-[244px]`
+            : `w-[80px]  `
         }`}
       >
         <SideBar />

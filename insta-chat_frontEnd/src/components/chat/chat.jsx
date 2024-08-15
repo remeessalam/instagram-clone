@@ -65,7 +65,7 @@ export default function Chat({ Socket }) {
   }, [Socket]);
 
   return (
-    <div className=" w-chatPageContainer h-full  -ml-[160px] ">
+    <div className=" w-chatPageContainer h-full   ">
       <div className="flex flex-wrap w-full h-full min-h-[100vh]">
         <div className={`bg-white w-1/4 max-h-full  overflow-hidden border-r `}>
           <div className="absalute w-full  h-16 ">

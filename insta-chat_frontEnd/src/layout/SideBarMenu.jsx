@@ -2,7 +2,14 @@ import React, { useRef, useState } from "react";
 import useChangeTab from "../hooks/useChangeTab";
 import { useNavigate } from "react-router-dom";
 
-const SideBarMenu = ({ currentTab, setCurrentTab, Search, not, chat }) => {
+const SideBarMenu = ({
+  currentTab,
+  setCurrentTab,
+  Search,
+  not,
+  chat,
+  allCondition,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -49,7 +56,7 @@ const SideBarMenu = ({ currentTab, setCurrentTab, Search, not, chat }) => {
               </svg>
             </div>
             <div className="w-full  ml-3">
-              {Search || not || chat ? (
+              {allCondition ? (
                 ""
               ) : (
                 <button
