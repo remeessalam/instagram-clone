@@ -46,7 +46,7 @@ function Profile() {
   return (
     <>
       <div className="flex justify-center w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-y-auto scrollbar-hide">
-        <div className="flex flex-col w-[975px] shrink h-full m-2">
+        <div className="flex flex-col w-[975px] shrink h-full m-0 sm:m-2 overflow-y-auto scrollbar-hide">
           {/**PROFILE details area */}
           {IsBigScreen ? (
             <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
@@ -269,16 +269,16 @@ function Profile() {
 
           {/** POST  */}
           {/* <div className="w-[975px] shrink"> */}
-          <div className=" grid grid-cols-3 gap-1 min-h-full">
+          <div className=" grid grid-cols-3 gap-1 lg:min-h-full overflow-hidden">
             {post.map((e, i) => {
               return (
                 <div
                   key={i}
-                  className="flex bg-green-300 cursor-pointer aspect-square group"
+                  className="flex relative cursor-pointer aspect-square group"
                 >
-                  <div className="">
+                  <div className=" w-full h-full ">
                     <img
-                      className="aspect-square h-full group-hover:brightness-50 object-cover  "
+                      className="w-full h-full group-hover:brightness-50 object-cover"
                       src={e.image[0]?.url}
                       alt=""
                     />
@@ -287,7 +287,7 @@ function Profile() {
                     </div>
 
                     <div
-                      className={`flex text-white flex-row  mt-[130px] mx-[110px] z-100  opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
+                      className={`flex  text-black flex-row mx-auto mt-[130px] w-full h-full z-100  opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
                     >
                       <div className="flex flex-row">
                         <svg

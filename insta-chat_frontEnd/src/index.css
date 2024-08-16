@@ -11,7 +11,7 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 30px #fafafa inset !important;
 }
 
-.container {
+/* .container {
   --uib-size: 23px;
   --uib-color: rgb(200, 200, 200);
   --uib-speed: 1s;
@@ -134,4 +134,4 @@ input:-webkit-autofill {
     transform: scaleY(1);
     opacity: 1;
   }
-}
+} */
