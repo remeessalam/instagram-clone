@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import finduser from "../../services/finduser";
 import Friend from "../suggestion/Suggestion";
 import Getuser from "../../services/getuser";
-import Spinner from "../spinner/Spinner";
+import { RotatingLines } from "react-loader-spinner";
+
 const Search = ({ open, setOpen, handleClose }) => {
   const [find, setFind] = useState("");
 
@@ -53,7 +54,20 @@ const Search = ({ open, setOpen, handleClose }) => {
                 <div className="w-1/4 flex justify-end">
                   {find ? (
                     loading ? (
-                      <Spinner />
+                      <>
+                        <RotatingLines
+                          visible={true}
+                          height="23"
+                          width="23"
+                          strokeColor="rgb(200, 200, 200)"
+                          color="rgb(200, 200, 200)"
+                          strokeWidth="5"
+                          animationDuration="0.75"
+                          ariaLabel="rotating-lines-loading"
+                          wrapperStyle={{}}
+                          wrapperClass=""
+                        />
+                      </>
                     ) : (
                       <div
                         onClick={() => setFind("")}

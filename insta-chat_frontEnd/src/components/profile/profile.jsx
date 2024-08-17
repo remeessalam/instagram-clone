@@ -274,20 +274,20 @@ function Profile() {
               return (
                 <div
                   key={i}
-                  className="flex relative cursor-pointer aspect-square group"
+                  className="flex  cursor-pointer aspect-square group"
                 >
-                  <div className=" w-full h-full ">
+                  <div className="relative w-full h-full ">
                     <img
                       className="w-full h-full group-hover:brightness-50 object-cover"
                       src={e.image[0]?.url}
                       alt=""
                     />
-                    <div className="w-4 h-4 -mt-[315px] ml-[287px]">
+                    <div className="absolute right-2 top-2 w-4 h-4 ">
                       {e.image.length > 1 && svgIcons.stackIcon}
                     </div>
 
                     <div
-                      className={`flex  text-black flex-row mx-auto mt-[130px] w-full h-full z-100  opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
+                      className={`flex absolute top-[50%] left-[35%] text-white flex-row opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
                     >
                       <div className="flex flex-row">
                         <svg
