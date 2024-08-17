@@ -300,7 +300,7 @@ function Profile() {
                         </svg>
 
                         {e.Likes.length ? (
-                          <h1 className="text-lg text-white font-bold ml-2 mr-2">
+                          <h1 className="text-lg  font-bold ml-2 mr-2">
                             {e.Likes.length}
                           </h1>
                         ) : (

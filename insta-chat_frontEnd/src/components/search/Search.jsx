@@ -105,7 +105,7 @@ const Search = ({ open, setOpen, handleClose }) => {
               <div className="border-b border-borderColor my-5"></div>
               {users?.map((obj) => {
                 return (
-                  <div className="m-3">
+                  <div className="m-3" key={obj._id}>
                     <Friend
                       handleClose={handleClose}
                       key={obj._id}
