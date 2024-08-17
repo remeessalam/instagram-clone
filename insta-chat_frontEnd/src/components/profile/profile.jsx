@@ -45,8 +45,8 @@ function Profile() {
 
   return (
     <>
-      <div className="flex justify-center w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-y-auto scrollbar-hide">
-        <div className="flex flex-col w-[975px] shrink h-full m-0 sm:m-2 overflow-y-auto scrollbar-hide">
+      <div className="flex justify-center w-full h-screen lg:pt-10 pt-2  mx-auto overflow-y-scroll scrollbar-hide">
+        <div className="flex flex-col w-[975px] shrink h-full m-0 sm:p-2 overflow-y-auto scrollbar-hide">
           {/**PROFILE details area */}
           {IsBigScreen ? (
             <div className="flex justify-center flex-row  min-h-1/2 p-1 sm:p-4">
@@ -269,7 +269,7 @@ function Profile() {
 
           {/** POST  */}
           {/* <div className="w-[975px] shrink"> */}
-          <div className=" grid grid-cols-3 gap-1 lg:min-h-full overflow-hidden">
+          <div className=" grid grid-cols-3 gap-1 md:pb-0 pb-[50px]">
             {post.map((e, i) => {
               return (
                 <div
@@ -287,7 +287,7 @@ function Profile() {
                     </div>
 
                     <div
-                      className={`flex absolute top-[50%] left-[35%] text-white flex-row opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
+                      className={`flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex-row opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
                     >
                       <div className="flex flex-row">
                         <svg
