@@ -26,10 +26,9 @@ const SideBarMenu = ({
   }
   return (
     <div className="z-100">
-      {" "}
       <div className="flex w-full h-40 pt-16">
         <div
-          className="flex flex-row items-center px-3"
+          className="flex flex-row items-center px-3 group"
           // onClick={handleMenuToggle}
         >
           <div
@@ -39,7 +38,7 @@ const SideBarMenu = ({
               handleTabClick("more", setCurrentTab);
             }}
           >
-            <div className="flex  w-10 cursor-pointer">
+            <div className="flex  w-10 cursor-pointer group-hover:scale-110 duration-300">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
