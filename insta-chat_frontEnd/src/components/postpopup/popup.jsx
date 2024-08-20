@@ -56,18 +56,21 @@ export default function Modal({ post, open, setOpen }) {
 
   return (
     <>
+      {/** CLOSE BUTTON */}
       <div className="z-50 fixed top-3 right-3 flex justify-end">
         <button className="text-white" onClick={() => setOpen(!open)}>
           {svgIcons.whiteXCloseIcon}
           {/* <ClearSharpIcon /> */}
         </button>
       </div>
-      <div className="fixed z-40 left-[50%] bg-black bg-opacity-60 top-[50%]  -translate-y-[50%] -translate-x-[50%] w-full h-full p-6 ">
+
+      <div className="fixed z-40 left-[50%] bg-black bg-opacity-60 top-[50%]  -translate-y-[50%] -translate-x-[50%] w-screen h-full p-6 ">
         <div className="flex flex-wrap rounded-r-md  w-[350px] lg:w-[1200px] lg:h-[95vh] h-[650px] bg-white mx-auto brightness-100 overflow-y-auto scrollbar-hide">
-          <div className="flex items-center sm:w-1/2 w-full h-1/2 sm:h-full ">
-            <div className="flex flex-col items-center w-full">
+          {/** IMAGE SIDE */}
+          <div className="flex items-center max-w-[50%] min-w-[20%]  h-1/2 sm:h-full ">
+            <div className="flex flex-col items-center  ">
               <div
-                className="flex  h-full w-full overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
+                className="flex  h-full  overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
                 onClick={() => {
                   setOpen(!open);
                 }}
@@ -75,7 +78,7 @@ export default function Modal({ post, open, setOpen }) {
               >
                 {post.image?.map((obj) => {
                   return (
-                    <div className="flex min-w-full  snap-always snap-center justify-center place-items-center">
+                    <div className="flex h-full snap-always snap-center justify-center place-items-center">
                       <img
                         className=" h-full max-h-[325px] sm:max-h-[96vh]  object-cover aspect-auto "
                         src={obj.url}
@@ -105,6 +108,7 @@ export default function Modal({ post, open, setOpen }) {
               </div>
             </div>
           </div>
+          {/** OTHER SIDE COMMET AND LIKE */}
           <div className="flex flex-col bg-white  sm:w-1/2 w-full sm:h-full h-[500px] overflow-x-auto ">
             <div className="flex items-center h-20 border-b">
               {post?.user?.image ? (

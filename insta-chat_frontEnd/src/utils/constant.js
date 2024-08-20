@@ -636,4 +636,148 @@ export const svgIcons = {
       <path d="M18 7.5a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-7.5a3 3 0 0 1-3-3v-7.5a3 3 0 0 1 3-3H18Z" />
     </svg>
   ),
+  cropIcon: (
+    <svg
+      aria-label="Select crop"
+      className=""
+      fill="currentColor"
+      height="16"
+      role="img"
+      viewBox="0 0 24 24"
+      width="16"
+    >
+      <title>Select crop</title>
+      <path d="M10 20H4v-6a1 1 0 0 0-2 0v7a1 1 0 0 0 1 1h7a1 1 0 0 0 0-2ZM20.999 2H14a1 1 0 0 0 0 2h5.999v6a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1Z"></path>
+    </svg>
+  ),
+  zoomIcon: (
+    <svg
+      aria-label="Select zoom"
+      className=""
+      fill="currentColor"
+      height="16"
+      role="img"
+      viewBox="0 0 24 24"
+      width="16"
+    >
+      <title>Select zoom</title>
+      <path d="m22.707 21.293-4.825-4.825a9.519 9.519 0 1 0-1.414 1.414l4.825 4.825a1 1 0 0 0 1.414-1.414ZM10.5 18.001a7.5 7.5 0 1 1 7.5-7.5 7.509 7.509 0 0 1-7.5 7.5Zm3.5-8.5h-2.5v-2.5a1 1 0 1 0-2 0v2.5H7a1 1 0 1 0 0 2h2.5v2.5a1 1 0 0 0 2 0v-2.5H14a1 1 0 0 0 0-2Z"></path>
+    </svg>
+  ),
+  imageGallery: (
+    <svg
+      aria-label="Photo outline icon"
+      className="x1lliihq x1n2onr6 x1roi4f4"
+      fill="currentColor"
+      height="24"
+      role="img"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <title>Photo outline icon</title>
+      <path
+        d="M6.549 5.013A1.557 1.557 0 1 0 8.106 6.57a1.557 1.557 0 0 0-1.557-1.557Z"
+        fillRule="evenodd"
+      ></path>
+      <path
+        d="m2 18.605 3.901-3.9a.908.908 0 0 1 1.284 0l2.807 2.806a.908.908 0 0 0 1.283 0l5.534-5.534a.908.908 0 0 1 1.283 0l3.905 3.905"
+        fill="none"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      ></path>
+      <path
+        d="M18.44 2.004A3.56 3.56 0 0 1 22 5.564h0v12.873a3.56 3.56 0 0 1-3.56 3.56H5.568a3.56 3.56 0 0 1-3.56-3.56V5.563a3.56 3.56 0 0 1 3.56-3.56Z"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      ></path>
+    </svg>
+  ),
+  cropSquare: (
+    <svg
+      aria-label="Crop square icon"
+      className=""
+      fill="currentColor"
+      height="24"
+      role="img"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <title>Crop square icon</title>
+      <path d="M19 23H5a4.004 4.004 0 0 1-4-4V5a4.004 4.004 0 0 1 4-4h14a4.004 4.004 0 0 1 4 4v14a4.004 4.004 0 0 1-4 4ZM5 3a2.002 2.002 0 0 0-2 2v14a2.002 2.002 0 0 0 2 2h14a2.002 2.002 0 0 0 2-2V5a2.002 2.002 0 0 0-2-2Z"></path>
+    </svg>
+  ),
+  cropPortrait: (
+    <svg
+      aria-label="Crop portrait icon"
+      className=""
+      fill="currentColor"
+      height="24"
+      role="img"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <title>Crop portrait icon</title>
+      <path d="M16 23H8a4.004 4.004 0 0 1-4-4V5a4.004 4.004 0 0 1 4-4h8a4.004 4.004 0 0 1 4 4v14a4.004 4.004 0 0 1-4 4ZM8 3a2.002 2.002 0 0 0-2 2v14a2.002 2.002 0 0 0 2 2h8a2.002 2.002 0 0 0 2-2V5a2.002 2.002 0 0 0-2-2Z"></path>
+    </svg>
+  ),
+  cropLandscape: (
+    <svg
+      aria-label="Crop landscape icon"
+      className=""
+      fill="currentColor"
+      height="24"
+      role="img"
+      viewBox="0 0 24 24"
+      width="24"
+    >
+      <title>Crop landscape icon</title>
+      <path d="M19 20H5a4.004 4.004 0 0 1-4-4V8a4.004 4.004 0 0 1 4-4h14a4.004 4.004 0 0 1 4 4v8a4.004 4.004 0 0 1-4 4ZM5 6a2.002 2.002 0 0 0-2 2v8a2.002 2.002 0 0 0 2 2h14a2.002 2.002 0 0 0 2-2V8a2.002 2.002 0 0 0-2-2Z"></path>
+    </svg>
+  ),
+  rightArrow: (
+    <svg
+      aria-label="Right chevron"
+      className=""
+      fill="currentColor"
+      height="16"
+      role="img"
+      viewBox="0 0 24 24"
+      width="16"
+    >
+      <title>Right chevron</title>
+      <polyline
+        fill="none"
+        points="8 3 17.004 12 8 21"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      ></polyline>
+    </svg>
+  ),
+  leftArrow: (
+    <svg
+      aria-label="Left chevron"
+      className=""
+      fill="currentColor"
+      height="16"
+      role="img"
+      viewBox="0 0 24 24"
+      width="16"
+    >
+      <title>Left chevron</title>
+      <polyline
+        fill="none"
+        points="16.502 3 7.498 12 16.502 21"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+      ></polyline>
+    </svg>
+  ),
 };
