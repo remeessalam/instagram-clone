@@ -3,25 +3,28 @@ import { svgIcons } from "../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
-import getCroppedImg from "../../../utils/helperFuntion";
 
 const CropImage = ({
   images,
+  onCrop,
   setOpen,
   open,
   croppedImage,
   setCroppedImage,
   setImageFile,
+  setCount,
+  count,
+  position,
+  onCropComplete,
+  setPosition,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
-  const [position, setPosition] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  //   const [croppedImage, setCroppedImage] = useState(null);
-  const [count, setCount] = useState(0);
+
+  const cropperRef = useRef(null);
+
   const duration = 5;
   const rotation = 0;
-  const imageContainer = useRef(null);
   const handleScroll = (event) => {
     const scrollLeft = event.target.scrollLeft;
     const width = event.target.clientWidth;
@@ -33,29 +36,12 @@ const CropImage = ({
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   console.log(images, "tisisiiisdfnaskdjiwe");
+
   useEffect(() => {
-    if (images[0]) {
-      imageContainer.current.click();
-      console.log("clickedsss");
-    }
-  }, [images]);
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-    showCroppedImage(images[count]);
-    console.log(croppedArea, croppedAreaPixels, position, "thisisdsomesdf");
-  };
-  console.log(position, "thiasdhfasdhfasjfladf");
-
-  const showCroppedImage = async (image) => {
-    try {
-      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
-      console.log("donee", croppedImage);
-      setCroppedImage(croppedImage);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
+    // Center the image horizontally by default
+    const cropper = cropperRef.current.cropper;
+    cropper.setDragMode("move");
+  }, []);
   // Handle previous image
   const handlePrev = () => {
     setCount((prevCount) =>
@@ -69,6 +55,10 @@ const CropImage = ({
       prevCount < images.length - 1 ? prevCount + 1 : 0
     );
   };
+  const handleCrop = () => {
+    const cropper = cropperRef.current.cropper;
+    onCrop(cropper.getCroppedCanvas().toDataURL());
+  };
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
@@ -80,7 +70,7 @@ const CropImage = ({
             {/* {images.map((img, index) => {
               console.log(img, "thisisimage");
               return ( */}
-            <div ref={imageContainer} className={`w-full h-[100%]`}>
+            <div className={`w-full h-[100%]`}>
               {count !== 0 && (
                 <div
                   className="absolute left-3 bottom-1/2 z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
@@ -90,15 +80,25 @@ const CropImage = ({
                 </div>
               )}
               <Cropper
-                image={images[count]}
-                crop={crop}
-                rotation={rotation}
-                zoom={position}
-                aspect={aspectRatio}
-                onCropChange={setCrop}
-                onMediaLoaded={onCropComplete}
-                onCropAreaChange={onCropComplete}
-                // onZoomChange={setZoom}
+                src={images[count]}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                }}
+                aspectRatio={aspectRatio}
+                guides={false}
+                crop={handleCrop}
+                ref={cropperRef}
+                viewMode={1}
+                dragMode="move" // Allow horizontal movement
+                center
+                autoCropArea={1}
+                background={false}
+                responsive={true}
+                zoomTo={position}
               />
               {count < images.length - 1 && (
                 <div

@@ -5,6 +5,7 @@ import { svgIcons } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/CropImage";
+import getCroppedImg from "../../utils/helperFuntion";
 
 export default memo(function Modal() {
   const [spinner, setSpinner] = useState(false);
@@ -17,6 +18,11 @@ export default memo(function Modal() {
   const [step, setStep] = useState(0);
   const dispatch = useDispatch();
   const [croppedImage, setCroppedImage] = useState(null);
+
+  const [position, setPosition] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  //   const [croppedImage, setCroppedImage] = useState(null);
+  const [count, setCount] = useState(0);
 
   const openModalState = useSelector((state) => state.modal.openModalState);
 
@@ -60,6 +66,36 @@ export default memo(function Modal() {
     setCurrentSlide(newIndex);
   };
   console.log(croppedImage, "thiisiscorppeduiasndf");
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+    showCroppedImage(images[count]);
+    console.log(croppedArea, croppedAreaPixels, position, "thisisdsomesdf");
+  };
+  console.log(position, "thiasdhfasdhfasjfladf");
+
+  const showCroppedImage = async (image) => {
+    try {
+      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
+      console.log("donee", croppedImage);
+      setCroppedImage(croppedImage);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const controlNext = () => {
+    if (count === " 1") {
+      onCropComplete();
+    }
+    setStep((pre) => pre + 1);
+  };
+  const [croppedImages, setCroppedImages] = useState([]);
+
+  const handleCrop = (croppedImage) => {
+    setCroppedImages((prev) => [...prev, croppedImage]);
+  };
+
+  console.log(croppedImages, "thisiisdfisdf");
   return (
     <>
       {openModalState && (
@@ -84,7 +120,7 @@ export default memo(function Modal() {
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 {svgIcons.leftArrow}
                 <h3 className="font-semibold">Create new post</h3>
-                <h3 onClick={() => setStep((pre) => pre + 1)}>next</h3>
+                <h3 onClick={controlNext}>next</h3>
               </div>
               <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
                 {/** STEP ONE */}
@@ -124,6 +160,12 @@ export default memo(function Modal() {
                     croppedImage={croppedImage}
                     setCroppedImage={setCroppedImage}
                     setImageFile={setImageFile}
+                    setCount={setCount}
+                    count={count}
+                    position={position}
+                    setPosition={setPosition}
+                    onCropComplete={onCropComplete}
+                    onCrop={handleCrop}
                   />
                 )}
                 {step === 2 && (
