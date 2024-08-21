@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { svgIcons } from "../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
-import getCroppedImg from "../../../utils/helperFuntion";
 
 const CropImage = ({
   images,
@@ -12,49 +11,44 @@ const CropImage = ({
   croppedImage,
   setCroppedImage,
   setImageFile,
+  setCroppedAreaPixels,
+  croppedAreaPixels,
+  showCroppedImage,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [position, setPosition] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   //   const [croppedImage, setCroppedImage] = useState(null);
   const [count, setCount] = useState(0);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
   const duration = 5;
   const rotation = 0;
-  const imageContainer = useRef(null);
+  const theme = useTheme();
+
   const handleScroll = (event) => {
     const scrollLeft = event.target.scrollLeft;
     const width = event.target.clientWidth;
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  const theme = useTheme();
+  let i = 0;
   console.log(aspectRatio, "thisiisascpredfd");
 
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
   console.log(images, "tisisiiisdfnaskdjiwe");
-  useEffect(() => {
-    if (images[0]) {
-      imageContainer.current.click();
-      console.log("clickedsss");
-    }
-  }, [images]);
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-    showCroppedImage(images[count]);
-    console.log(croppedArea, croppedAreaPixels, position, "thisisdsomesdf");
-  };
-  console.log(position, "thiasdhfasdhfasjfladf");
 
-  const showCroppedImage = async (image) => {
-    try {
-      const croppedImage = await getCroppedImg(image, croppedAreaPixels);
-      console.log("donee", croppedImage);
-      setCroppedImage(croppedImage);
-    } catch (e) {
-      console.error(e);
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+    if (count === images[count]?.id) {
+      showCroppedImage(images);
+      console.log(
+        //   croppedArea,
+        //   croppedAreaPixels,
+        //   position,
+        "akjshfkjashdfkjhadhfjkfdsj",
+        i++
+      );
     }
-  };
+  }, []);
 
   // Handle previous image
   const handlePrev = () => {
@@ -69,6 +63,7 @@ const CropImage = ({
       prevCount < images.length - 1 ? prevCount + 1 : 0
     );
   };
+
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
@@ -77,10 +72,7 @@ const CropImage = ({
             onScroll={handleScroll}
             className={`flex  justify-center items-center  overflow-x-auto w-[634px] h-[100%] transition-all duration-900  snap-x snap-mandatory scrollbar-hide`}
           >
-            {/* {images.map((img, index) => {
-              console.log(img, "thisisimage");
-              return ( */}
-            <div ref={imageContainer} className={`w-full h-[100%]`}>
+            <div className={`w-full h-[100%] pb-[100%] overflow-hidden`}>
               {count !== 0 && (
                 <div
                   className="absolute left-3 bottom-1/2 z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
@@ -90,14 +82,15 @@ const CropImage = ({
                 </div>
               )}
               <Cropper
-                image={images[count]}
+                image={images[count]?.url}
                 crop={crop}
                 rotation={rotation}
                 zoom={position}
                 aspect={aspectRatio}
                 onCropChange={setCrop}
-                onMediaLoaded={onCropComplete}
+                // onMediaLoaded={onCropComplete}
                 onCropAreaChange={onCropComplete}
+                cropShape="rect"
                 // onZoomChange={setZoom}
               />
               {count < images.length - 1 && (

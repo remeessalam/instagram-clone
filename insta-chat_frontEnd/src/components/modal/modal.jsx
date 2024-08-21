@@ -5,6 +5,7 @@ import { svgIcons } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/CropImage";
+import getCroppedImg from "../../utils/helperFuntion";
 
 export default memo(function Modal() {
   const [spinner, setSpinner] = useState(false);
@@ -17,6 +18,7 @@ export default memo(function Modal() {
   const [step, setStep] = useState(0);
   const dispatch = useDispatch();
   const [croppedImage, setCroppedImage] = useState(null);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
   const openModalState = useSelector((state) => state.modal.openModalState);
 
@@ -28,7 +30,10 @@ export default memo(function Modal() {
       const reader = new FileReader();
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
-        setImages((images) => [...images, readerEvent.target.result]);
+        setImages((images) => [
+          ...images,
+          { url: readerEvent.target.result, id: images.length, cropped: false },
+        ]);
       };
     });
 
@@ -59,7 +64,33 @@ export default memo(function Modal() {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  console.log(croppedImage, "thiisiscorppeduiasndf");
+
+  const handleNext = () => {
+    setStep((pre) => pre + 1);
+    images.forEach((img, i) => {
+      showCroppedImage(images[i]);
+    });
+  };
+
+  const showCroppedImage = async (image) => {
+    try {
+      console.log(image, "thsdifjisdfjisimage");
+      const croppedImages = await getCroppedImg(image.url, croppedAreaPixels);
+      console.log("donee", croppedImages);
+      setCroppedImage((prev) => {
+        if (prev !== null) {
+          console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
+          return [...prev, { ...image, url: croppedImages }];
+        }
+        console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
+        return [{ ...image, url: croppedImages }];
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  console.log(croppedImage, "akjshfkjashdfkjhadhfjkfdsj");
   return (
     <>
       {openModalState && (
@@ -84,7 +115,7 @@ export default memo(function Modal() {
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 {svgIcons.leftArrow}
                 <h3 className="font-semibold">Create new post</h3>
-                <h3 onClick={() => setStep((pre) => pre + 1)}>next</h3>
+                <h3 onClick={handleNext}>next</h3>
               </div>
               <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
                 {/** STEP ONE */}
@@ -124,11 +155,22 @@ export default memo(function Modal() {
                     croppedImage={croppedImage}
                     setCroppedImage={setCroppedImage}
                     setImageFile={setImageFile}
+                    showCroppedImage={showCroppedImage}
+                    setCroppedAreaPixels={setCroppedAreaPixels}
+                    croppedAreaPixels={croppedAreaPixels}
                   />
                 )}
                 {step === 2 && (
-                  <div className="min-h-min">
-                    <img src={croppedImage} alt="" className="" />
+                  <div className={`flex w-full`}>
+                    {croppedImage?.map((img) => (
+                      <div key={img?.id} className="w-full h-[100%] ">
+                        <img
+                          src={img?.url}
+                          alt=""
+                          className="min-w-full min-h-[100%]"
+                        />
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

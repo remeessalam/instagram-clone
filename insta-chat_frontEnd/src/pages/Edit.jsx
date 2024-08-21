@@ -1,43 +1,136 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import "./edit.css";
 
-const Edit = () => {
-  const [open, setOpen] = useState(false);
-  const mapping = ["hello", "game", "water", "green"];
+const ImageCropper = () => {
+  const [image, setImage] = useState(null);
+  const [cropArea, setCropArea] = useState({
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 200,
+  });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const imageRef = useRef(null);
+  const cropBoxRef = useRef(null);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const startDrag = (e) => {
+    setIsDragging(true);
+  };
+
+  const handleDrag = (e) => {
+    if (!isDragging) return;
+
+    const rect = imageRef.current.getBoundingClientRect();
+    const cropRect = cropBoxRef.current.getBoundingClientRect();
+
+    const x = Math.max(
+      0,
+      Math.min(
+        rect.width - cropArea.width,
+        e.clientX - rect.left - cropArea.width / 2
+      )
+    );
+    const y = Math.max(
+      0,
+      Math.min(
+        rect.height - cropArea.height,
+        e.clientY - rect.top - cropArea.height / 2
+      )
+    );
+
+    setCropArea((prev) => ({
+      ...prev,
+      x,
+      y,
+    }));
+  };
+
+  const stopDrag = () => {
+    setIsDragging(false);
+  };
+
+  const cropImage = () => {
+    if (!image) return;
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const imageElement = imageRef.current;
+
+    const scaleX = imageElement.naturalWidth / imageElement.width;
+    const scaleY = imageElement.naturalHeight / imageElement.height;
+
+    canvas.width = cropArea.width * scaleX;
+    canvas.height = cropArea.height * scaleY;
+
+    ctx.drawImage(
+      imageElement,
+      cropArea.x * scaleX,
+      cropArea.y * scaleY,
+      cropArea.width * scaleX,
+      cropArea.height * scaleY,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    const croppedImageURL = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = croppedImageURL;
+    link.download = "cropped-image.png";
+    link.click();
+  };
+
   return (
-    <div className="flex justify-center mx-auto h-full bg-gray-300 m-5">
-      <div className="w-[975px] shrink">
-        <button onClick={() => setOpen(!open)}>open</button>
-        <div class="grid relative grid-cols-3 gap-1 min-h-full">
-          {mapping.map((item) => {
-            return (
-              <div className="relative bg-green-300 aspect-square hover:bg-red-200 text-center">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVGHL9r9OucwArH8yO3rEDPryG4V3tSCBw-w&s"
-                  alt=""
-                  className=""
-                />
-                <div className="absolute top-0">{item}</div>
-              </div>
-            );
-          })}
-        </div>
-        {open && <Modal fun={setOpen} boo={open} />}
+    <div className="image-cropper-container">
+      <input type="file" onChange={handleImageUpload} />
+      <div className="crop-container">
+        {image && (
+          <div
+            className="image-wrapper"
+            style={{ position: "relative", display: "inline-block" }}
+          >
+            <img
+              src={image}
+              alt="To Crop"
+              ref={imageRef}
+              style={{ maxWidth: "100%" }}
+            />
+            <div
+              className="crop-box"
+              ref={cropBoxRef}
+              style={{
+                position: "absolute",
+                top: `${cropArea.y}px`,
+                left: `${cropArea.x}px`,
+                width: `${cropArea.width}px`,
+                height: `${cropArea.height}px`,
+                border: "2px dashed #000",
+                cursor: "move",
+              }}
+              onMouseDown={startDrag}
+              onMouseMove={handleDrag}
+              onMouseUp={stopDrag}
+              onMouseLeave={stopDrag}
+            ></div>
+          </div>
+        )}
       </div>
+      <button onClick={cropImage} style={{ marginTop: "20px" }}>
+        Crop Image
+      </button>
     </div>
   );
 };
 
-export default Edit;
-
-const Modal = ({ fun, boo }) => {
-  return (
-    <div className="absolute top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-80">
-      <div className="relative w-[980px] h-80 bg-gray-200 ">
-        <h1 onClick={() => fun(!boo)}>this sample model</h1>
-        <div className="absolute bottom-0 right-0">
-          <h1>checking position</h1>
-        </div>
-      </div>
-    </div>
-  );
-};
+export default ImageCropper;
