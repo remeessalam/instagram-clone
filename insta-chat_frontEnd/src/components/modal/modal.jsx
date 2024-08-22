@@ -32,7 +32,12 @@ export default memo(function Modal() {
       reader.onload = (readerEvent) => {
         setImages((images) => [
           ...images,
-          { url: readerEvent.target.result, id: images.length, cropped: false },
+          {
+            url: readerEvent.target.result,
+            id: images.length,
+            cropped: false,
+            croppedPixel: {},
+          },
         ]);
       };
     });
@@ -68,22 +73,23 @@ export default memo(function Modal() {
   const handleNext = () => {
     setStep((pre) => pre + 1);
     images.forEach((img, i) => {
+      if (img.cropped) return;
       showCroppedImage(images[i]);
     });
   };
 
-  const showCroppedImage = async (image) => {
+  const showCroppedImage = async (image, count) => {
     try {
-      console.log(image, "thsdifjisdfjisimage");
-      const croppedImages = await getCroppedImg(image.url, croppedAreaPixels);
+      console.log(image, "akjshfkjashdfkjhadhfjkfdsj");
+      const croppedImages = await getCroppedImg(image.url, image.croppedPixel);
       console.log("donee", croppedImages);
       setCroppedImage((prev) => {
         if (prev !== null) {
           console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-          return [...prev, { ...image, url: croppedImages }];
+          return [{ ...(prev.image.url = croppedImages), cropped: true }];
         }
         console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-        return [{ ...image, url: croppedImages }];
+        return [{ ...image, url: croppedImages, cropped: true }];
       });
     } catch (e) {
       console.error(e);
@@ -158,6 +164,7 @@ export default memo(function Modal() {
                     showCroppedImage={showCroppedImage}
                     setCroppedAreaPixels={setCroppedAreaPixels}
                     croppedAreaPixels={croppedAreaPixels}
+                    setImages={setImages}
                   />
                 )}
                 {step === 2 && (

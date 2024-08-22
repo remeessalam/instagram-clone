@@ -14,6 +14,7 @@ const CropImage = ({
   setCroppedAreaPixels,
   croppedAreaPixels,
   showCroppedImage,
+  setImages,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
@@ -34,21 +35,34 @@ const CropImage = ({
   let i = 0;
   console.log(aspectRatio, "thisiisascpredfd");
 
-  console.log(images, "tisisiiisdfnaskdjiwe");
+  console.log(count, images, "akjshfkjashdfkjhadhfjkfdsj");
 
-  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+  console.log(
+    images[count]?.url,
+    count,
+    croppedAreaPixels,
+    //   position,
+    "akjshfkjashdfkjhadhfjkfdsj",
+    i++
+  );
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    console.log(images, croppedAreaPixels, "akjshfkjashdfkjhadhfjkfdsj");
+
     setCroppedAreaPixels(croppedAreaPixels);
     if (count === images[count]?.id) {
-      showCroppedImage(images);
-      console.log(
-        //   croppedArea,
-        //   croppedAreaPixels,
-        //   position,
-        "akjshfkjashdfkjhadhfjkfdsj",
-        i++
-      );
+      setImages((prev) => {
+        console.log(prev[count]?.url, "akjshfkjashdfkjhadhfjkfdsj");
+        if (!prev[count]?.url) {
+          console.log(prev[count]?.url, "akjshfkjashdfkjhadhfjkfdsj");
+          return [{ ...(prev[count].croppedPixel = croppedAreaPixels) }];
+        }
+        console.log(prev, croppedAreaPixels, "akjshfkjashdfkjhadhfjkfdsjhai");
+        return [{ ...prev, ...(prev[count].croppedPixel = croppedAreaPixels) }];
+      });
+      console.log(images, "akjshfkjashdfkjhadhfjkfdsj");
     }
-  }, []);
+    showCroppedImage(images[count], count);
+  };
 
   // Handle previous image
   const handlePrev = () => {
