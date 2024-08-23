@@ -83,14 +83,16 @@ export default memo(function Modal() {
       console.log(image, "akjshfkjashdfkjhadhfjkfdsj");
       const croppedImages = await getCroppedImg(image.url, image.croppedPixel);
       console.log("donee", croppedImages);
-      setCroppedImage((prev) => {
-        if (prev !== null) {
+      if (croppedImages) {
+        setCroppedImage((prev) => {
+          if (prev !== null) {
+            console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
+            return [{ ...(prev.image.url = croppedImages), cropped: true }];
+          }
           console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-          return [{ ...(prev.image.url = croppedImages), cropped: true }];
-        }
-        console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-        return [{ ...image, url: croppedImages, cropped: true }];
-      });
+          return [{ ...image, url: croppedImages, cropped: true }];
+        });
+      }
     } catch (e) {
       console.error(e);
     }
