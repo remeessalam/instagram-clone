@@ -45,19 +45,24 @@ const CropImage = ({
     "akjshfkjashdfkjhadhfjkfdsj",
     i++
   );
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    console.log(images, croppedAreaPixels, "akjshfkjashdfkjhadhfjkfdsj");
+  const onCropComplete = (croppedArea, croppedAreaPixel) => {
+    console.log(images, croppedAreaPixel, "akjshfkjashdfkjhadhfjkfdsj");
 
-    setCroppedAreaPixels(croppedAreaPixels);
+    setCroppedAreaPixels(croppedAreaPixel);
     if (count === images[count]?.id) {
       setImages((prev) => {
-        console.log(prev[count]?.url, "akjshfkjashdfkjhadhfjkfdsj");
-        if (!prev[count]?.url) {
-          console.log(prev[count]?.url, "akjshfkjashdfkjhadhfjkfdsj");
-          return [{ ...(prev[count].croppedPixel = croppedAreaPixels) }];
-        }
-        console.log(prev, croppedAreaPixels, "akjshfkjashdfkjhadhfjkfdsjhai");
-        return [{ ...prev, ...(prev[count].croppedPixel = croppedAreaPixels) }];
+        console.log(prev[count]?.url, "Logging the URL");
+        console.log(
+          prev,
+          croppedAreaPixel,
+          "Logging previous images and cropped pixels"
+        );
+        const updatedImages = [...prev];
+        updatedImages[count] = {
+          ...updatedImages[count],
+          croppedPixel: croppedAreaPixel,
+        };
+        return updatedImages;
       });
       console.log(images, "akjshfkjashdfkjhadhfjkfdsj");
     }
@@ -84,12 +89,12 @@ const CropImage = ({
         <div className="relative w-full h-full">
           <div
             onScroll={handleScroll}
-            className={`flex  justify-center items-center  overflow-x-auto w-[634px] h-[100%] transition-all duration-900  snap-x snap-mandatory scrollbar-hide`}
+            className={`flex  justify-center items-center overflow-x-auto w-[634px] h-[100%] transition-all duration-900  snap-x snap-mandatory scrollbar-hide`}
           >
             <div className={`w-full h-[100%] pb-[100%] overflow-hidden`}>
               {count !== 0 && (
                 <div
-                  className="absolute left-3 bottom-1/2 z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                  className="absolute left-3 bottom-1/2 z-500 cursor-pointer text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
                   onClick={handlePrev}
                 >
                   {svgIcons.leftArrow}
@@ -109,7 +114,7 @@ const CropImage = ({
               />
               {count < images.length - 1 && (
                 <div
-                  className="absolute right-3 bottom-1/2 z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                  className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
                   onClick={handleNext}
                 >
                   {svgIcons.rightArrow}

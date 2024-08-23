@@ -30,13 +30,14 @@ export default memo(function Modal() {
       const reader = new FileReader();
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
-        setImages((images) => [
-          ...images,
+        setImages((prev) => [
+          ...prev,
           {
             url: readerEvent.target.result,
-            id: images.length,
+            id: prev.length,
             cropped: false,
             croppedPixel: {},
+            croppedImageUrl: "",
           },
         ]);
       };
@@ -84,10 +85,16 @@ export default memo(function Modal() {
       const croppedImages = await getCroppedImg(image.url, image.croppedPixel);
       console.log("donee", croppedImages);
       if (croppedImages) {
-        setCroppedImage((prev) => {
+        setImages((prev) => {
+          const updatedImages = [...prev];
+          updatedImages[count] = {
+            ...updatedImages[count],
+            croppedImageUrl: croppedImages,
+          };
+          return updatedImages;
           if (prev !== null) {
             console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-            return [{ ...(prev.image.url = croppedImages), cropped: true }];
+            return [{ ...(prev[count].url = croppedImages), cropped: true }];
           }
           console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
           return [{ ...image, url: croppedImages, cropped: true }];
@@ -170,13 +177,15 @@ export default memo(function Modal() {
                   />
                 )}
                 {step === 2 && (
-                  <div className={`flex w-full`}>
-                    {croppedImage?.map((img) => (
-                      <div key={img?.id} className="w-full h-[100%] ">
+                  <div
+                    className={`flex min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
+                  >
+                    {images?.map((img) => (
+                      <div key={img?.id} className="min-w-[634px] h-[100%] ">
                         <img
-                          src={img?.url}
+                          src={img?.croppedImageUrl}
                           alt=""
-                          className="min-w-full min-h-[100%]"
+                          className="min-w-[634px] min-h-[100%]"
                         />
                       </div>
                     ))}
