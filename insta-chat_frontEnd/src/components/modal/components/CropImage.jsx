@@ -15,9 +15,11 @@ const CropImage = ({
   croppedAreaPixels,
   showCroppedImage,
   setImages,
+  setAspectRatio,
+  aspectRatio,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [aspectRatio, setAspectRatio] = useState(1 / 1);
+  //   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [position, setPosition] = useState(1);
   //   const [croppedImage, setCroppedImage] = useState(null);
   const [count, setCount] = useState(0);
@@ -61,6 +63,7 @@ const CropImage = ({
         updatedImages[count] = {
           ...updatedImages[count],
           croppedPixel: croppedAreaPixel,
+          aspectRatio: aspectRatio,
         };
         return updatedImages;
       });

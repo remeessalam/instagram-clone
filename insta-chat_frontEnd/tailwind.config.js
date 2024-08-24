@@ -44,8 +44,10 @@ module.exports = {
         bouncing: "bouncing 0.35s ease-in-out",
       },
       aspectRatio: {
-        "4/5": "4/5",
-        original: "16/10",
+        "4 / 5": "4 / 5",
+        "16 / 10": "16 / 10",
+        " 1 / 1": "1 / 1",
+        "16 : 9": "16 / 9",
       },
     },
     fontFamily: {

@@ -19,6 +19,7 @@ export default memo(function Modal() {
   const dispatch = useDispatch();
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [aspectRatio, setAspectRatio] = useState(1 / 1);
 
   const openModalState = useSelector((state) => state.modal.openModalState);
 
@@ -38,6 +39,7 @@ export default memo(function Modal() {
             cropped: false,
             croppedPixel: {},
             croppedImageUrl: "",
+            aspectRatio: null,
           },
         ]);
       };
@@ -174,6 +176,8 @@ export default memo(function Modal() {
                     setCroppedAreaPixels={setCroppedAreaPixels}
                     croppedAreaPixels={croppedAreaPixels}
                     setImages={setImages}
+                    setAspectRatio={setAspectRatio}
+                    aspectRatio={aspectRatio}
                   />
                 )}
                 {step === 2 && (
@@ -181,12 +185,19 @@ export default memo(function Modal() {
                     className={`flex min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
                   >
                     {images?.map((img) => (
-                      <div key={img?.id} className="min-w-[634px] h-[100%] ">
-                        <img
-                          src={img?.croppedImageUrl}
-                          alt=""
-                          className="min-w-[634px] min-h-[100%]"
-                        />
+                      <div
+                        className="min-w-[634px] max-w-[634px] flex "
+                        key={img?.id}
+                      >
+                        <div
+                          className={`aspect-[${aspectRatio} mx-auto my-auto  `}
+                        >
+                          <img
+                            src={img?.croppedImageUrl}
+                            alt=""
+                            className={`aspect-[${aspectRatio}] h-[100%] object-cover brightness-100 contrast-50 saturate-100`}
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
