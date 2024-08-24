@@ -20,6 +20,7 @@ export default memo(function Modal() {
   const [croppedImage, setCroppedImage] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
+  const [count, setCount] = useState(0);
 
   const openModalState = useSelector((state) => state.modal.openModalState);
 
@@ -106,6 +107,16 @@ export default memo(function Modal() {
       console.error(e);
     }
   };
+  const handleNextImage = () => {
+    setCount((prevCount) =>
+      prevCount < images.length - 1 ? prevCount + 1 : 0
+    );
+  };
+  const handlePrevImage = () => {
+    setCount((prevCount) =>
+      prevCount > 0 ? prevCount - 1 : images.length - 1
+    );
+  };
 
   console.log(croppedImage, "akjshfkjashdfkjhadhfjkfdsj");
   return (
@@ -130,7 +141,12 @@ export default memo(function Modal() {
             {/** CONTAINER */}
             <div className="bg-white  rounded-xl overflow-hidden md:w-[634px] w-[290px] h-[675px]">
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
-                {svgIcons.leftArrow}
+                <span
+                  onClick={() => setStep((prev) => (prev === 0 ? 0 : prev - 1))}
+                >
+                  {" "}
+                  {svgIcons.leftArrow}
+                </span>
                 <h3 className="font-semibold">Create new post</h3>
                 <h3 onClick={handleNext}>next</h3>
               </div>
@@ -182,11 +198,21 @@ export default memo(function Modal() {
                 )}
                 {step === 2 && (
                   <div
-                    className={`flex min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
+                    className={`flex relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
                   >
-                    {images?.map((img) => (
+                    {count !== 0 && (
                       <div
-                        className="min-w-[634px] max-w-[634px] flex "
+                        className="absolute left-3 bottom-1/2 z-500 cursor-pointer text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                        onClick={handlePrevImage}
+                      >
+                        {svgIcons.leftArrow}
+                      </div>
+                    )}
+                    {images?.map((img, i) => (
+                      <div
+                        className={`min-w-[634px] max-w-[634px] flex ${
+                          count === i ? `block` : `hidden`
+                        } `}
                         key={img?.id}
                       >
                         <div
@@ -195,11 +221,35 @@ export default memo(function Modal() {
                           <img
                             src={img?.croppedImageUrl}
                             alt=""
-                            className={`aspect-[${aspectRatio}] h-[100%] object-cover brightness-100 contrast-50 saturate-100`}
+                            className={`aspect-[${aspectRatio}] max-h-[675px] object-cover `}
                           />
                         </div>
                       </div>
                     ))}
+                    {count < images.length - 1 && (
+                      <div
+                        className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                        onClick={handleNextImage}
+                      >
+                        {svgIcons.rightArrow}
+                      </div>
+                    )}
+                    {images.length > 1 && (
+                      <div className="flex  justify-center absolute gap-1 bottom-8 w-full text-center">
+                        {images.map((_, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className={`w-[6px] h-[6px] rounded-full  ${
+                                index === count
+                                  ? "bg-white"
+                                  : "bg-imageDotColor"
+                              }`}
+                            ></div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
