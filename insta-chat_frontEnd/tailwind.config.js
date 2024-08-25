@@ -29,6 +29,7 @@ module.exports = {
         chatPageMsgContentHight: "calc(100vh - 130px)",
         chatPageMsgContentHightMedium: "calc(100vh - 176px)",
         postUploadChildContainer: "calc(666px - 32px)",
+        postUploadImageMaxHeight: "calc(675px - 41px)",
       },
       keyframes: {
         bouncing: {

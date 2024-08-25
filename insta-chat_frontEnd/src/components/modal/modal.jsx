@@ -21,6 +21,7 @@ export default memo(function Modal() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [count, setCount] = useState(0);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
 
   const openModalState = useSelector((state) => state.modal.openModalState);
 
@@ -40,7 +41,8 @@ export default memo(function Modal() {
             cropped: false,
             croppedPixel: {},
             croppedImageUrl: "",
-            aspectRatio: null,
+            aspectRatio: 1 / 1,
+            crop: { x: 0, y: 0 },
           },
         ]);
       };
@@ -78,7 +80,7 @@ export default memo(function Modal() {
     setStep((pre) => pre + 1);
     images.forEach((img, i) => {
       if (img.cropped) return;
-      showCroppedImage(images[i]);
+      showCroppedImage(images[i], i);
     });
   };
 
@@ -111,11 +113,13 @@ export default memo(function Modal() {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
     );
+    setCrop({ x: 0, y: 0 });
   };
   const handlePrevImage = () => {
     setCount((prevCount) =>
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
+    setCrop({ x: 0, y: 0 });
   };
 
   console.log(croppedImage, "akjshfkjashdfkjhadhfjkfdsj");
@@ -194,6 +198,8 @@ export default memo(function Modal() {
                     setImages={setImages}
                     setAspectRatio={setAspectRatio}
                     aspectRatio={aspectRatio}
+                    setCrop={setCrop}
+                    crop={crop}
                   />
                 )}
                 {step === 2 && (
@@ -221,7 +227,7 @@ export default memo(function Modal() {
                           <img
                             src={img?.croppedImageUrl}
                             alt=""
-                            className={`aspect-[${aspectRatio}] max-h-[675px] object-cover `}
+                            className={`aspect-[${aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
                           />
                         </div>
                       </div>

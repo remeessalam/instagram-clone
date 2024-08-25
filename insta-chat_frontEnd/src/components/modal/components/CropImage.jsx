@@ -17,13 +17,14 @@ const CropImage = ({
   setImages,
   setAspectRatio,
   aspectRatio,
+  setCrop,
+  crop,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   //   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [position, setPosition] = useState(1);
   //   const [croppedImage, setCroppedImage] = useState(null);
   const [count, setCount] = useState(0);
-  const [crop, setCrop] = useState({ x: 0, y: 0 });
   const duration = 5;
   const rotation = 0;
   const theme = useTheme();
@@ -48,7 +49,12 @@ const CropImage = ({
     i++
   );
   const onCropComplete = (croppedArea, croppedAreaPixel) => {
-    console.log(images, croppedAreaPixel, "akjshfkjashdfkjhadhfjkfdsj");
+    console.log(
+      images,
+      croppedAreaPixel,
+      croppedArea,
+      "akjshfkjashdfkjhadhfjkfdsj"
+    );
 
     setCroppedAreaPixels(croppedAreaPixel);
     if (count === images[count]?.id) {
@@ -63,7 +69,6 @@ const CropImage = ({
         updatedImages[count] = {
           ...updatedImages[count],
           croppedPixel: croppedAreaPixel,
-          aspectRatio: aspectRatio,
         };
         return updatedImages;
       });
@@ -74,9 +79,19 @@ const CropImage = ({
 
   // Handle previous image
   const handlePrev = () => {
+    // setAspectRatio((prev) => {
+    //   images[count].aspectRatio === 1 / 1
+    //     ? setImages((prev) => {
+    //         return { ...(prev[count].aspectRatio = 1 / 1) };
+    //       })
+    //     : setImages((prev) => {
+    //         return { ...(prev[count].aspectRatio = images[count].aspectRatio) };
+    //       });
+    // });
     setCount((prevCount) =>
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
+    setCrop({ x: 0, y: 0 });
   };
 
   // Handle next image
@@ -84,8 +99,22 @@ const CropImage = ({
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
     );
+    // setAspectRatio(1 / 1);
+    setCrop({ x: 0, y: 0 });
   };
-
+  const cropChange = (crop) => {
+    console.log(crop, "lkasdfkjasldcrop");
+    setImages((prev) => {
+      const updatedImages = [...prev];
+      updatedImages[count] = {
+        ...updatedImages[count],
+        crop: crop,
+      };
+      return updatedImages;
+    });
+    // setCrop(crop);
+  };
+  console.log(images, "thisfidsfjacoropcrop");
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
@@ -105,11 +134,11 @@ const CropImage = ({
               )}
               <Cropper
                 image={images[count]?.url}
-                crop={crop}
+                crop={images[count]?.crop}
                 rotation={rotation}
                 zoom={position}
-                aspect={aspectRatio}
-                onCropChange={setCrop}
+                aspect={images[count]?.aspectRatio}
+                onCropChange={cropChange}
                 // onMediaLoaded={onCropComplete}
                 onCropAreaChange={onCropComplete}
                 cropShape="rect"
@@ -176,34 +205,78 @@ const CropImage = ({
               <div className="flex flex-col justify-between absolute bottom-10 w-32 h-48 bg-black bg-opacity-60  rounded-md">
                 <div
                   className={`text-center flex ${
-                    aspectRatio === 16 / 10 ? `text-white` : `text-gray-500`
+                    images[count]?.aspectRatio === 16 / 10
+                      ? `text-white`
+                      : `text-gray-500`
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
-                  onClick={() => setAspectRatio(16 / 10)}
+                  onClick={() => {
+                    setImages((prev) => {
+                      const updatedImages = [...prev];
+                      updatedImages[count] = {
+                        ...updatedImages[count],
+                        aspectRatio: 16 / 10,
+                      };
+                      return updatedImages;
+                    });
+                  }}
                 >
                   Original
                   {svgIcons.imageGallery}
                 </div>
                 <div
                   className={`text-center flex ${
-                    aspectRatio === 1 / 1 ? `text-white` : `text-gray-500`
+                    images[count]?.aspectRatio === 1 / 1
+                      ? `text-white`
+                      : `text-gray-500`
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
-                  onClick={() => setAspectRatio(1 / 1)}
+                  onClick={() => {
+                    setImages((prev) => {
+                      const updatedImages = [...prev];
+                      updatedImages[count] = {
+                        ...updatedImages[count],
+                        aspectRatio: 1 / 1,
+                      };
+                      return updatedImages;
+                    });
+                  }}
                 >
                   1:1 {svgIcons.cropSquare}
                 </div>
                 <div
                   className={`text-center flex ${
-                    aspectRatio === 4 / 5 ? `text-white` : `text-gray-500`
+                    images[count]?.aspectRatio === 4 / 5
+                      ? `text-white`
+                      : `text-gray-500`
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
-                  onClick={() => setAspectRatio(4 / 5)}
+                  onClick={() => {
+                    setImages((prev) => {
+                      const updatedImages = [...prev];
+                      updatedImages[count] = {
+                        ...updatedImages[count],
+                        aspectRatio: 4 / 5,
+                      };
+                      return updatedImages;
+                    });
+                  }}
                 >
                   4:5 {svgIcons.cropPortrait}
                 </div>
                 <div
                   className={`text-center flex ${
-                    aspectRatio === 16 / 9 ? `text-white` : `text-gray-500`
+                    images[count]?.aspectRatio === 16 / 9
+                      ? `text-white`
+                      : `text-gray-500`
                   } items-center justify-center gap-3 cursor-pointer py-3`}
-                  onClick={() => setAspectRatio(16 / 9)}
+                  onClick={() => {
+                    setImages((prev) => {
+                      const updatedImages = [...prev];
+                      updatedImages[count] = {
+                        ...updatedImages[count],
+                        aspectRatio: 16 / 9,
+                      };
+                      return updatedImages;
+                    });
+                  }}
                 >
                   16:9 {svgIcons.cropLandscape}
                 </div>
