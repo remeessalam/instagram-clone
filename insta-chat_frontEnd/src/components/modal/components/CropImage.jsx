@@ -3,6 +3,7 @@ import { svgIcons } from "../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
+import { Co2Sharp } from "@mui/icons-material";
 
 const CropImage = ({
   images,
@@ -11,8 +12,9 @@ const CropImage = ({
   croppedImage,
   setCroppedImage,
   setImageFile,
-  setCroppedAreaPixels,
-  croppedAreaPixels,
+  //   setCroppedAreaPixels,
+  //   croppedAreaPixels,
+  imageCount,
   showCroppedImage,
   setImages,
   setAspectRatio,
@@ -43,20 +45,26 @@ const CropImage = ({
   console.log(
     images[count]?.url,
     count,
-    croppedAreaPixels,
     //   position,
     "akjshfkjashdfkjhadhfjkfdsj",
     i++
   );
-  const onCropComplete = (croppedArea, croppedAreaPixel) => {
+  const onCropComplete = async (croppedArea, croppedAreaPixel) => {
+    if (
+      isNaN(croppedAreaPixel?.width) ||
+      isNaN(croppedArea?.x) ||
+      imageCount !== images?.length
+    ) {
+      return;
+    }
     console.log(
+      imageCount,
       images,
       croppedAreaPixel,
       croppedArea,
-      "akjshfkjashdfkjhadhfjkfdsj"
+      "akjshfkjashdfkjhadhfjkfdsjsingleone"
     );
-
-    setCroppedAreaPixels(croppedAreaPixel);
+    // setCroppedAreaPixels(croppedAreaPixel);
     if (count === images[count]?.id) {
       setImages((prev) => {
         console.log(prev[count]?.url, "Logging the URL");
@@ -72,9 +80,31 @@ const CropImage = ({
         };
         return updatedImages;
       });
-      console.log(images, "akjshfkjashdfkjhadhfjkfdsj");
+      console.log(images[count], "akjshfkjashdfkjhadhfjkfdsj");
     }
-    showCroppedImage(images[count], count);
+    let croppedImages;
+
+    if (images[count]?.url) {
+      croppedImages = await showCroppedImage(
+        images[count],
+        count,
+        "from onCropComplete"
+      );
+      console.log(croppedImages, "akjshfkjashdfkjhadhfjkfdsjfour");
+      console.log(croppedImages, "thiasdfkasdfasdfasdfkljcon");
+    }
+
+    if (croppedImages) {
+      setImages((prev) => {
+        const updatedImages = [...prev];
+        updatedImages[count] = {
+          ...updatedImages[count],
+          croppedImageUrl: croppedImages,
+          cropped: true,
+        };
+        return updatedImages;
+      });
+    }
   };
 
   // Handle previous image
@@ -114,7 +144,10 @@ const CropImage = ({
     });
     // setCrop(crop);
   };
-  console.log(images, "thisfidsfjacoropcrop");
+  const onMediaLoad = (media) => {
+    console.log(media, "akjsdkflkasjdflajdsflj");
+  };
+  console.log(images, "thisfidsfjacoropcropnosdfasfd");
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
@@ -132,18 +165,30 @@ const CropImage = ({
                   {svgIcons.leftArrow}
                 </div>
               )}
-              <Cropper
-                image={images[count]?.url}
-                crop={images[count]?.crop}
-                rotation={rotation}
-                zoom={position}
-                aspect={images[count]?.aspectRatio}
-                onCropChange={cropChange}
-                // onMediaLoaded={onCropComplete}
-                onCropAreaChange={onCropComplete}
-                cropShape="rect"
-                // onZoomChange={setZoom}
-              />
+              {images.map((img, i) => {
+                console.log(img, count, "htiadnkfjsajdklfjsldf");
+                return (
+                  <div
+                    key={img?.id}
+                    className={`${img?.id === count ? `block` : `hidden`}`}
+                  >
+                    {/* {img?.id === count && ( */}
+                    <Cropper
+                      image={img?.url}
+                      crop={img?.crop ? img?.crop : crop}
+                      rotation={rotation}
+                      zoom={position}
+                      aspect={img?.aspectRatio}
+                      onCropChange={cropChange}
+                      onMediaLoaded={onMediaLoad}
+                      onCropAreaChange={onCropComplete}
+                      cropShape="rect"
+                      // onZoomChange={setZoom}
+                    />
+                    {/* )} */}
+                  </div>
+                );
+              })}
               {count < images.length - 1 && (
                 <div
                   className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"

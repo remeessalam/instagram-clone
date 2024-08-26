@@ -7,7 +7,7 @@ import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
 
-export default memo(function Modal() {
+export default function Modal() {
   const [spinner, setSpinner] = useState(false);
   const [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
@@ -18,15 +18,17 @@ export default memo(function Modal() {
   const [step, setStep] = useState(0);
   const dispatch = useDispatch();
   const [croppedImage, setCroppedImage] = useState(null);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  // const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [count, setCount] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-
+  const [imageCount, setImageCount] = useState(0);
   const openModalState = useSelector((state) => state.modal.openModalState);
 
   function uploadPhoto(e) {
     const files = Object.values(e.target.files);
+    console.log(files.length, "ladsjflasjdfjaslkdflkasdjfk");
+    setImageCount(files.length);
     setImageFile(files);
     files.forEach((img) => {
       console.log(img, "imagefromcloudinary");
@@ -34,13 +36,13 @@ export default memo(function Modal() {
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
         setImages((prev) => [
-          ...prev,
+          ...(prev || []),
           {
             url: readerEvent.target.result,
             id: prev.length,
             cropped: false,
             croppedPixel: {},
-            croppedImageUrl: "",
+            croppedImageUrl: null,
             aspectRatio: 1 / 1,
             crop: { x: 0, y: 0 },
           },
@@ -75,38 +77,56 @@ export default memo(function Modal() {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
+  let times = 0;
 
   const handleNext = () => {
-    setStep((pre) => pre + 1);
-    images.forEach((img, i) => {
-      if (img.cropped) return;
-      showCroppedImage(images[i], i);
-    });
-  };
-
-  const showCroppedImage = async (image, count) => {
-    try {
-      console.log(image, "akjshfkjashdfkjhadhfjkfdsj");
-      const croppedImages = await getCroppedImg(image.url, image.croppedPixel);
-      console.log("donee", croppedImages);
+    setSpinner(true);
+    let reme = images;
+    reme.map(async (img, i) => {
+      console.log(img, count, "thisisdcocjlsajflkjfskj");
+      if (img.cropped) return img;
+      const croppedImages = await showCroppedImage(img, i, "from handnext");
       if (croppedImages) {
+        console.log(croppedImages, img, times++, "thiasdfkasdfasdfasdfkljcon");
         setImages((prev) => {
           const updatedImages = [...prev];
-          updatedImages[count] = {
-            ...updatedImages[count],
+          updatedImages[i] = {
+            ...updatedImages[i],
             croppedImageUrl: croppedImages,
+            cropped: true,
           };
           return updatedImages;
-          if (prev !== null) {
-            console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-            return [{ ...(prev[count].url = croppedImages), cropped: true }];
-          }
-          console.log(prev, "akjshfkjashdfkjhadhfjkfdsj");
-          return [{ ...image, url: croppedImages, cropped: true }];
         });
       }
+      return img;
+    });
+    setStep((pre) => pre + 1);
+
+    setSpinner(false);
+  };
+
+  const showCroppedImage = async (image, count, console) => {
+    try {
+      console.log(image, count, console, "akjshfkjashdfkjhadhfjkfdsjfour");
+      let all;
+      let croppedImages = null;
+      if (
+        image?.url ||
+        isNaN(image?.croppedPixel?.height) ||
+        isNaN(image?.croppedPixel?.width) ||
+        isNaN(image?.croppedPixel?.x) ||
+        isNaN(image?.croppedPixel?.y)
+      ) {
+        croppedImages = await getCroppedImg(image?.url, image?.croppedPixel);
+        all = [{ ...all }, { croppedImages }];
+        console.log("donee", all, croppedImages);
+      }
+
+      if (croppedImages) {
+        return croppedImages;
+      }
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   };
   const handleNextImage = () => {
@@ -122,7 +142,7 @@ export default memo(function Modal() {
     setCrop({ x: 0, y: 0 });
   };
 
-  console.log(croppedImage, "akjshfkjashdfkjhadhfjkfdsj");
+  console.log(croppedImage, images, "akjshfkjashdfkjhadhfjkfdsjonetwothree");
   return (
     <>
       {openModalState && (
@@ -151,7 +171,9 @@ export default memo(function Modal() {
                   {" "}
                   {svgIcons.leftArrow}
                 </span>
-                <h3 className="font-semibold">Create new post</h3>
+                <h3 className="font-semibold">
+                  {spinner ? "`loading" : "Create new post"}
+                </h3>
                 <h3 onClick={handleNext}>next</h3>
               </div>
               <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
@@ -193,13 +215,14 @@ export default memo(function Modal() {
                     setCroppedImage={setCroppedImage}
                     setImageFile={setImageFile}
                     showCroppedImage={showCroppedImage}
-                    setCroppedAreaPixels={setCroppedAreaPixels}
-                    croppedAreaPixels={croppedAreaPixels}
+                    // setCroppedAreaPixels={setCroppedAreaPixels}
+                    // croppedAreaPixels={croppedAreaPixels}
                     setImages={setImages}
                     setAspectRatio={setAspectRatio}
                     aspectRatio={aspectRatio}
                     setCrop={setCrop}
                     crop={crop}
+                    imageCount={imageCount}
                   />
                 )}
                 {step === 2 && (
@@ -214,24 +237,28 @@ export default memo(function Modal() {
                         {svgIcons.leftArrow}
                       </div>
                     )}
-                    {images?.map((img, i) => (
-                      <div
-                        className={`min-w-[634px] max-w-[634px] flex ${
-                          count === i ? `block` : `hidden`
-                        } `}
-                        key={img?.id}
-                      >
+
+                    {images?.map((img, i) => {
+                      console.log(img, "thidisadfasimage");
+                      return (
                         <div
-                          className={`aspect-[${aspectRatio} mx-auto my-auto  `}
+                          className={`min-w-[634px] max-w-[634px] flex ${
+                            count === i ? `block` : `hidden`
+                          } `}
+                          key={img?.id}
                         >
-                          <img
-                            src={img?.croppedImageUrl}
-                            alt=""
-                            className={`aspect-[${aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
-                          />
+                          <div
+                            className={`aspect-[${aspectRatio} mx-auto my-auto  `}
+                          >
+                            <img
+                              src={img?.croppedImageUrl}
+                              alt=""
+                              className={`aspect-[${aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                     {count < images.length - 1 && (
                       <div
                         className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
@@ -265,7 +292,7 @@ export default memo(function Modal() {
       )}
     </>
   );
-});
+}
 
 /** CAPTION IS HERER */
 /* <input
