@@ -1,31 +1,22 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { svgIcons } from "../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
-import { Co2Sharp } from "@mui/icons-material";
 
 const CropImage = ({
   images,
   setOpen,
   open,
-  croppedImage,
-  setCroppedImage,
-  setImageFile,
-  //   setCroppedAreaPixels,
-  //   croppedAreaPixels,
   imageCount,
   showCroppedImage,
   setImages,
-  setAspectRatio,
   aspectRatio,
   setCrop,
   crop,
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  //   const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [position, setPosition] = useState(1);
-  //   const [croppedImage, setCroppedImage] = useState(null);
   const [count, setCount] = useState(0);
   const duration = 5;
   const rotation = 0;
@@ -120,7 +111,7 @@ const CropImage = ({
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
     );
-    // setAspectRatio(1 / 1);
+
     setCrop({ x: 0, y: 0 });
   };
   const cropChange = (crop) => {

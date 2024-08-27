@@ -11,7 +11,6 @@ export default function Modal() {
   const [spinner, setSpinner] = useState(false);
   const [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [error, setError] = useState("");
   const [imageFile, setImageFile] = useState();
   const [open, setOpen] = useState("");
@@ -88,37 +87,19 @@ export default function Modal() {
       });
   };
 
-  const handleScroll = (event) => {
-    const scrollLeft = event.target.scrollLeft;
-    const width = event.target.clientWidth;
-    const newIndex = Math.round(scrollLeft / width);
-    setCurrentSlide(newIndex);
-  };
-
   const handleNext = () => {
     setSpinner(true);
-    // let reme = images;
-    // reme.map(async (img, i) => {
-    //   console.log(img, count, "thisisdcocjlsajflkjfskj");
-    //   if (img.cropped) return img;
-    //   const croppedImages = await showCroppedImage(img, i, "from handnext");
-    //   if (croppedImages) {
-    //     console.log(croppedImages, img, times++, "thiasdfkasdfasdfasdfkljcon");
-    //     setImages((prev) => {
-    //       const updatedImages = [...prev];
-    //       updatedImages[i] = {
-    //         ...updatedImages[i],
-    //         croppedImageUrl: croppedImages,
-    //         cropped: true,
-    //       };
-    //       return updatedImages;
-    //     });
-    //   }
-    //   return img;
-    // });
+
     setStep((pre) => pre + 1);
 
     setSpinner(false);
+  };
+
+  const handlePrev = () => {
+    setStep((prev) => {
+      prev === 1 && setImages([]);
+      return prev === 0 ? 0 : prev - 1;
+    });
   };
 
   const showCroppedImage = async (image, count) => {
@@ -175,9 +156,9 @@ export default function Modal() {
             <div className="bg-white  rounded-xl overflow-hidden md:w-[634px] w-[290px] h-[675px]">
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 <span
-                  onClick={() => setStep((prev) => (prev === 0 ? 0 : prev - 1))}
+                  onClick={handlePrev}
+                  className={`${step === 0 ? `invisible` : `visible`}`}
                 >
-                  {" "}
                   {svgIcons.leftArrow}
                 </span>
                 <h3 className="font-semibold">
@@ -186,7 +167,16 @@ export default function Modal() {
                 {next ? (
                   <h3 onClick={handleNext}>next</h3>
                 ) : (
-                  <h3 className="text-gray-500">next</h3>
+                  <div
+                    className={`relative group ${
+                      step === 0 ? `invisible` : `visible`
+                    }`}
+                  >
+                    <h3 className="text-gray-500 cursor-pointer">next</h3>
+                    <div className="absolute -translate-x-3/4 mt-2 w-max bg-black text-white text-xs px-2 py-1  opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+                      Crop All Images
+                    </div>
+                  </div>
                 )}
               </div>
               <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
