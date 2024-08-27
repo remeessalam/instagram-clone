@@ -1,4 +1,4 @@
-import { useState, memo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import uploadImage from "../../services/imageUpload";
 import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
