@@ -34,7 +34,6 @@ export default async function getCroppedImg(
   rotation = 0,
   flip = { horizontal: false, vertical: false }
 ) {
-  console.log(imageSrc, pixelCrop, "thisidimageandpixelcrop");
   const image = await createImage(imageSrc);
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -95,17 +94,10 @@ export default async function getCroppedImg(
 
   // As a blob
   return new Promise((resolve, reject) => {
-    try {
-      croppedCanvas.toBlob((file) => {
-        console.log(file, "thisididfileiinhelperfuntion");
-        if (file) {
-          resolve(URL.createObjectURL(file));
-        } else {
-          reject(new Error("Failed to create blob from cropped canvas"));
-        }
-      }, "image/jpeg");
-    } catch (err) {
-      console.log(err, "thisisierrorisjfjadsfn");
-    }
+    croppedCanvas.toBlob((file) => {
+      if (file) {
+        resolve(URL.createObjectURL(file));
+      }
+    }, "image/jpeg");
   });
 }

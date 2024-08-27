@@ -109,15 +109,6 @@ const CropImage = ({
 
   // Handle previous image
   const handlePrev = () => {
-    // setAspectRatio((prev) => {
-    //   images[count].aspectRatio === 1 / 1
-    //     ? setImages((prev) => {
-    //         return { ...(prev[count].aspectRatio = 1 / 1) };
-    //       })
-    //     : setImages((prev) => {
-    //         return { ...(prev[count].aspectRatio = images[count].aspectRatio) };
-    //       });
-    // });
     setCount((prevCount) =>
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
@@ -133,7 +124,7 @@ const CropImage = ({
     setCrop({ x: 0, y: 0 });
   };
   const cropChange = (crop) => {
-    console.log(crop, "lkasdfkjasldcrop");
+    console.log(crop, images[count]?.crop, "lkasdfkjasldcrop");
     setImages((prev) => {
       const updatedImages = [...prev];
       updatedImages[count] = {
@@ -165,30 +156,20 @@ const CropImage = ({
                   {svgIcons.leftArrow}
                 </div>
               )}
-              {images.map((img, i) => {
-                console.log(img, count, "htiadnkfjsajdklfjsldf");
-                return (
-                  <div
-                    key={img?.id}
-                    className={`${img?.id === count ? `block` : `hidden`}`}
-                  >
-                    {/* {img?.id === count && ( */}
-                    <Cropper
-                      image={img?.url}
-                      crop={img?.crop ? img?.crop : crop}
-                      rotation={rotation}
-                      zoom={position}
-                      aspect={img?.aspectRatio}
-                      onCropChange={cropChange}
-                      onMediaLoaded={onMediaLoad}
-                      onCropAreaChange={onCropComplete}
-                      cropShape="rect"
-                      // onZoomChange={setZoom}
-                    />
-                    {/* )} */}
-                  </div>
-                );
-              })}
+
+              <Cropper
+                image={images[count]?.url}
+                crop={images[count]?.crop ? images[count]?.crop : crop}
+                rotation={rotation}
+                zoom={position}
+                aspect={images[count]?.aspectRatio}
+                onCropChange={cropChange}
+                onMediaLoaded={onMediaLoad}
+                onCropAreaChange={onCropComplete}
+                cropShape="rect"
+                // onZoomChange={setZoom}
+              />
+
               {count < images.length - 1 && (
                 <div
                   className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
@@ -197,14 +178,7 @@ const CropImage = ({
                   {svgIcons.rightArrow}
                 </div>
               )}
-              {/* <img
-                    className={` object-cover w-full h-full `}
-                    src={img}
-                    alt="post"
-                  /> */}
             </div>
-            {/* );
-            })} */}
           </div>
           {images.length > 1 && (
             <div className="flex  justify-center absolute gap-1 bottom-8 w-full text-center">

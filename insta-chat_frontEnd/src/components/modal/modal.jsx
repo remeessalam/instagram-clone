@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import uploadImage from "../../services/imageUpload";
 import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
@@ -24,8 +24,25 @@ export default function Modal() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [imageCount, setImageCount] = useState(0);
   const openModalState = useSelector((state) => state.modal.openModalState);
-
-  function uploadPhoto(e) {
+  const [next, setNext] = useState(false);
+  useEffect(() => {
+    let counts = 0;
+    images.forEach((img) => {
+      if (img.croppedImageUrl) {
+        counts++;
+        if (images.length === counts) {
+          console.log(
+            counts,
+            images.length,
+            next,
+            "klajsdklajdlkfhtisisiscrop"
+          );
+          setNext(true);
+        }
+      }
+    });
+  });
+  const uploadPhoto = (e) => {
     const files = Object.values(e.target.files);
     console.log(files.length, "ladsjflasjdfjaslkdflkasdjfk");
     setImageCount(files.length);
@@ -51,7 +68,7 @@ export default function Modal() {
     });
 
     setStep(1);
-  }
+  };
 
   const addImage = () => {
     setSpinner(true);
@@ -77,56 +94,48 @@ export default function Modal() {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  let times = 0;
 
   const handleNext = () => {
     setSpinner(true);
-    let reme = images;
-    reme.map(async (img, i) => {
-      console.log(img, count, "thisisdcocjlsajflkjfskj");
-      if (img.cropped) return img;
-      const croppedImages = await showCroppedImage(img, i, "from handnext");
-      if (croppedImages) {
-        console.log(croppedImages, img, times++, "thiasdfkasdfasdfasdfkljcon");
-        setImages((prev) => {
-          const updatedImages = [...prev];
-          updatedImages[i] = {
-            ...updatedImages[i],
-            croppedImageUrl: croppedImages,
-            cropped: true,
-          };
-          return updatedImages;
-        });
-      }
-      return img;
-    });
+    // let reme = images;
+    // reme.map(async (img, i) => {
+    //   console.log(img, count, "thisisdcocjlsajflkjfskj");
+    //   if (img.cropped) return img;
+    //   const croppedImages = await showCroppedImage(img, i, "from handnext");
+    //   if (croppedImages) {
+    //     console.log(croppedImages, img, times++, "thiasdfkasdfasdfasdfkljcon");
+    //     setImages((prev) => {
+    //       const updatedImages = [...prev];
+    //       updatedImages[i] = {
+    //         ...updatedImages[i],
+    //         croppedImageUrl: croppedImages,
+    //         cropped: true,
+    //       };
+    //       return updatedImages;
+    //     });
+    //   }
+    //   return img;
+    // });
     setStep((pre) => pre + 1);
 
     setSpinner(false);
   };
 
-  const showCroppedImage = async (image, count, console) => {
+  const showCroppedImage = async (image, count) => {
     try {
-      console.log(image, count, console, "akjshfkjashdfkjhadhfjkfdsjfour");
-      let all;
-      let croppedImages = null;
-      if (
-        image?.url ||
-        isNaN(image?.croppedPixel?.height) ||
-        isNaN(image?.croppedPixel?.width) ||
-        isNaN(image?.croppedPixel?.x) ||
-        isNaN(image?.croppedPixel?.y)
-      ) {
-        croppedImages = await getCroppedImg(image?.url, image?.croppedPixel);
-        all = [{ ...all }, { croppedImages }];
-        console.log("donee", all, croppedImages);
-      }
+      console.log(image, count, "akjshfkjashdfkjhadhfjkfdsjfour");
+
+      const croppedImages = await getCroppedImg(
+        image?.url,
+        image?.croppedPixel
+      );
+      console.log("donee", croppedImages);
 
       if (croppedImages) {
         return croppedImages;
       }
     } catch (e) {
-      console.log(e);
+      throw Error(e, "somthing worst happening");
     }
   };
   const handleNextImage = () => {
@@ -174,7 +183,11 @@ export default function Modal() {
                 <h3 className="font-semibold">
                   {spinner ? "`loading" : "Create new post"}
                 </h3>
-                <h3 onClick={handleNext}>next</h3>
+                {next ? (
+                  <h3 onClick={handleNext}>next</h3>
+                ) : (
+                  <h3 className="text-gray-500">next</h3>
+                )}
               </div>
               <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
                 {/** STEP ONE */}
@@ -248,7 +261,7 @@ export default function Modal() {
                           key={img?.id}
                         >
                           <div
-                            className={`aspect-[${aspectRatio} mx-auto my-auto  `}
+                            className={`aspect-[${aspectRatio}] mx-auto my-auto  `}
                           >
                             <img
                               src={img?.croppedImageUrl}
