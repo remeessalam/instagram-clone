@@ -11,35 +11,15 @@ const CropImage = ({
   imageCount,
   showCroppedImage,
   setImages,
-  aspectRatio,
   setCrop,
   crop,
 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [position, setPosition] = useState(1);
   const [count, setCount] = useState(0);
   const duration = 5;
   const rotation = 0;
   const theme = useTheme();
 
-  const handleScroll = (event) => {
-    const scrollLeft = event.target.scrollLeft;
-    const width = event.target.clientWidth;
-    const newIndex = Math.round(scrollLeft / width);
-    setCurrentSlide(newIndex);
-  };
-  let i = 0;
-  console.log(aspectRatio, "thisiisascpredfd");
-
-  console.log(count, images, "akjshfkjashdfkjhadhfjkfdsj");
-
-  console.log(
-    images[count]?.url,
-    count,
-    //   position,
-    "akjshfkjashdfkjhadhfjkfdsj",
-    i++
-  );
   const onCropComplete = async (croppedArea, croppedAreaPixel) => {
     if (
       isNaN(croppedAreaPixel?.width) ||
@@ -48,22 +28,9 @@ const CropImage = ({
     ) {
       return;
     }
-    console.log(
-      imageCount,
-      images,
-      croppedAreaPixel,
-      croppedArea,
-      "akjshfkjashdfkjhadhfjkfdsjsingleone"
-    );
-    // setCroppedAreaPixels(croppedAreaPixel);
+
     if (count === images[count]?.id) {
       setImages((prev) => {
-        console.log(prev[count]?.url, "Logging the URL");
-        console.log(
-          prev,
-          croppedAreaPixel,
-          "Logging previous images and cropped pixels"
-        );
         const updatedImages = [...prev];
         updatedImages[count] = {
           ...updatedImages[count],
@@ -71,7 +38,6 @@ const CropImage = ({
         };
         return updatedImages;
       });
-      console.log(images[count], "akjshfkjashdfkjhadhfjkfdsj");
     }
     let croppedImages;
 
@@ -81,8 +47,6 @@ const CropImage = ({
         count,
         "from onCropComplete"
       );
-      console.log(croppedImages, "akjshfkjashdfkjhadhfjkfdsjfour");
-      console.log(croppedImages, "thiasdfkasdfasdfasdfkljcon");
     }
 
     if (croppedImages) {
@@ -115,7 +79,6 @@ const CropImage = ({
     setCrop({ x: 0, y: 0 });
   };
   const cropChange = (crop) => {
-    console.log(crop, images[count]?.crop, "lkasdfkjasldcrop");
     setImages((prev) => {
       const updatedImages = [...prev];
       updatedImages[count] = {
@@ -126,16 +89,12 @@ const CropImage = ({
     });
     // setCrop(crop);
   };
-  const onMediaLoad = (media) => {
-    console.log(media, "akjsdkflkasjdflajdsflj");
-  };
-  console.log(images, "thisfidsfjacoropcropnosdfasfd");
+
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
         <div className="relative w-full h-full">
           <div
-            onScroll={handleScroll}
             className={`flex  justify-center items-center overflow-x-auto w-[634px] h-[100%] transition-all duration-900  snap-x snap-mandatory scrollbar-hide`}
           >
             <div className={`w-full h-[100%] pb-[100%] overflow-hidden`}>
@@ -155,10 +114,8 @@ const CropImage = ({
                 zoom={position}
                 aspect={images[count]?.aspectRatio}
                 onCropChange={cropChange}
-                onMediaLoaded={onMediaLoad}
                 onCropAreaChange={onCropComplete}
                 cropShape="rect"
-                // onZoomChange={setZoom}
               />
 
               {count < images.length - 1 && (

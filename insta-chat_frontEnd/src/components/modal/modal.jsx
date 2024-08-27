@@ -15,39 +15,31 @@ export default function Modal() {
   const [imageFile, setImageFile] = useState();
   const [open, setOpen] = useState("");
   const [step, setStep] = useState(0);
-  const dispatch = useDispatch();
-  const [croppedImage, setCroppedImage] = useState(null);
-  // const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [aspectRatio, setAspectRatio] = useState(1 / 1);
   const [count, setCount] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [imageCount, setImageCount] = useState(0);
-  const openModalState = useSelector((state) => state.modal.openModalState);
   const [next, setNext] = useState(false);
+
+  const openModalState = useSelector((state) => state.modal.openModalState);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let counts = 0;
     images.forEach((img) => {
       if (img.croppedImageUrl) {
         counts++;
         if (images.length === counts) {
-          console.log(
-            counts,
-            images.length,
-            next,
-            "klajsdklajdlkfhtisisiscrop"
-          );
           setNext(true);
         }
       }
     });
   });
+
   const uploadPhoto = (e) => {
     const files = Object.values(e.target.files);
-    console.log(files.length, "ladsjflasjdfjaslkdflkasdjfk");
     setImageCount(files.length);
     setImageFile(files);
     files.forEach((img) => {
-      console.log(img, "imagefromcloudinary");
       const reader = new FileReader();
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
@@ -65,13 +57,11 @@ export default function Modal() {
         ]);
       };
     });
-
     setStep(1);
   };
 
   const addImage = () => {
     setSpinner(true);
-    console.log(imageFile, "thisispostaftercloudinary");
     uploadImage(imageFile)
       .then((data) => {
         if (data) {
@@ -80,7 +70,6 @@ export default function Modal() {
           setImages([]);
         }
         setSpinner(false);
-        console.log(data, "thisisdatafromupload");
       })
       .catch((err) => {
         setError(err);
@@ -104,13 +93,10 @@ export default function Modal() {
 
   const showCroppedImage = async (image, count) => {
     try {
-      console.log(image, count, "akjshfkjashdfkjhadhfjkfdsjfour");
-
       const croppedImages = await getCroppedImg(
         image?.url,
         image?.croppedPixel
       );
-      console.log("donee", croppedImages);
 
       if (croppedImages) {
         return croppedImages;
@@ -132,7 +118,6 @@ export default function Modal() {
     setCrop({ x: 0, y: 0 });
   };
 
-  console.log(croppedImage, images, "akjshfkjashdfkjhadhfjkfdsjonetwothree");
   return (
     <>
       {openModalState && (
@@ -157,7 +142,9 @@ export default function Modal() {
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 <span
                   onClick={handlePrev}
-                  className={`${step === 0 ? `invisible` : `visible`}`}
+                  className={`${
+                    step === 0 ? `invisible` : `visible`
+                  } cursor-pointer`}
                 >
                   {svgIcons.leftArrow}
                 </span>
@@ -165,14 +152,21 @@ export default function Modal() {
                   {spinner ? "`loading" : "Create new post"}
                 </h3>
                 {next ? (
-                  <h3 onClick={handleNext}>next</h3>
+                  <h3
+                    className="cursor-pointer font-semibold text-sm text-sky-500 hover:text-blue-900"
+                    onClick={handleNext}
+                  >
+                    Next
+                  </h3>
                 ) : (
                   <div
                     className={`relative group ${
                       step === 0 ? `invisible` : `visible`
                     }`}
                   >
-                    <h3 className="text-gray-500 cursor-pointer">next</h3>
+                    <h3 className="text-gray-200 cursor-pointer font-semibold text-sm">
+                      Next
+                    </h3>
                     <div className="absolute -translate-x-3/4 mt-2 w-max bg-black text-white text-xs px-2 py-1  opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
                       Crop All Images
                     </div>
@@ -214,15 +208,8 @@ export default function Modal() {
                     images={images}
                     open={open}
                     setOpen={setOpen}
-                    croppedImage={croppedImage}
-                    setCroppedImage={setCroppedImage}
-                    setImageFile={setImageFile}
                     showCroppedImage={showCroppedImage}
-                    // setCroppedAreaPixels={setCroppedAreaPixels}
-                    // croppedAreaPixels={croppedAreaPixels}
                     setImages={setImages}
-                    setAspectRatio={setAspectRatio}
-                    aspectRatio={aspectRatio}
                     setCrop={setCrop}
                     crop={crop}
                     imageCount={imageCount}
@@ -230,7 +217,7 @@ export default function Modal() {
                 )}
                 {step === 2 && (
                   <div
-                    className={`flex relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
+                    className={`flex select-none relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
                   >
                     {count !== 0 && (
                       <div
@@ -242,7 +229,6 @@ export default function Modal() {
                     )}
 
                     {images?.map((img, i) => {
-                      console.log(img, "thidisadfasimage");
                       return (
                         <div
                           className={`min-w-[634px] max-w-[634px] flex ${
@@ -251,12 +237,12 @@ export default function Modal() {
                           key={img?.id}
                         >
                           <div
-                            className={`aspect-[${aspectRatio}] mx-auto my-auto  `}
+                            className={`aspect-[${img.aspectRatio}] mx-auto my-auto  `}
                           >
                             <img
                               src={img?.croppedImageUrl}
                               alt=""
-                              className={`aspect-[${aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                              className={`aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
                             />
                           </div>
                         </div>
@@ -296,108 +282,3 @@ export default function Modal() {
     </>
   );
 }
-
-/** CAPTION IS HERER */
-/* <input
-className="w-full pl-2 h-8 focus:outline-0"
-type="text"
-value={caption}
-onChange={(e) => setCaption(e.target.value)}
-placeholder="Write a caption"
-/> */
-
-//BUTTON IS HERE TO
-/* <div className="flex justify-end w-full mr-7 mb-1">
-{!spinner ? (
-  <button
-    className="m-1 text-sky-500 text-sm font-bold"
-    onClick={() => {
-      addImage();
-    }}
-  >
-    Share
-  </button>
-) : (
-  <button
-    className="m-1 text-sky-100 text-sm font-bold cursor-wait"
-    onClick={() => {}}
-  >
-    Share
-  </button>
-)}
-</div> */
-
-// images && images.length ? (
-//   <div className=" flex h-full w-full flex-col rounded-md">
-//     <div className="flex  flex-col mx-auto md:w-full w-full">
-//       {!error ? (
-//         <div className="relative w-full h-full">
-//           <div
-//             onScroll={handleScroll}
-//             className="flex  overflow-x-auto w-[634px] snap-x snap-mandatory scrollbar-hide"
-//           >
-//             {images.map((img, index) => {
-//               console.log(img, "thisisimage");
-//               return (
-//                 <div key={index} className="min-w-[634px]">
-//                   <img
-//                     className=" aspect-square object-cover"
-//                     src={img}
-//                     alt="post"
-//                   />
-//                 </div>
-//               );
-//             })}
-//           </div>
-//           {images.length > 1 && (
-//             <div className="flex  justify-center absolute gap-1 bottom-20 w-full text-center">
-//               {images.map((_, index) => {
-//                 return (
-//                   <div
-//                     key={index}
-//                     className={`w-[6px] h-[6px] rounded-full ${
-//                       index === currentSlide
-//                         ? "bg-white"
-//                         : "bg-imageDotColor"
-//                     }`}
-//                   ></div>
-//                 );
-//               })}
-//             </div>
-//           )}
-//         </div>
-//       ) : (
-//         <div className="mx-auto min-w-full">
-//           <h1>Please select another image!</h1>
-//         </div>
-//       )}
-//       {error && <h1>{error[0]}</h1>}
-//     </div>
-//   </div>
-
-// <div className="mt-3  flex items-center justify-center text-center w-full h-full">
-//   <div className="max-h-full p-4 flex flex-col m-2">
-//     <div className="">
-//       <div className="flex justify-center">
-//         {svgIcons.postUploadModal}
-//       </div>
-//       <h1 className="text-xl my-4">Drag your photos here</h1>
-//     </div>
-//     <div className="flex justify-center text-sm text-gray-600">
-//       <label
-//         htmlFor="file-upload"
-//         className="relative cursor-pointer py-2 px-3 rounded-md bg-sky-600 font-medium text-white hover:pointer"
-//       >
-//         <span>Select from computer</span>
-//         <input
-//           id="file-upload"
-//           name="file-upload"
-//           type="file"
-//           multiple
-//           className="sr-only"
-//           onChange={uploadPhoto}
-//         />
-//       </label>
-//     </div>
-//   </div>
-// </div>
