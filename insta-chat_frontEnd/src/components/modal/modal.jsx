@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
+import FilterImage from "./components/FilterImages";
 
 export default function Modal() {
   const [spinner, setSpinner] = useState(false);
@@ -105,18 +106,18 @@ export default function Modal() {
       throw Error(e, "somthing worst happening");
     }
   };
-  const handleNextImage = () => {
-    setCount((prevCount) =>
-      prevCount < images.length - 1 ? prevCount + 1 : 0
-    );
-    setCrop({ x: 0, y: 0 });
-  };
-  const handlePrevImage = () => {
-    setCount((prevCount) =>
-      prevCount > 0 ? prevCount - 1 : images.length - 1
-    );
-    setCrop({ x: 0, y: 0 });
-  };
+  // const handleNextImage = () => {
+  //   setCount((prevCount) =>
+  //     prevCount < images.length - 1 ? prevCount + 1 : 0
+  //   );
+  //   setCrop({ x: 0, y: 0 });
+  // };
+  // const handlePrevImage = () => {
+  //   setCount((prevCount) =>
+  //     prevCount > 0 ? prevCount - 1 : images.length - 1
+  //   );
+  //   setCrop({ x: 0, y: 0 });
+  // };
 
   return (
     <>
@@ -138,7 +139,11 @@ export default function Modal() {
           {/**POST MODEL */}
           <div className=" z-500 flex min-h-full justify-center w-full items-center">
             {/** CONTAINER */}
-            <div className="bg-white  rounded-xl overflow-hidden md:w-[634px] w-[290px] h-[675px]">
+            <div
+              className={`bg-white  rounded-xl overflow-hidden ${
+                step > 1 ? `md:w-[978px]` : `md:w-[634px]`
+              } w-[290px] h-[675px]`}
+            >
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 <span
                   onClick={handlePrev}
@@ -216,63 +221,64 @@ export default function Modal() {
                   />
                 )}
                 {step === 2 && (
-                  <div
-                    className={`flex select-none relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
-                  >
-                    {count !== 0 && (
-                      <div
-                        className="absolute left-3 bottom-1/2 z-500 cursor-pointer text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
-                        onClick={handlePrevImage}
-                      >
-                        {svgIcons.leftArrow}
-                      </div>
-                    )}
+                  <FilterImage images={images} />
+                  // <div
+                  //   className={`flex select-none relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
+                  // >
+                  //   {count !== 0 && (
+                  //     <div
+                  //       className="absolute left-3 bottom-1/2 z-500 cursor-pointer text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                  //       onClick={handlePrevImage}
+                  //     >
+                  //       {svgIcons.leftArrow}
+                  //     </div>
+                  //   )}
 
-                    {images?.map((img, i) => {
-                      return (
-                        <div
-                          className={`min-w-[634px] max-w-[634px] flex ${
-                            count === i ? `block` : `hidden`
-                          } `}
-                          key={img?.id}
-                        >
-                          <div
-                            className={`aspect-[${img.aspectRatio}] mx-auto my-auto  `}
-                          >
-                            <img
-                              src={img?.croppedImageUrl}
-                              alt=""
-                              className={`aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
-                            />
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {count < images.length - 1 && (
-                      <div
-                        className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
-                        onClick={handleNextImage}
-                      >
-                        {svgIcons.rightArrow}
-                      </div>
-                    )}
-                    {images.length > 1 && (
-                      <div className="flex  justify-center absolute gap-1 bottom-8 w-full text-center">
-                        {images.map((_, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className={`w-[6px] h-[6px] rounded-full  ${
-                                index === count
-                                  ? "bg-white"
-                                  : "bg-imageDotColor"
-                              }`}
-                            ></div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
+                  //   {images?.map((img, i) => {
+                  //     return (
+                  //       <div
+                  //         className={`min-w-[634px] max-w-[634px] flex ${
+                  //           count === i ? `block` : `hidden`
+                  //         } `}
+                  //         key={img?.id}
+                  //       >
+                  //         <div
+                  //           className={`aspect-[${img.aspectRatio}] mx-auto my-auto  `}
+                  //         >
+                  //           <img
+                  //             src={img?.croppedImageUrl}
+                  //             alt=""
+                  //             className={`aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                  //           />
+                  //         </div>
+                  //       </div>
+                  //     );
+                  //   })}
+                  //   {count < images.length - 1 && (
+                  //     <div
+                  //       className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
+                  //       onClick={handleNextImage}
+                  //     >
+                  //       {svgIcons.rightArrow}
+                  //     </div>
+                  //   )}
+                  //   {images.length > 1 && (
+                  //     <div className="flex  justify-center absolute gap-1 bottom-8 w-full text-center">
+                  //       {images.map((_, index) => {
+                  //         return (
+                  //           <div
+                  //             key={index}
+                  //             className={`w-[6px] h-[6px] rounded-full  ${
+                  //               index === count
+                  //                 ? "bg-white"
+                  //                 : "bg-imageDotColor"
+                  //             }`}
+                  //           ></div>
+                  //         );
+                  //       })}
+                  //     </div>
+                  //   )}
+                  // </div>
                 )}
               </div>
             </div>
