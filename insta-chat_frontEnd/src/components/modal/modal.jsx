@@ -221,7 +221,7 @@ export default function Modal() {
                   />
                 )}
                 {step === 2 && (
-                  <FilterImage images={images} />
+                  <FilterImage images={images} setImages={setImages} />
                   // <div
                   //   className={`flex select-none relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
                   // >

@@ -4,9 +4,19 @@ import Aden from "../../../filterSamples/Aden-2x.jpg";
 import Clarendon from "../../../filterSamples/Clarendon-2x.jpg";
 import Crema from "../../../filterSamples/Crema-2x.jpg";
 import Gingham from "../../../filterSamples/Gingham-2x.jpg";
-const FilterImage = ({ images }) => {
+import Juno from "../../../filterSamples/Juno-2x.jpg";
+import Lark from "../../../filterSamples/Lark-2x.jpg";
+import Ludwig from "../../../filterSamples/Ludwig-2x.jpg";
+import Moon from "../../../filterSamples/Moon-2x.jpg";
+import Normal from "../../../filterSamples/Normal-2x.jpg";
+import Perpetua from "../../../filterSamples/Perpetua-2x.jpg";
+import Reyes from "../../../filterSamples/Reyes-2x.jpg";
+import Slumber from "../../../filterSamples/Slumber-2x.jpg";
+import "./filter.css";
+const FilterImage = ({ images, setImages }) => {
   const [count, setCount] = useState(0);
   const [tab, setTab] = useState("filter");
+  const [filterSelection, setFilterSelection] = useState("Orginal");
   const handleNextImage = () => {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
@@ -21,58 +31,63 @@ const FilterImage = ({ images }) => {
     {
       filterName: "Aden",
       filterSample: Aden,
+      class: "aden",
+      filter: "sepia(0.2) brightness(1.15) saturate(1.4)",
     },
     {
       filterName: "Clarendon",
       filterSample: Clarendon,
+      filter: "sepia(0.15) contrast(1.25) brightness(1.25) hue-rotate(5deg)",
     },
     {
       filterName: "Crema",
       filterSample: Crema,
+      filter:
+        "sepia(0.5) contrast(1.25) brightness(1.15) saturate(0.9) hue-rotate(-2deg)",
     },
     {
       filterName: "Gingham",
       filterSample: Gingham,
+      filter: "contrast(1.1) brightness(1.1)",
     },
     {
       filterName: "Juno",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Juno-2x.jpg?__d=www",
+      filterSample: Juno,
+      filter: "sepia(0.35) contrast(1.15) brightness(1.15) saturate(1.8)",
     },
     {
       filterName: "Lark",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Lark-2x.jpg?__d=www",
+      filterSample: Lark,
+      filter: "sepia(0.25) contrast(1.2) brightness(1.3) saturate(1.25)",
     },
     {
       filterName: "Ludwig",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Ludwig-2x.jpg?__d=www",
+      filterSample: Ludwig,
+      filter: "sepia(0.25) contrast(1.05) brightness(1.05) saturate(2)",
     },
     {
       filterName: "Moon",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Moon-2x.jpg?__d=www",
+      filterSample: Moon,
+      filter: "brightness(1.4) contrast(0.95) saturate(0) sepia(0.35)",
     },
     {
       filterName: "Orginal",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Normal-2x.jpg?__d=www",
+      filterSample: Normal,
     },
     {
       filterName: "Perpetua",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Perpetua-2x.jpg?__d=www",
+      filterSample: Perpetua,
+      filter: "contrast(1.1) brightness(1.25) saturate(1.1)",
     },
     {
       filterName: "Reyes",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Reyes-2x.jpg?__d=www",
+      filterSample: Reyes,
+      filter: "sepia(0.75) contrast(0.75) brightness(1.25) saturate(1.4)",
     },
     {
       filterName: "Slumber",
-      filterSample:
-        "https://www.instagram.com/images/instagram/xig/filters/Slumber-2x.jpg?__d=www",
+      filterSample: Slumber,
+      filter: "sepia(0.35) contrast(1.25) saturate(1.25)",
     },
   ];
   return (
@@ -101,7 +116,9 @@ const FilterImage = ({ images }) => {
                 <img
                   src={img?.croppedImageUrl}
                   alt=""
-                  className={`aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                  className={`filter-${filterSelection.toLowerCase()} aspect-[${
+                    img.aspectRatio
+                  }] max-h-postUploadImageMaxHeight object-cover `}
                 />
               </div>
             </div>
@@ -155,15 +172,33 @@ const FilterImage = ({ images }) => {
         </div>
         <div>
           {tab === "filter" ? (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4 mx-4 mt-4">
               {filters.map((filter) => {
                 return (
                   <div
                     key={filter.filterName}
-                    className="flex items-center flex-col h-[111px]"
+                    onClick={() => setFilterSelection(filter.filterName)}
+                    className={`flex items-center gap-2 flex-col h-[111px] `}
                   >
-                    <img src={filter.filterSample} alt={filter.filterName} />
-                    <h3> {filter.filterName}</h3>
+                    <img
+                      className={`rounded-sm border-2 border-transparent ${
+                        filterSelection === filter.filterName
+                          ? `  border-sky-500`
+                          : ``
+                      }`}
+                      src={filter.filterSample}
+                      alt={filter.filterName}
+                    />
+                    <h3
+                      className={`text-xs ${
+                        filterSelection === filter.filterName
+                          ? `text-sky-500 font-semibold`
+                          : `text-gray-500`
+                      } `}
+                    >
+                      {" "}
+                      {filter.filterName}
+                    </h3>
                   </div>
                 );
               })}
