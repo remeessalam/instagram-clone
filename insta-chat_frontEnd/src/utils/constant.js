@@ -1,3 +1,15 @@
+import Aden from "./filterSamples/Aden-2x.jpg";
+import Clarendon from "./filterSamples/Clarendon-2x.jpg";
+import Crema from "./filterSamples/Crema-2x.jpg";
+import Gingham from "./filterSamples/Gingham-2x.jpg";
+import Juno from "./filterSamples/Juno-2x.jpg";
+import Lark from "./filterSamples/Lark-2x.jpg";
+import Ludwig from "./filterSamples/Ludwig-2x.jpg";
+import Moon from "./filterSamples/Moon-2x.jpg";
+import Normal from "./filterSamples/Normal-2x.jpg";
+import Perpetua from "./filterSamples/Perpetua-2x.jpg";
+import Reyes from "./filterSamples/Reyes-2x.jpg";
+import Slumber from "./filterSamples/Slumber-2x.jpg";
 export const loginPageImage = [
   "/png/screenshot1.png",
   "/png/screenshot2.png",
@@ -8,6 +20,80 @@ export const loginPageImage = [
 export const bigScreen = "(min-width: 1024px)";
 export const forSideBar = "(min-width: 1205px)";
 
+export const filtersImagesFilters = [
+  {
+    filterName: "Aden",
+    filterSample: Aden,
+    filter: "sepia(0.2) brightness(1.15) saturate(1.4)",
+    position: 100,
+  },
+  {
+    filterName: "Clarendon",
+    filterSample: Clarendon,
+    filter: "sepia(0.15) contrast(1.25) brightness(1.25) hue-rotate(5deg)",
+    position: 100,
+  },
+  {
+    filterName: "Crema",
+    filterSample: Crema,
+    filter:
+      "sepia(0.5) contrast(1.25) brightness(1.15) saturate(0.9) hue-rotate(0.1deg)",
+    position: 100,
+  },
+  {
+    filterName: "Gingham",
+    filterSample: Gingham,
+    filter: "contrast(1.1) brightness(1.1)",
+    position: 100,
+  },
+  {
+    filterName: "Juno",
+    filterSample: Juno,
+    filter: "sepia(0.35) contrast(1.15) brightness(1.15) saturate(1.8)",
+    position: 100,
+  },
+  {
+    filterName: "Lark",
+    filterSample: Lark,
+    filter: "sepia(0.25) contrast(1.2) brightness(1.3) saturate(1.25)",
+    position: 100,
+  },
+  {
+    filterName: "Ludwig",
+    filterSample: Ludwig,
+    filter: "sepia(0.25) contrast(1.05) brightness(1.05) saturate(2)",
+    position: 100,
+  },
+  {
+    filterName: "Moon",
+    filterSample: Moon,
+    filter: "brightness(1.4) contrast(0.95) saturate(0) sepia(0.35)",
+    position: 100,
+  },
+  {
+    filterName: "Orginal",
+    filterSample: Normal,
+    filter: "",
+  },
+  {
+    filterName: "Perpetua",
+    filterSample: Perpetua,
+    filter: "contrast(1.1) brightness(1.25) saturate(1.1)",
+    position: 100,
+  },
+  {
+    filterName: "Reyes",
+    filterSample: Reyes,
+    filter: "sepia(0.75) contrast(0.75) brightness(1.25) saturate(1.4)",
+    position: 100,
+  },
+  {
+    filterName: "Slumber",
+    filterSample: Slumber,
+    filter: "sepia(0.35) contrast(1.25) saturate(1.25)",
+    position: 100,
+  },
+];
 export const svgIcons = {
   homeIcon: (
     <svg

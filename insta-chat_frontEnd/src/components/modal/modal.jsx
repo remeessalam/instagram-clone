@@ -54,6 +54,11 @@ export default function Modal() {
             croppedImageUrl: null,
             aspectRatio: 1 / 1,
             crop: { x: 0, y: 0 },
+            filter: {
+              filterName: "Orginal",
+              filterSample: "",
+              filter: "",
+            },
           },
         ]);
       };
