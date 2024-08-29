@@ -12,11 +12,19 @@ import Normal from "../../../filterSamples/Normal-2x.jpg";
 import Perpetua from "../../../filterSamples/Perpetua-2x.jpg";
 import Reyes from "../../../filterSamples/Reyes-2x.jpg";
 import Slumber from "../../../filterSamples/Slumber-2x.jpg";
+import { useTheme } from "@mui/material/styles";
+import { Slider } from "@mui/material";
 import "./filter.css";
 const FilterImage = ({ images, setImages }) => {
   const [count, setCount] = useState(0);
   const [tab, setTab] = useState("filter");
+  const [position, setPosition] = useState(100);
+  const [isSliding, setIsSliding] = useState(false);
   const [filterSelection, setFilterSelection] = useState("Orginal");
+
+  const duration = 100;
+  const theme = useTheme();
+
   const handleNextImage = () => {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
@@ -116,9 +124,8 @@ const FilterImage = ({ images, setImages }) => {
                 <img
                   src={img?.croppedImageUrl}
                   alt=""
-                  className={`filter-${filterSelection.toLowerCase()} aspect-[${
-                    img.aspectRatio
-                  }] max-h-postUploadImageMaxHeight object-cover `}
+                  style={{ filter: filterSelection.filter }}
+                  className={` aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
                 />
               </div>
             </div>
@@ -177,12 +184,17 @@ const FilterImage = ({ images, setImages }) => {
                 return (
                   <div
                     key={filter.filterName}
-                    onClick={() => setFilterSelection(filter.filterName)}
+                    onClick={() =>
+                      setFilterSelection({
+                        filterName: filter.filterName,
+                        filter: filter.filter,
+                      })
+                    }
                     className={`flex items-center gap-2 flex-col h-[111px] `}
                   >
                     <img
                       className={`rounded-sm border-2 border-transparent ${
-                        filterSelection === filter.filterName
+                        filterSelection.filterName === filter.filterName
                           ? `  border-sky-500`
                           : ``
                       }`}
@@ -191,7 +203,7 @@ const FilterImage = ({ images, setImages }) => {
                     />
                     <h3
                       className={`text-xs ${
-                        filterSelection === filter.filterName
+                        filterSelection.filterName === filter.filterName
                           ? `text-sky-500 font-semibold`
                           : `text-gray-500`
                       } `}
@@ -206,6 +218,49 @@ const FilterImage = ({ images, setImages }) => {
           ) : (
             <div> adjustment area</div>
           )}
+        </div>
+        <div className="flex  gap-5 text-xs focus:font-medium active-within:font-bold items-center mt-8 mx-4">
+          {" "}
+          <Slider
+            aria-label="time-indicator"
+            size="small"
+            value={position}
+            min={0}
+            step={0.001}
+            max={duration}
+            onChange={(_, value) => setPosition(value)}
+            onMouseDown={() => setIsSliding(true)}
+            onMouseUp={() => setIsSliding(false)}
+            sx={{
+              color: theme.palette.mode === "dark" ? "#000000" : "#000000",
+              height: 2,
+              "& .MuiSlider-thumb": {
+                width: 19,
+                height: 19,
+                transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
+                "&::before": {
+                  boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                },
+                "&:hover, &.Mui-focusVisible": {
+                  boxShadow: `0px 0px 0px 8px ${
+                    theme.palette.mode === "dark"
+                      ? "rgb(255 255 255 / 16%)"
+                      : "rgb(0 0 0 / 16%)"
+                  }`,
+                },
+                "&.Mui-active": {
+                  width: 20,
+                  height: 20,
+                },
+              },
+              "& .MuiSlider-rail": {
+                opacity: 0.28,
+              },
+            }}
+          />
+          <h1 className={`w-6 text-end ${isSliding ? "font-bold" : ""}`}>
+            {Math.floor(position)}
+          </h1>
         </div>
       </div>
     </>
