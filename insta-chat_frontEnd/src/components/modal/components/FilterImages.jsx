@@ -36,7 +36,7 @@ const FilterImage = ({ images, setImages }) => {
       images[count].filter.filterName === "Orginal"
     )
       return ""; // No filter at position 0 or if no filter is selected
-    console.log(images[count]?.filter?.filter, "ajdflkasjflkajslfkjaslkfjl");
+    console.log(images[count], "fffasdfasdfasdfasdf");
     return images[count]?.filter?.filter
       .split(/\s(?=[a-zA-Z-]+\()/) // Split on spaces before filter functions
       .map((part) => {
@@ -176,7 +176,7 @@ const FilterImage = ({ images, setImages }) => {
                   >
                     <img
                       className={`rounded-sm border-2 border-transparent ${
-                        selectedFilter.filter.filterName === filter.filterName
+                        images[count].filter.filterName === filter.filterName
                           ? `  border-sky-500`
                           : ``
                       }`}
@@ -185,7 +185,7 @@ const FilterImage = ({ images, setImages }) => {
                     />
                     <h3
                       className={`text-xs ${
-                        selectedFilter.filter.filterName === filter.filterName
+                        images[count].filter.filterName === filter.filterName
                           ? `text-sky-500 font-semibold`
                           : `text-gray-500`
                       } `}
@@ -239,12 +239,13 @@ const FilterImage = ({ images, setImages }) => {
                       });
                       return updatedSelection;
                     });
+
                     setImages((prev) => {
                       const newImages = [...prev];
                       newImages[count] = {
                         ...newImages[count],
                         filter: {
-                          ...prev.filter,
+                          ...prev[count].filter,
                           position: value,
                         },
                       };
@@ -297,8 +298,8 @@ const FilterImage = ({ images, setImages }) => {
             );
           })}
           <h1 className={`w-6 text-end ${isSliding ? "font-bold" : ""}`}>
-            {selectedFilter?.filter?.position &&
-              Math.floor(selectedFilter?.filter?.position)}
+            {filterSelection?.filter?.position &&
+              Math.floor(filterSelection?.filter?.position)}
           </h1>
         </div>
       </div>

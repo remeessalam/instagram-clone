@@ -58,6 +58,7 @@ export default function Modal() {
               filterName: "Orginal",
               filterSample: "",
               filter: "",
+              position: 100,
             },
           },
         ]);
