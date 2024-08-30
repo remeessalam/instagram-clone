@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
-import FilterImage from "./components/FilterImages";
+import FilterImage from "./components/imagesfilter/ImagesFilter";
 
 export default function Modal() {
   const [spinner, setSpinner] = useState(false);
