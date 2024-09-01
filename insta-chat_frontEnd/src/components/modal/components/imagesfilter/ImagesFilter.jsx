@@ -9,6 +9,7 @@ const FilterImage = ({ images, setImages }) => {
   const [tab, setTab] = useState("filter");
 
   const [filterSelection, setFilterSelection] = useState(filtersImagesFilters);
+
   const [selectedFilter, setSelectedFilter] = useState({
     filterName: "Orginal",
     filter: "",
@@ -68,7 +69,7 @@ const FilterImage = ({ images, setImages }) => {
       })
       .join(" ");
   };
-  console.log(getDynamicFilter(), "ajdflkasjflkajslfkjaslkfjl");
+
   return (
     <>
       <div
@@ -86,16 +87,18 @@ const FilterImage = ({ images, setImages }) => {
         {images?.map((img, i) => {
           return (
             <div
-              className={`min-w-[634px] max-w-[634px] flex ${
+              className={`relative min-w-[634px] max-w-[634px] flex ${
                 count === i ? `block` : `hidden`
               } `}
               key={img?.id}
             >
-              <div className={`aspect-[${img.aspectRatio}] mx-auto my-auto  `}>
+              <div className={` aspect-[${img.aspectRatio}] mx-auto my-auto  `}>
                 <img
                   src={img?.croppedImageUrl}
                   alt=""
-                  style={{ filter: getDynamicFilter() }}
+                  style={{
+                    filter: getDynamicFilter(),
+                  }}
                   className={` aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
                 />
               </div>
