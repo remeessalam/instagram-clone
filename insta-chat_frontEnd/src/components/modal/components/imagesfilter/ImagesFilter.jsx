@@ -15,6 +15,13 @@ const FilterImage = ({ images, setImages }) => {
     filter: "",
   });
 
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(0);
+  const [fade, setFade] = useState(0);
+  const [saturation, setSaturation] = useState(0);
+  const [temperature, setTemperature] = useState(0);
+  const [vignette, setVignette] = useState(0);
+
   const handleNextImage = () => {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
@@ -26,48 +33,50 @@ const FilterImage = ({ images, setImages }) => {
     );
   };
   console.log(selectedFilter, "asdjflkajdsflfioer");
+
   const getDynamicFilter = () => {
-    if (
-      images[count].filter.position === 0 ||
-      !images[count].filter.filter ||
-      images[count].filter.filterName === "Orginal"
-    )
-      return ""; // No filter at position 0 or if no filter is selected
-    console.log(images[count], "fffasdfasdfasdfasdf");
-    return images[count]?.filter?.filter
-      .split(/\s(?=[a-zA-Z-]+\()/) // Split on spaces before filter functions
-      .map((part) => {
-        const match = part.match(/([a-zA-Z-]+)\(([^)]+)\)/);
-        if (!match) return part; // Return as-is if no match
+    const imageFilter = images[count].filter;
+    let filters = "";
 
-        const [_, name, valueWithUnit] = match;
-        const value = parseFloat(valueWithUnit);
-        const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
+    // Apply existing filters if any
+    if (imageFilter?.filter && imageFilter.filterName !== "Orginal") {
+      filters = imageFilter.filter
+        .split(/\s(?=[a-zA-Z-]+\()/) // Split on spaces before filter functions
+        .map((part) => {
+          const match = part.match(/([a-zA-Z-]+)\(([^)]+)\)/);
+          if (!match) return part; // Return as-is if no match
 
-        switch (name) {
-          case "brightness":
-          case "contrast":
-          case "saturate":
-            // For these filters, we scale from 1 to the filter value
-            return `${name}(${
-              1 + (value - 1) * (images[count].filter.position / 100)
-            }${unit})`;
-          case "sepia":
-            // Sepia is scaled directly
-            return `${name}(${
-              value * (images[count].filter.position / 100)
-            }${unit})`;
-          case "hue-rotate":
-            // Hue-rotate is scaled directly
-            return `${name}(${
-              value * (images[count].filter.position / 100)
-            }${unit})`;
-          default:
-            // For any other filter, return as-is
-            return part;
-        }
-      })
-      .join(" ");
+          const [_, name, valueWithUnit] = match;
+          const value = parseFloat(valueWithUnit);
+          const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
+
+          switch (name) {
+            case "contrast":
+            case "saturate":
+              // Scale from 1 to the filter value
+              return `${name}(${
+                1 + (value - 1) * (imageFilter.position / 100)
+              }${unit})`;
+            case "sepia":
+            case "hue-rotate":
+              // Scale directly
+              return `${name}(${value * (imageFilter.position / 100)}${unit})`;
+            default:
+              // Return other filters as-is
+              return part;
+          }
+        })
+        .join(" ");
+    }
+
+    // Apply brightness adjustment even if no other filter is selected
+    if (brightness !== 0) {
+      let by = brightness > 0 ? 500 : 400;
+      const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
+      filters += ` brightness(${brightnessValue})`;
+    }
+
+    return filters.trim(); // Return the final filter string
   };
 
   return (
@@ -163,7 +172,20 @@ const FilterImage = ({ images, setImages }) => {
               setFilterSelection={setFilterSelection}
             />
           ) : (
-            <Adjustments />
+            <Adjustments
+              brightness={brightness}
+              setBrightness={setBrightness}
+              contrast={contrast}
+              setContrast={setContrast}
+              fade={fade}
+              setFade={setFade}
+              saturation={saturation}
+              setSaturation={setSaturation}
+              temperature={temperature}
+              setTemperature={setTemperature}
+              vignette={vignette}
+              setVignette={setVignette}
+            />
           )}
         </div>
       </div>

@@ -2,17 +2,24 @@ import { Slider } from "@mui/material";
 import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 
-const Adjustments = () => {
+const Adjustments = ({
+  brightness,
+  setBrightness,
+  contrast,
+  setContrast,
+  fade,
+  setFade,
+  saturation,
+  setSaturation,
+  temperature,
+  setTemperature,
+  vignette,
+  setVignette,
+}) => {
   const theme = useTheme();
 
   //   const [sliderValue, setSliderValue] = useState(0);
 
-  const [brightness, setBrightness] = useState(0);
-  const [contrast, setContrast] = useState(0);
-  const [fade, setFade] = useState(0);
-  const [saturation, setSaturation] = useState(0);
-  const [temperature, setTemperature] = useState(0);
-  const [vignette, setVignette] = useState(0);
   const [isSliding, setIsSliding] = useState(false);
   const duration = 100;
 
