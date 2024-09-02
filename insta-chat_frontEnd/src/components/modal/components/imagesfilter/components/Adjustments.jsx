@@ -43,7 +43,7 @@ const Adjustments = ({
               getAriaValueText={(value) => setBrightness(value)}
               min={-100}
               max={100}
-              defaultValue={0}
+              defaultValue={brightness}
               onMouseDown={() => setIsSliding("brightness")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -105,7 +105,7 @@ const Adjustments = ({
               getAriaValueText={(value) => setContrast(value)}
               min={-100}
               max={100}
-              defaultValue={0}
+              defaultValue={contrast}
               onMouseDown={() => setIsSliding("contrast")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -167,7 +167,7 @@ const Adjustments = ({
               getAriaValueText={(value) => setFade(value)}
               min={-100}
               max={100}
-              defaultValue={0}
+              defaultValue={fade}
               onMouseDown={() => setIsSliding("fade")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -225,7 +225,7 @@ const Adjustments = ({
               getAriaValueText={(value) => setSaturation(value)}
               min={-100}
               max={100}
-              defaultValue={0}
+              defaultValue={saturation}
               onMouseDown={() => setIsSliding("saturation")}
               onMouseUp={() => setIsSliding(false)}
               sx={{

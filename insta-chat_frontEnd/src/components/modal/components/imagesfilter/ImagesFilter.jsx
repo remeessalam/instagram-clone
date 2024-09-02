@@ -74,8 +74,26 @@ const FilterImage = ({ images, setImages }) => {
       let by = brightness > 0 ? 500 : 400;
       const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
       filters += ` brightness(${brightnessValue})`;
+      console.log(filters, "thiaksdjfaksdfajdf");
     }
-    console.log(filters, "thiaksdjfaksdfajdf");
+    if (contrast !== 0) {
+      let by = contrast > 0 ? 400 : 400;
+      const contrastValue = 1 + contrast / by; // Scale from -100 to 100 to 0 to 2
+      filters += ` contrast(${contrastValue})`;
+      console.log(filters, "thiaksdjfaksdfajdf");
+    }
+    // if (fade !== 0) {
+    //   let by = fade > 0 ? 400 : 400;
+    //   const fadeValue = 1 + fade / by; // Scale from -100 to 100 to 0 to 2
+    //   filters += ` fade(${fadeValue})`;
+    //   console.log(filters, "thiaksdjfaksdfajdf");
+    // }
+    if (saturation !== 0) {
+      let by = saturation > 0 ? 400 : 100;
+      const saturationValue = 1 + saturation / by; // Scale from -100 to 100 to 0 to 2
+      filters += ` saturate(${saturationValue})`;
+    }
+    console.log(filters, "thiaksdjfaksdfajdfonsdf");
 
     return filters.trim(); // Return the final filter string
   };
