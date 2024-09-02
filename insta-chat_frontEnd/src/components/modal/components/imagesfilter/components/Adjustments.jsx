@@ -19,7 +19,7 @@ const Adjustments = ({
   const theme = useTheme();
 
   //   const [sliderValue, setSliderValue] = useState(0);
-
+  console.log(brightness, "thisisbrightness");
   const [isSliding, setIsSliding] = useState(false);
   const duration = 100;
 

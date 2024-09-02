@@ -32,7 +32,7 @@ const FilterImage = ({ images, setImages }) => {
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
   };
-  console.log(selectedFilter, "asdjflkajdsflfioer");
+  console.log(images[count].filter, "thisisbrightness");
 
   const getDynamicFilter = () => {
     const imageFilter = images[count].filter;
@@ -49,7 +49,7 @@ const FilterImage = ({ images, setImages }) => {
           const [_, name, valueWithUnit] = match;
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
-
+          console.log(part, "thisadkfjasdf");
           switch (name) {
             case "contrast":
             case "saturate":
@@ -75,6 +75,7 @@ const FilterImage = ({ images, setImages }) => {
       const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
       filters += ` brightness(${brightnessValue})`;
     }
+    console.log(filters, "thiaksdjfaksdfajdf");
 
     return filters.trim(); // Return the final filter string
   };
