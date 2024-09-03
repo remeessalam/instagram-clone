@@ -39,7 +39,7 @@ const FilterImage = ({ images, setImages }) => {
     let filters = "";
 
     // Apply existing filters if any
-    if (imageFilter?.filter && imageFilter.filterName !== "Orginal") {
+    if (imageFilter?.filter && imageFilter.filterName !== "Original") {
       filters = imageFilter.filter
         .split(/\s(?=[a-zA-Z-]+\()/) // Split on spaces before filter functions
         .map((part) => {
@@ -49,37 +49,49 @@ const FilterImage = ({ images, setImages }) => {
           const [_, name, valueWithUnit] = match;
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
-          console.log(part, "thisadkfjasdf");
-          switch (name) {
-            case "contrast":
-            case "saturate":
-              // Scale from 1 to the filter value
-              return `${name}(${
-                1 + (value - 1) * (imageFilter.position / 100)
-              }${unit})`;
-            case "sepia":
-            case "hue-rotate":
-              // Scale directly
-              return `${name}(${value * (imageFilter.position / 100)}${unit})`;
-            default:
-              // Return other filters as-is
-              return part;
+
+          if (name === "contrast") {
+            // Scale from 1 to the filter value
+            return `${name}(${
+              1 + (value - 1) * (imageFilter.position / 100)
+            }${unit})`;
+          } else if (name === "saturate") {
+            // Scale from 1 to the filter value
+            return `${name}(${
+              1 + (value - 1) * (imageFilter.position / 100)
+            }${unit})`;
+          } else if (name === "sepia") {
+            // Scale directly
+            return `${name}(${value * (imageFilter.position / 100)}${unit})`;
+          } else if (name === "hue-rotate") {
+            // Scale directly
+            return `${name}(${value * (imageFilter.position / 100)}${unit})`;
+          } else if (name === "brightness") {
+            // Combine existing brightness value with the current brightness
+            console.log(value, "alksdjflajsdfthisidvaluse");
+            let by = brightness !== 0 ? (brightness > 0 ? 500 : 400) : 1;
+            const currentBrightnessValue = 1 + brightness / by;
+            const newBrightnessValue = value * currentBrightnessValue; // Combine with existing
+            setBrightness(newBrightnessValue);
+            return `${name}(${newBrightnessValue}${unit})`;
+          } else {
+            return part; // Return other filters as-is
           }
         })
         .join(" ");
     }
 
     // Apply brightness adjustment even if no other filter is selected
-    if (brightness !== 0) {
-      let by = brightness > 0 ? 500 : 400;
-      const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
-      filters += ` brightness(${brightnessValue})`;
-      console.log(filters, "thiaksdjfaksdfajdf");
-    }
+    // if (brightness !== 0) {
+    //   let by = brightness > 0 ? 500 : 400;
+    //   const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
+    //   filters += `brightness(${brightnessValue})`;
+    //   console.log(filters, "thiaksdjfaksdfajdf");
+    // }
     if (contrast !== 0) {
       let by = contrast > 0 ? 400 : 400;
       const contrastValue = 1 + contrast / by; // Scale from -100 to 100 to 0 to 2
-      filters += ` contrast(${contrastValue})`;
+      filters += `contrast(${contrastValue})`;
       console.log(filters, "thiaksdjfaksdfajdf");
     }
     // if (fade !== 0) {
@@ -91,7 +103,7 @@ const FilterImage = ({ images, setImages }) => {
     if (saturation !== 0) {
       let by = saturation > 0 ? 400 : 100;
       const saturationValue = 1 + saturation / by; // Scale from -100 to 100 to 0 to 2
-      filters += ` saturate(${saturationValue})`;
+      filters += `saturate(${saturationValue})`;
     }
     console.log(filters, "thiaksdjfaksdfajdfonsdf");
 
