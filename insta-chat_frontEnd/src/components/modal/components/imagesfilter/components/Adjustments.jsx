@@ -1,8 +1,11 @@
 import { Slider } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 
 const Adjustments = ({
+  count,
+  images,
+  setImages,
   brightness,
   setBrightness,
   contrast,
@@ -31,6 +34,16 @@ const Adjustments = ({
   //       };
   //     });
   //   }
+  useEffect(() => {
+    setBrightness((prev) => {
+      const updatedBrightness = [...prev];
+      if (!updatedBrightness[count]) {
+        updatedBrightness[count] = { value: 0 };
+      }
+      return updatedBrightness;
+    });
+  }, [images, count]);
+  console.log(brightness[count], count, "jsdfkjaksdjfkjadfk");
   return (
     <div>
       <div className="px-4">
@@ -40,10 +53,23 @@ const Adjustments = ({
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
-              getAriaValueText={(value) => setBrightness(value)}
+              // getAriaValueText={(value) =>
+              //   setBrightness((prev) => {
+              //     const updatedBrightness = [...prev]; // Create a shallow copy of the previous brightness array
+              //     updatedBrightness[count] = value; // Update the specific index with the new value
+              //     return updatedBrightness; // Return the updated array
+              //   })
+              // }
+              onChange={(e, value) =>
+                setBrightness((prev) => {
+                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
+                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
+                  return updatedBrightness; // Return the updated array
+                })
+              }
               min={-100}
               max={100}
-              defaultValue={brightness}
+              value={brightness[count]?.value || 0}
               onMouseDown={() => setIsSliding("brightness")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -73,15 +99,19 @@ const Adjustments = ({
                 },
                 "& .MuiSlider-track": {
                   left: `${
-                    brightness >= 0 ? "50% !important" : "auto !important"
+                    brightness[count]?.value >= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   right: `${
-                    brightness <= 0 ? "50% !important" : "auto !important"
+                    brightness[count]?.value <= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   width: `${
-                    brightness >= 0
-                      ? brightness / 2 + "% !important"
-                      : Math.abs(brightness) / 2 + "% !important"
+                    brightness[count]?.value >= 0
+                      ? brightness[count].value / 2 + "% !important"
+                      : Math.abs(brightness[count].value) / 2 + "% !important"
                   }`,
                   transition: "left 0.3s, right 0.3s",
                 },
@@ -92,7 +122,7 @@ const Adjustments = ({
                 isSliding === "brightness" ? "font-bold" : ""
               }`}
             >
-              {brightness}
+              {brightness[count].value}
             </h3>
           </div>
         </div>

@@ -91,7 +91,7 @@ export default function Modal({ post, open, setOpen }) {
               <div className="flex justify-center relative gap-1 bottom-5 w-full text-center">
                 {post.image.map((image, index) => {
                   return (
-                    <>
+                    <div key={index}>
                       {post.image.length > 1 && (
                         <div
                           key={index}
@@ -102,7 +102,7 @@ export default function Modal({ post, open, setOpen }) {
                           }`}
                         ></div>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>

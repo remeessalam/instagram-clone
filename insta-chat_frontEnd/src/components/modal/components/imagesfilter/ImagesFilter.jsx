@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { svgIcons } from "../../../../utils/constant";
 import { filtersImagesFilters } from "../../../../utils/constant";
 import "./filter.css";
@@ -15,13 +15,18 @@ const FilterImage = ({ images, setImages }) => {
     filter: "",
   });
 
-  const [brightness, setBrightness] = useState(0);
+  const [brightness, setBrightness] = useState(
+    images.map((image, i) => {
+      return { value: 0 };
+    })
+  );
   const [contrast, setContrast] = useState(0);
   const [fade, setFade] = useState(0);
   const [saturation, setSaturation] = useState(0);
   const [temperature, setTemperature] = useState(0);
   const [vignette, setVignette] = useState(0);
 
+  console.log(brightness, "tlkasjdfkthisisibroghtness");
   const handleNextImage = () => {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
@@ -59,9 +64,9 @@ const FilterImage = ({ images, setImages }) => {
             return `saturate(${saturationValue}${unit})`;
           } else if (name === "sepia" || name === "hue-rotate") {
             return `${name}(${value * (imageFilter.position / 100)}${unit})`;
-          } else if (name === "brightness" && brightness !== 0) {
-            let by = brightness > 0 ? 500 : 400;
-            const brightnessValue = 1 + brightness / by;
+          } else if (name === "brightness" && brightness[count]?.value !== 0) {
+            let by = brightness[count]?.value > 0 ? 500 : 400;
+            const brightnessValue = 1 + brightness[count]?.value / by;
             return `brightness(${brightnessValue}${unit})`;
           } else {
             return part;
@@ -70,8 +75,10 @@ const FilterImage = ({ images, setImages }) => {
         .join(" ");
     }
 
-    if (!filters.includes("brightness") && brightness !== 0) {
-      const brightnessValue = 1 + brightness / (brightness > 0 ? 500 : 400);
+    if (!filters.includes("brightness") && brightness[count]?.value !== 0) {
+      const brightnessValue =
+        1 +
+        brightness[count]?.value / (brightness[count]?.value > 0 ? 500 : 400);
       filters = `${filters} brightness(${brightnessValue})`.trim();
     }
 
@@ -206,6 +213,9 @@ const FilterImage = ({ images, setImages }) => {
             />
           ) : (
             <Adjustments
+              count={count}
+              images={images}
+              setImages={setImages}
               brightness={brightness}
               setBrightness={setBrightness}
               contrast={contrast}
