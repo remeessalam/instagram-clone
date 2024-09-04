@@ -132,10 +132,17 @@ const Adjustments = ({
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
-              getAriaValueText={(value) => setContrast(value)}
+              onChange={(e, value) =>
+                setContrast((prev) => {
+                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
+                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
+                  return updatedBrightness; // Return the updated array
+                })
+              }
+              // getAriaValueText={(value) => setContrast(value)}
               min={-100}
               max={100}
-              defaultValue={contrast}
+              value={contrast[count]?.value}
               onMouseDown={() => setIsSliding("contrast")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -165,15 +172,19 @@ const Adjustments = ({
                 },
                 "& .MuiSlider-track": {
                   left: `${
-                    contrast >= 0 ? "50% !important" : "auto !important"
+                    contrast[count]?.value >= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   right: `${
-                    contrast <= 0 ? "50% !important" : "auto !important"
+                    contrast[count]?.value <= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   width: `${
-                    contrast >= 0
-                      ? contrast / 2 + "% !important"
-                      : Math.abs(contrast) / 2 + "% !important"
+                    contrast[count]?.value >= 0
+                      ? contrast[count]?.value / 2 + "% !important"
+                      : Math.abs(contrast[count]?.value) / 2 + "% !important"
                   }`,
                   transition: "left 0.3s, right 0.3s",
                 },
@@ -184,7 +195,7 @@ const Adjustments = ({
                 isSliding === "contrast" ? "font-bold" : ""
               }`}
             >
-              {contrast}
+              {contrast[count]?.value}
             </h3>
           </div>
         </div>

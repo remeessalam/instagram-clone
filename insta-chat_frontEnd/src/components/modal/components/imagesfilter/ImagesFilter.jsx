@@ -20,7 +20,11 @@ const FilterImage = ({ images, setImages }) => {
       return { value: 0 };
     })
   );
-  const [contrast, setContrast] = useState(0);
+  const [contrast, setContrast] = useState(
+    images.map((image, i) => {
+      return { value: 0 };
+    })
+  );
   const [fade, setFade] = useState(0);
   const [saturation, setSaturation] = useState(0);
   const [temperature, setTemperature] = useState(0);
@@ -55,8 +59,8 @@ const FilterImage = ({ images, setImages }) => {
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
 
-          if (name === "contrast" && contrast !== 0) {
-            const contrastValue = 1 + contrast / 400;
+          if (name === "contrast" && contrast[count]?.value !== 0) {
+            const contrastValue = 1 + contrast[count]?.value / 400;
             return `contrast(${contrastValue}${unit})`;
           } else if (name === "saturate" && saturation !== 0) {
             const saturationValue =
