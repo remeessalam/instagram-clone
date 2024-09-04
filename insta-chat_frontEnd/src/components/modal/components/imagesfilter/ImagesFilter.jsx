@@ -41,44 +41,38 @@ const FilterImage = ({ images, setImages }) => {
     // Apply existing filters if any
     if (imageFilter?.filter && imageFilter.filterName !== "Original") {
       filters = imageFilter.filter
-        .split(/\s(?=[a-zA-Z-]+\()/) // Split on spaces before filter functions
+        .split(/\s(?=[a-zA-Z-]+\()/)
         .map((part) => {
           const match = part.match(/([a-zA-Z-]+)\(([^)]+)\)/);
-          if (!match) return part; // Return as-is if no match
+          if (!match) return part;
 
           const [_, name, valueWithUnit] = match;
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
 
-          if (name === "contrast") {
-            // Scale from 1 to the filter value
-            return `${name}(${
-              1 + (value - 1) * (imageFilter.position / 100)
-            }${unit})`;
-          } else if (name === "saturate") {
-            // Scale from 1 to the filter value
-            return `${name}(${
-              1 + (value - 1) * (imageFilter.position / 100)
-            }${unit})`;
-          } else if (name === "sepia") {
-            // Scale directly
+          if (name === "contrast" && contrast !== 0) {
+            const contrastValue = 1 + contrast / 400;
+            return `contrast(${contrastValue}${unit})`;
+          } else if (name === "saturate" && saturation !== 0) {
+            const saturationValue =
+              1 + saturation / (saturation > 0 ? 400 : 100);
+            return `saturate(${saturationValue}${unit})`;
+          } else if (name === "sepia" || name === "hue-rotate") {
             return `${name}(${value * (imageFilter.position / 100)}${unit})`;
-          } else if (name === "hue-rotate") {
-            // Scale directly
-            return `${name}(${value * (imageFilter.position / 100)}${unit})`;
-          } else if (name === "brightness") {
-            // Combine existing brightness value with the current brightness
-            console.log(value, "alksdjflajsdfthisidvaluse");
-            let by = brightness !== 0 ? (brightness > 0 ? 500 : 400) : 1;
-            const currentBrightnessValue = 1 + brightness / by;
-            const newBrightnessValue = value * currentBrightnessValue; // Combine with existing
-            setBrightness(newBrightnessValue);
-            return `${name}(${newBrightnessValue}${unit})`;
+          } else if (name === "brightness" && brightness !== 0) {
+            let by = brightness > 0 ? 500 : 400;
+            const brightnessValue = 1 + brightness / by;
+            return `brightness(${brightnessValue}${unit})`;
           } else {
-            return part; // Return other filters as-is
+            return part;
           }
         })
         .join(" ");
+    }
+
+    if (!filters.includes("brightness") && brightness !== 0) {
+      const brightnessValue = 1 + brightness / (brightness > 0 ? 500 : 400);
+      filters = `${filters} brightness(${brightnessValue})`.trim();
     }
 
     // Apply brightness adjustment even if no other filter is selected
@@ -88,23 +82,31 @@ const FilterImage = ({ images, setImages }) => {
     //   filters += `brightness(${brightnessValue})`;
     //   console.log(filters, "thiaksdjfaksdfajdf");
     // }
-    if (contrast !== 0) {
-      let by = contrast > 0 ? 400 : 400;
-      const contrastValue = 1 + contrast / by; // Scale from -100 to 100 to 0 to 2
-      filters += `contrast(${contrastValue})`;
-      console.log(filters, "thiaksdjfaksdfajdf");
+    if (!filters.includes("contrast") && contrast !== 0) {
+      const contrastValue = 1 + contrast / (contrast > 0 ? 400 : 400);
+      filters = `${filters} contrast(${contrastValue})`.trim();
     }
+    // if (contrast !== 0) {
+    //   let by = contrast > 0 ? 400 : 400;
+    //   const contrastValue = 1 + contrast / by; // Scale from -100 to 100 to 0 to 2
+    //   filters += `contrast(${contrastValue})`;
+    //   console.log(filters, "thiaksdjfaksdfajdf");
+    // }
     // if (fade !== 0) {
     //   let by = fade > 0 ? 400 : 400;
     //   const fadeValue = 1 + fade / by; // Scale from -100 to 100 to 0 to 2
     //   filters += ` fade(${fadeValue})`;
     //   console.log(filters, "thiaksdjfaksdfajdf");
     // }
-    if (saturation !== 0) {
-      let by = saturation > 0 ? 400 : 100;
-      const saturationValue = 1 + saturation / by; // Scale from -100 to 100 to 0 to 2
-      filters += `saturate(${saturationValue})`;
+    if (!filters.includes("saturate") && saturation !== 0) {
+      const saturationValue = 1 + saturation / (saturation > 0 ? 400 : 100);
+      filters = `${filters} saturate(${saturationValue})`.trim();
     }
+    // if (saturation !== 0) {
+    //   let by = saturation > 0 ? 400 : 100;
+    //   const saturationValue = 1 + saturation / by; // Scale from -100 to 100 to 0 to 2
+    //   filters += `saturate(${saturationValue})`;
+    // }
     console.log(filters, "thiaksdjfaksdfajdfonsdf");
 
     return filters.trim(); // Return the final filter string
