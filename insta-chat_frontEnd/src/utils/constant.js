@@ -24,7 +24,7 @@ export const filtersImagesFilters = [
   {
     filterName: "Aden",
     filterSample: Aden,
-    filter: "sepia(0.2) brightness(1.15) saturate(1.4)",
+    filter: "sepia(0.2) brightness(0.9) saturate(1)",
     position: 100,
   },
   {

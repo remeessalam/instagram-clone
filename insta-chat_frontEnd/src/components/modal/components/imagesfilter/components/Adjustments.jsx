@@ -44,11 +44,30 @@ const Adjustments = ({
     });
   }, [images, count]);
   console.log(brightness[count], count, "jsdfkjaksdjfkjadfk");
+  const resetFilter = () => {
+    setBrightness((prev) => {
+      const updatedBrightness = [...prev];
+      if (updatedBrightness[count]) {
+        updatedBrightness[count] = { value: 0 };
+      }
+      return updatedBrightness;
+    });
+  };
   return (
     <div>
       <div className="px-4">
-        <div>
-          <h3 className="py-3">Brightness</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3 ">Brightness</h3>
+            {brightness[count].value !== 0 && (
+              <h3
+                onClick={resetFilter}
+                className="py-3 font-semibold text-sm group-hover:block hidden text-sky-500"
+              >
+                Reset
+              </h3>
+            )}
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               //   track={false}

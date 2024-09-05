@@ -93,8 +93,9 @@ const FilterImage = ({ images, setImages }) => {
     //   filters += `brightness(${brightnessValue})`;
     //   console.log(filters, "thiaksdjfaksdfajdf");
     // }
-    if (!filters.includes("contrast") && contrast !== 0) {
-      const contrastValue = 1 + contrast / (contrast > 0 ? 400 : 400);
+    if (!filters.includes("contrast") && contrast[count]?.value !== 0) {
+      const contrastValue =
+        1 + contrast[count]?.value / (contrast[count]?.value > 0 ? 400 : 400);
       filters = `${filters} contrast(${contrastValue})`.trim();
     }
     // if (contrast !== 0) {
