@@ -26,7 +26,11 @@ const FilterImage = ({ images, setImages }) => {
     })
   );
   const [fade, setFade] = useState(0);
-  const [saturation, setSaturation] = useState(0);
+  const [saturation, setSaturation] = useState(
+    images.map((image, i) => {
+      return { value: 0 };
+    })
+  );
   const [temperature, setTemperature] = useState(0);
   const [vignette, setVignette] = useState(0);
 
@@ -62,9 +66,11 @@ const FilterImage = ({ images, setImages }) => {
           if (name === "contrast" && contrast[count]?.value !== 0) {
             const contrastValue = 1 + contrast[count]?.value / 400;
             return `contrast(${contrastValue}${unit})`;
-          } else if (name === "saturate" && saturation !== 0) {
+          } else if (name === "saturate" && saturation[count]?.value !== 0) {
             const saturationValue =
-              1 + saturation / (saturation > 0 ? 400 : 100);
+              1 +
+              saturation[count]?.value /
+                (saturation[count]?.value > 0 ? 400 : 100);
             return `saturate(${saturationValue}${unit})`;
           } else if (name === "sepia" || name === "hue-rotate") {
             return `${name}(${value * (imageFilter.position / 100)}${unit})`;
@@ -110,8 +116,10 @@ const FilterImage = ({ images, setImages }) => {
     //   filters += ` fade(${fadeValue})`;
     //   console.log(filters, "thiaksdjfaksdfajdf");
     // }
-    if (!filters.includes("saturate") && saturation !== 0) {
-      const saturationValue = 1 + saturation / (saturation > 0 ? 400 : 100);
+    if (!filters.includes("saturate") && saturation[count]?.value !== 0) {
+      const saturationValue =
+        1 +
+        saturation[count]?.value / (saturation[count]?.value > 0 ? 400 : 100);
       filters = `${filters} saturate(${saturationValue})`.trim();
     }
     // if (saturation !== 0) {

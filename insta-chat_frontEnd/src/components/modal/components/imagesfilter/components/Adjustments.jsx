@@ -44,8 +44,8 @@ const Adjustments = ({
     });
   }, [images, count]);
   console.log(brightness[count], count, "jsdfkjaksdjfkjadfk");
-  const resetFilter = () => {
-    setBrightness((prev) => {
+  const resetFilter = (fun) => {
+    fun((prev) => {
       const updatedBrightness = [...prev];
       if (updatedBrightness[count]) {
         updatedBrightness[count] = { value: 0 };
@@ -61,7 +61,7 @@ const Adjustments = ({
             <h3 className="py-3 ">Brightness</h3>
             {brightness[count].value !== 0 && (
               <h3
-                onClick={resetFilter}
+                onClick={() => resetFilter(setBrightness)}
                 className="py-3 font-semibold text-sm group-hover:block hidden text-sky-500"
               >
                 Reset
@@ -145,8 +145,18 @@ const Adjustments = ({
             </h3>
           </div>
         </div>
-        <div>
-          <h3 className="py-3">Contrast</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3">Contrast</h3>
+            {contrast[count].value !== 0 && (
+              <h3
+                onClick={() => resetFilter(setContrast)}
+                className="py-3 font-semibold text-sm group-hover:block hidden text-sky-500"
+              >
+                Reset
+              </h3>
+            )}
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               //   track={false}
@@ -218,8 +228,13 @@ const Adjustments = ({
             </h3>
           </div>
         </div>
-        <div>
-          <h3 className="py-3">Fade</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3">Fade</h3>
+            <h3 className="py-3 hidden group-hover:block font-semibold text-sm text-sky-500">
+              Not working
+            </h3>
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               //   track={false}
@@ -276,16 +291,33 @@ const Adjustments = ({
             </h3>
           </div>
         </div>
-        <div>
-          <h3 className="py-3">Saturation</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3">Saturation</h3>
+            {saturation[count].value !== 0 && (
+              <h3
+                onClick={() => resetFilter(setSaturation)}
+                className="py-3 font-semibold text-sm group-hover:block hidden text-sky-500"
+              >
+                Reset
+              </h3>
+            )}
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
-              getAriaValueText={(value) => setSaturation(value)}
+              // getAriaValueText={(value) => setSaturation(value)}
+              onChange={(e, value) =>
+                setSaturation((prev) => {
+                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
+                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
+                  return updatedBrightness; // Return the updated array
+                })
+              }
               min={-100}
               max={100}
-              defaultValue={saturation}
+              value={saturation[count]?.value || 0}
               onMouseDown={() => setIsSliding("saturation")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -315,15 +347,19 @@ const Adjustments = ({
                 },
                 "& .MuiSlider-track": {
                   left: `${
-                    saturation >= 0 ? "50% !important" : "auto !important"
+                    saturation[count]?.value >= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   right: `${
-                    saturation <= 0 ? "50% !important" : "auto !important"
+                    saturation[count]?.value <= 0
+                      ? "50% !important"
+                      : "auto !important"
                   }`,
                   width: `${
-                    saturation >= 0
-                      ? saturation / 2 + "% !important"
-                      : Math.abs(saturation) / 2 + "% !important"
+                    saturation[count]?.value >= 0
+                      ? saturation[count]?.value / 2 + "% !important"
+                      : Math.abs(saturation[count]?.value) / 2 + "% !important"
                   }`,
                   transition: "left 0.3s, right 0.3s",
                 },
@@ -334,12 +370,17 @@ const Adjustments = ({
                 isSliding === "saturation" ? "font-bold" : ""
               }`}
             >
-              {saturation}
+              {saturation[count]?.value}
             </h3>
           </div>
         </div>
-        <div>
-          <h3 className="py-3">Temperature</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3">Temperature</h3>
+            <h3 className="py-3 font-semibold text-sm text-sky-500 hidden group-hover:block">
+              Not working
+            </h3>
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               //   track={false}
@@ -400,8 +441,13 @@ const Adjustments = ({
             </h3>
           </div>
         </div>
-        <div>
-          <h3 className="py-3">Vignette</h3>
+        <div className="group">
+          <div className="flex justify-between">
+            <h3 className="py-3">Vignette</h3>
+            <h3 className="py-3 font-semibold text-sm text-sky-500 hidden group-hover:block">
+              Not working
+            </h3>
+          </div>
           <div className="flex gap-4 items-center">
             <Slider
               aria-label="time-indicator"
