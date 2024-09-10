@@ -5,35 +5,23 @@ import { useTheme } from "@mui/material/styles";
 const Adjustments = ({
   count,
   images,
-  setImages,
   brightness,
   setBrightness,
   contrast,
   setContrast,
-  fade,
-  setFade,
   saturation,
   setSaturation,
-  temperature,
-  setTemperature,
-  vignette,
-  setVignette,
 }) => {
   const theme = useTheme();
 
   //   const [sliderValue, setSliderValue] = useState(0);
   console.log(brightness, "thisisbrightness");
   const [isSliding, setIsSliding] = useState(false);
+  const [fade, setFade] = useState(0);
+  const [temperature, setTemperature] = useState(0);
+  const [vignette, setVignette] = useState(0);
   const duration = 100;
 
-  //   function valuetext(value) {
-  //     setFilterValue((prev) => {
-  //       return {
-  //         ...prev,
-  //         brightness: value,
-  //       };
-  //     });
-  //   }
   useEffect(() => {
     setBrightness((prev) => {
       const updatedBrightness = [...prev];
@@ -43,7 +31,9 @@ const Adjustments = ({
       return updatedBrightness;
     });
   }, [images, count]);
+
   console.log(brightness[count], count, "jsdfkjaksdjfkjadfk");
+
   const resetFilter = (fun) => {
     fun((prev) => {
       const updatedBrightness = [...prev];
@@ -53,9 +43,10 @@ const Adjustments = ({
       return updatedBrightness;
     });
   };
+  console.log(fade, "thhisdfdfafade");
   return (
     <div>
-      <div className="px-4">
+      <div className="px-5">
         <div className="group">
           <div className="flex justify-between">
             <h3 className="py-3 ">Brightness</h3>
@@ -68,7 +59,7 @@ const Adjustments = ({
               </h3>
             )}
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
@@ -157,7 +148,7 @@ const Adjustments = ({
               </h3>
             )}
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
@@ -235,14 +226,14 @@ const Adjustments = ({
               Not working
             </h3>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
-              getAriaValueText={(value) => setFade(value)}
+              onChange={(_, value) => setFade(value)}
               min={-100}
               max={100}
-              defaultValue={fade}
+              value={fade}
               onMouseDown={() => setIsSliding("fade")}
               onMouseUp={() => setIsSliding(false)}
               sx={{
@@ -253,7 +244,7 @@ const Adjustments = ({
                   height: 22,
                   transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
                   "&::before": {
-                    boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
+                    // boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
                   },
                   "&:hover, &.Mui-focusVisible": {
                     boxShadow: `0px 0px 0px 8px ${
@@ -303,7 +294,7 @@ const Adjustments = ({
               </h3>
             )}
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
@@ -381,7 +372,7 @@ const Adjustments = ({
               Not working
             </h3>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               //   track={false}
               //   aria-labelledby="track-false-slider"
@@ -448,7 +439,7 @@ const Adjustments = ({
               Not working
             </h3>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-6 items-center">
             <Slider
               aria-label="time-indicator"
               size="small"

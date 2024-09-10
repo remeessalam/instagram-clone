@@ -25,14 +25,11 @@ const FilterImage = ({ images, setImages }) => {
       return { value: 0 };
     })
   );
-  const [fade, setFade] = useState(0);
   const [saturation, setSaturation] = useState(
     images.map((image, i) => {
       return { value: 0 };
     })
   );
-  const [temperature, setTemperature] = useState(0);
-  const [vignette, setVignette] = useState(0);
 
   console.log(brightness, "tlkasjdfkthisisibroghtness");
   const handleNextImage = () => {
@@ -51,10 +48,19 @@ const FilterImage = ({ images, setImages }) => {
     const imageFilter = images[count].filter;
     let filters = "";
 
-    // Apply existing filters if any
+    // If the filter is not applicable (position = 0 or filter is "Original"), return empty
+    if (
+      // !imageFilter ||
+      imageFilter.position === 0 ||
+      imageFilter.filterName === "Original"
+    ) {
+      return "";
+    }
+
+    // Apply filters based on position
     if (imageFilter?.filter && imageFilter.filterName !== "Original") {
       filters = imageFilter.filter
-        .split(/\s(?=[a-zA-Z-]+\()/)
+        .split(/\s(?=[a-zA-Z-]+\()/) // Split filter string into individual filters
         .map((part) => {
           const match = part.match(/([a-zA-Z-]+)\(([^)]+)\)/);
           if (!match) return part;
@@ -63,20 +69,28 @@ const FilterImage = ({ images, setImages }) => {
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
 
+          const positionFactor = imageFilter.position / 100; // Calculate the factor based on position (0 to 1)
+
+          // Adjust filter values based on the slider position
           if (name === "contrast" && contrast[count]?.value !== 0) {
-            const contrastValue = 1 + contrast[count]?.value / 400;
+            const contrastValue =
+              1 + (contrast[count]?.value / 400) * positionFactor;
             return `contrast(${contrastValue}${unit})`;
           } else if (name === "saturate" && saturation[count]?.value !== 0) {
             const saturationValue =
               1 +
-              saturation[count]?.value /
-                (saturation[count]?.value > 0 ? 400 : 100);
+              (saturation[count]?.value /
+                (saturation[count]?.value > 0 ? 400 : 100)) *
+                positionFactor;
             return `saturate(${saturationValue}${unit})`;
           } else if (name === "sepia" || name === "hue-rotate") {
-            return `${name}(${value * (imageFilter.position / 100)}${unit})`;
+            return `${name}(${value * positionFactor}${unit})`;
           } else if (name === "brightness" && brightness[count]?.value !== 0) {
-            let by = brightness[count]?.value > 0 ? 500 : 400;
-            const brightnessValue = 1 + brightness[count]?.value / by;
+            const brightnessValue =
+              1 +
+              (brightness[count]?.value /
+                (brightness[count]?.value > 0 ? 500 : 400)) *
+                positionFactor;
             return `brightness(${brightnessValue}${unit})`;
           } else {
             return part;
@@ -85,49 +99,32 @@ const FilterImage = ({ images, setImages }) => {
         .join(" ");
     }
 
+    // Add missing filters if any
     if (!filters.includes("brightness") && brightness[count]?.value !== 0) {
       const brightnessValue =
         1 +
-        brightness[count]?.value / (brightness[count]?.value > 0 ? 500 : 400);
+        (brightness[count]?.value /
+          (brightness[count]?.value > 0 ? 500 : 400)) *
+          (imageFilter.position / 100);
       filters = `${filters} brightness(${brightnessValue})`.trim();
     }
 
-    // Apply brightness adjustment even if no other filter is selected
-    // if (brightness !== 0) {
-    //   let by = brightness > 0 ? 500 : 400;
-    //   const brightnessValue = 1 + brightness / by; // Scale from -100 to 100 to 0 to 2
-    //   filters += `brightness(${brightnessValue})`;
-    //   console.log(filters, "thiaksdjfaksdfajdf");
-    // }
     if (!filters.includes("contrast") && contrast[count]?.value !== 0) {
       const contrastValue =
-        1 + contrast[count]?.value / (contrast[count]?.value > 0 ? 400 : 400);
+        1 + (contrast[count]?.value / 400) * (imageFilter.position / 100);
       filters = `${filters} contrast(${contrastValue})`.trim();
     }
-    // if (contrast !== 0) {
-    //   let by = contrast > 0 ? 400 : 400;
-    //   const contrastValue = 1 + contrast / by; // Scale from -100 to 100 to 0 to 2
-    //   filters += `contrast(${contrastValue})`;
-    //   console.log(filters, "thiaksdjfaksdfajdf");
-    // }
-    // if (fade !== 0) {
-    //   let by = fade > 0 ? 400 : 400;
-    //   const fadeValue = 1 + fade / by; // Scale from -100 to 100 to 0 to 2
-    //   filters += ` fade(${fadeValue})`;
-    //   console.log(filters, "thiaksdjfaksdfajdf");
-    // }
+
     if (!filters.includes("saturate") && saturation[count]?.value !== 0) {
       const saturationValue =
         1 +
-        saturation[count]?.value / (saturation[count]?.value > 0 ? 400 : 100);
+        (saturation[count]?.value /
+          (saturation[count]?.value > 0 ? 400 : 100)) *
+          (imageFilter.position / 100);
       filters = `${filters} saturate(${saturationValue})`.trim();
     }
-    // if (saturation !== 0) {
-    //   let by = saturation > 0 ? 400 : 100;
-    //   const saturationValue = 1 + saturation / by; // Scale from -100 to 100 to 0 to 2
-    //   filters += `saturate(${saturationValue})`;
-    // }
-    console.log(filters, "thiaksdjfaksdfajdfonsdf");
+
+    console.log(filters, "Updated filter string");
 
     return filters.trim(); // Return the final filter string
   };
@@ -233,14 +230,8 @@ const FilterImage = ({ images, setImages }) => {
               setBrightness={setBrightness}
               contrast={contrast}
               setContrast={setContrast}
-              fade={fade}
-              setFade={setFade}
               saturation={saturation}
               setSaturation={setSaturation}
-              temperature={temperature}
-              setTemperature={setTemperature}
-              vignette={vignette}
-              setVignette={setVignette}
             />
           )}
         </div>
