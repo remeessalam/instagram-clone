@@ -128,7 +128,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "brightness" ? "font-bold" : ""
               }`}
             >
@@ -211,7 +211,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "contrast" ? "font-bold" : ""
               }`}
             >
@@ -274,7 +274,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "fade" ? "font-bold" : ""
               }`}
             >
@@ -357,7 +357,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "saturation" ? "font-bold" : ""
               }`}
             >
@@ -424,7 +424,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "temperature" ? "font-bold" : ""
               }`}
             >
@@ -480,7 +480,7 @@ const Adjustments = ({
               }}
             />
             <h3
-              className={`text-xs w-7 ${
+              className={`text-xs w-10 ${
                 isSliding === "vignette" ? "font-bold" : ""
               }`}
             >
