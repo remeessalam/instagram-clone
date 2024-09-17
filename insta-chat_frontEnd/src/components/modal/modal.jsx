@@ -4,9 +4,10 @@ import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
-import CropImage from "./components/CropImage";
+import CropImage from "./components/cropedImage/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
 import FilterImage from "./components/imagesfilter/ImagesFilter";
+import Final from "./components/final/Final";
 
 export default function Modal() {
   const [spinner, setSpinner] = useState(false);
@@ -124,7 +125,7 @@ export default function Modal() {
   //   );
   //   setCrop({ x: 0, y: 0 });
   // };
-
+  console.log(images, "thisisimagesinmodal");
   return (
     <>
       {openModalState && (
@@ -148,7 +149,7 @@ export default function Modal() {
             <div
               className={`bg-white  rounded-xl overflow-hidden ${
                 step > 1 ? `md:w-[978px]` : `md:w-[634px]`
-              } w-[290px] h-[675px]`}
+              } w-[290px] h-[675px] transition-all duration-700`}
             >
               <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
                 <span
@@ -228,64 +229,8 @@ export default function Modal() {
                 )}
                 {step === 2 && (
                   <FilterImage images={images} setImages={setImages} />
-                  // <div
-                  //   className={`flex select-none relative min-w-[634px] h-full overflow-scroll transition-all duration-900 overflow-x-auto snap-x snap-mandatory scrollbar-hide`}
-                  // >
-                  //   {count !== 0 && (
-                  //     <div
-                  //       className="absolute left-3 bottom-1/2 z-500 cursor-pointer text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
-                  //       onClick={handlePrevImage}
-                  //     >
-                  //       {svgIcons.leftArrow}
-                  //     </div>
-                  //   )}
-
-                  //   {images?.map((img, i) => {
-                  //     return (
-                  //       <div
-                  //         className={`min-w-[634px] max-w-[634px] flex ${
-                  //           count === i ? `block` : `hidden`
-                  //         } `}
-                  //         key={img?.id}
-                  //       >
-                  //         <div
-                  //           className={`aspect-[${img.aspectRatio}] mx-auto my-auto  `}
-                  //         >
-                  //           <img
-                  //             src={img?.croppedImageUrl}
-                  //             alt=""
-                  //             className={`aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
-                  //           />
-                  //         </div>
-                  //       </div>
-                  //     );
-                  //   })}
-                  //   {count < images.length - 1 && (
-                  //     <div
-                  //       className="absolute right-3 bottom-1/2 cursor-pointer z-500 text-white h-8 w-8 rounded-full bg-black bg-opacity-60 flex justify-center items-center"
-                  //       onClick={handleNextImage}
-                  //     >
-                  //       {svgIcons.rightArrow}
-                  //     </div>
-                  //   )}
-                  //   {images.length > 1 && (
-                  //     <div className="flex  justify-center absolute gap-1 bottom-8 w-full text-center">
-                  //       {images.map((_, index) => {
-                  //         return (
-                  //           <div
-                  //             key={index}
-                  //             className={`w-[6px] h-[6px] rounded-full  ${
-                  //               index === count
-                  //                 ? "bg-white"
-                  //                 : "bg-imageDotColor"
-                  //             }`}
-                  //           ></div>
-                  //         );
-                  //       })}
-                  //     </div>
-                  //   )}
-                  // </div>
                 )}
+                {step === 3 && <Final images={images} setImages={setImages} />}
               </div>
             </div>
           </div>

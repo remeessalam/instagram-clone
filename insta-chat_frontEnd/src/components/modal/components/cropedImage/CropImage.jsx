@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { svgIcons } from "../../../utils/constant";
+import { svgIcons } from "../../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
