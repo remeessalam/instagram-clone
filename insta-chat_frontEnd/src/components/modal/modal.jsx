@@ -125,6 +125,7 @@ export default function Modal() {
   //   );
   //   setCrop({ x: 0, y: 0 });
   // };
+  const final = () => {};
   console.log(images, "thisisimagesinmodal");
   return (
     <>
