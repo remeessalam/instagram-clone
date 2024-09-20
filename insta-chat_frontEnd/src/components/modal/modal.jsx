@@ -21,7 +21,6 @@ export default function Modal() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [imageCount, setImageCount] = useState(0);
   const [next, setNext] = useState(false);
-
   const openModalState = useSelector((state) => state.modal.openModalState);
   const dispatch = useDispatch();
 
@@ -69,11 +68,16 @@ export default function Modal() {
   };
 
   const addImage = () => {
-    setSpinner(true);
-    uploadImage(imageFile)
+    // setSpinner(true);
+    uploadImage(images)
       .then((data) => {
-        if (data) {
-          InsertPost(data, caption);
+        let cloudinaryImage = data;
+        if (cloudinaryImage) {
+          console.log(cloudinaryImage, "htisisiddarasr");
+
+          console.log(images, "thisisimagesinthisisok");
+          // return;
+          InsertPost(cloudinaryImage, caption, images);
           dispatch(openModal());
           setImages([]);
         }
@@ -86,7 +90,10 @@ export default function Modal() {
 
   const handleNext = () => {
     setSpinner(true);
-
+    if (step === 3) {
+      addImage();
+      return;
+    }
     setStep((pre) => pre + 1);
 
     setSpinner(false);
@@ -162,14 +169,14 @@ export default function Modal() {
                   {svgIcons.leftArrow}
                 </span>
                 <h3 className="font-semibold">
-                  {spinner ? "`loading" : "Create new post"}
+                  {spinner ? "loading" : "Create new post"}
                 </h3>
                 {next ? (
                   <h3
                     className="cursor-pointer font-semibold text-sm text-sky-500 hover:text-blue-900"
                     onClick={handleNext}
                   >
-                    Next
+                    {step === 3 ? "Share" : "Next"}
                   </h3>
                 ) : (
                   <div
@@ -231,7 +238,13 @@ export default function Modal() {
                 {step === 2 && (
                   <FilterImage images={images} setImages={setImages} />
                 )}
-                {step === 3 && <Final images={images} setImages={setImages} />}
+                {step === 3 && (
+                  <Final
+                    images={images}
+                    setImages={setImages}
+                    setCaption={setCaption}
+                  />
+                )}
               </div>
             </div>
           </div>

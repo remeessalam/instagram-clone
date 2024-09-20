@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { svgIcons } from "../../../../utils/constant";
 import { useSelector } from "react-redux";
 
-const Final = ({ images, setImages }) => {
+const Final = ({ images, setImages, setCaption }) => {
   const [count, setCount] = useState(0);
   const [discription, setDiscription] = useState("");
   const [disLength, setDisLength] = useState(0);
@@ -101,6 +101,7 @@ const Final = ({ images, setImages }) => {
               if (value.length > 2200) {
                 value = value.slice(0, 2200);
               }
+              setCaption(value);
               setDiscription(value);
             }}
             value={discription}

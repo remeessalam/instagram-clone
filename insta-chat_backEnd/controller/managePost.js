@@ -8,7 +8,7 @@ module.exports = {
     postSchema
       .create({
         user: req.userId,
-        image: req.body.post,
+        image: req.body.finalImage,
         caption: req.body.caption,
       })
       .then((data) => {

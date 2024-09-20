@@ -8,9 +8,13 @@ const chat = require("./routes/chat");
 const notification = require("./routes/notification");
 const server = http.createServer(app);
 const moongose = require("mongoose");
+const bodyParser = require("body-parser");
 const { errorHandler } = require("./middleware/handlerror");
 app.use(express.json());
 require("dotenv").config();
+
+app.use(bodyParser.json({ limit: "1000mb" })); // Adjust the limit size as needed
+app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 
 moongose
   .connect(process.env.MONGOURL, {
