@@ -79,6 +79,7 @@ const Post = ({ e }) => {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
+  console.log(e, "thiadjsfifjasdifj");
   return (
     <div
       key={e._id}
@@ -136,14 +137,27 @@ const Post = ({ e }) => {
           onScroll={handleScroll}
         >
           {e.image.map((obj, i) => {
+            console.log(obj, "jsldkfkalsdjfasdkf");
             return (
               <div
                 key={obj.url}
-                className="flex min-w-full snap-always snap-center "
+                className="flex min-w-full rounded-lg justify-center snap-always snap-center"
               >
+                {/* min-h-[468px] max-h-[585px] */}
                 <img
-                  className="min-h-[468px] w-full max-h-[585px] object-cover "
-                  src={obj.url}
+                  className={`${
+                    obj?.aspectRatio && obj?.aspectRatio === 1 / 1
+                      ? `object-cover`
+                      : `object-contain`
+                  }  `}
+                  style={{
+                    aspectRatio: obj?.aspectRatio && obj.aspectRatio,
+                    filter:
+                      obj.filter && obj.filter.filter !== ""
+                        ? obj.filter.filter
+                        : "",
+                  }}
+                  src={obj.url ? obj?.url : obj?.cloudinaryImage?.url}
                   alt=""
                 />
               </div>
