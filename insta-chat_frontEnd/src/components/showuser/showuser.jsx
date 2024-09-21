@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Getfriend from "../../services/getFriend.js";
 import GetfriendPost from "../../services/getfriendPost.js";
-import { bigScreen } from "../../utils/constant.js";
+import { bigScreen, svgIcons } from "../../utils/constant.js";
 import useChecktoken from "../../hooks/useChecktoken.js";
 
 function ShowProfile({ id }) {
@@ -11,6 +11,8 @@ function ShowProfile({ id }) {
   const [post, setPost] = useState([]);
 
   const [userDetails, setUser] = useState({});
+
+  const [mouseEnter, setMouseEnter] = useState("");
 
   useChecktoken();
 
@@ -25,8 +27,8 @@ function ShowProfile({ id }) {
 
   return (
     <>
-      <div className="w-full  h-screen lg:pt-10 pt-2  mx-auto overflow-x-auto scrollbar-hide">
-        <div className="flex-col  w-full  h-full mx-auto ">
+      <div className="w-full flex justify-center h-screen lg:pt-10 pt-2  mx-auto overflow-x-auto scrollbar-hide">
+        <div className="flex-col  w-[975px] shrink h-full mx-auto ">
           {IsBigScreen ? (
             <div className="flex flex-row  h-1/2 p-1 sm:p-4">
               <div className="sm:w-1/2 w-3/4 pl-16 ">
@@ -122,20 +124,52 @@ function ShowProfile({ id }) {
               </div>
             </div>
           )}
-          <div className="p-5 grid grid-cols-3 md:grid-cols-3  md:gap-8 gap-1">
+          <div
+            className=" grid grid-cols-3 gap-1 lg:pb-2 pb-[50px]"
+            // className="p-5 grid grid-cols-3 md:grid-cols-3  md:gap-8 gap-1"
+          >
             {post?.map((e, i) => {
               return (
                 <div
                   key={i}
-                  className="cursor-default grid justify-items-start group"
+                  className="flex  cursor-pointer aspect-square group"
+                  // className="cursor-default grid justify-items-start group"
                 >
-                  <div className="justify-self-center min-w-80 min-h-80 max-h-80 max-w-80">
+                  <div
+                    className="relative w-full h-full "
+                    //  className="justify-self-center min-w-80 min-h-80 max-h-80 max-w-80"
+                  >
                     <img
-                      className="justify-self-center object-cover sm:h-80 h-[100px] w-80 "
-                      src={e.image[0]?.url}
+                      className="w-full h-full group-hover:brightness-50 object-cover"
+                      // className="justify-self-center object-cover sm:h-80 h-[100px] w-80 "
+                      // src={e.image[0]?.url}
+                      onMouseEnter={() =>
+                        e.image[0].filter &&
+                        e.image[0].filter.filter &&
+                        setMouseEnter(i)
+                      }
+                      onMouseLeave={() => setMouseEnter("")}
+                      style={{
+                        filter:
+                          e.image[0].filter && e.image[0].filter.filter !== ""
+                            ? mouseEnter === i
+                              ? " "
+                              : e.image[0].filter.filter
+                            : "",
+                      }}
+                      src={
+                        e?.image[0]?.url
+                          ? e.image[0].url
+                          : e.image[0].cloudinaryImage.url
+                      }
                       alt=""
                     />
-                    <div className="flex flex-row md:visible invisible absolute bottom-32 left-24 opacity-0 group-hover:opacity-100 ">
+                    <div className="absolute right-2 top-2 w-4 h-4 ">
+                      {e.image.length > 1 && svgIcons.stackIcon}
+                    </div>
+                    <div
+                      className={`flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white flex-row opacity-0 ${``} group-hover:brightness-200 group-hover:opacity-100 `}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

@@ -67,7 +67,7 @@ export default function Modal({ post, open, setOpen }) {
       <div className="fixed z-40 left-[50%] bg-black bg-opacity-60 top-[50%]  -translate-y-[50%] -translate-x-[50%] w-screen h-full p-6 ">
         <div className="flex flex-wrap rounded-r-md  w-[350px] lg:w-[1200px] lg:h-[95vh] h-[650px] bg-white mx-auto brightness-100 overflow-y-auto scrollbar-hide">
           {/** IMAGE SIDE */}
-          <div className="flex items-center max-w-[50%] min-w-[20%]  h-1/2 sm:h-full ">
+          <div className="flex items-center relative max-w-[50%] min-w-[20%] bg-black h-1/2 sm:h-full ">
             <div className="flex flex-col items-center  ">
               <div
                 className="flex  h-full  overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-black"
@@ -76,19 +76,35 @@ export default function Modal({ post, open, setOpen }) {
                 }}
                 onScroll={handleScroll}
               >
-                {post.image?.map((obj) => {
+                {post.image?.map((obj, i) => {
                   return (
-                    <div className="flex h-full snap-always snap-center justify-center place-items-center">
+                    <div
+                      key={i}
+                      className="flex min-w-full min-h-full snap-always snap-center justify-center place-items-center"
+                    >
                       <img
-                        className=" h-full max-h-[325px] sm:max-h-[96vh]  object-cover aspect-auto "
-                        src={obj.url}
+                        // className=" h-full max-h-[325px] sm:max-h-[96vh]  object-cover aspect-auto "
+                        // src={obj.url}
+                        className={`${
+                          obj?.aspectRatio && obj?.aspectRatio === 1 / 1
+                            ? `object-cover`
+                            : `object-contain`
+                        }  `}
+                        style={{
+                          aspectRatio: obj?.aspectRatio && obj.aspectRatio,
+                          filter:
+                            obj.filter && obj.filter.filter !== ""
+                              ? obj.filter.filter
+                              : "",
+                        }}
+                        src={obj.url ? obj?.url : obj?.cloudinaryImage?.url}
                         alt=""
                       />
                     </div>
                   );
                 })}
               </div>
-              <div className="flex justify-center relative gap-1 bottom-5 w-full text-center">
+              <div className="flex justify-center absolute gap-1 bottom-5 w-full text-center">
                 {post.image.map((image, index) => {
                   return (
                     <div key={index}>
@@ -126,7 +142,7 @@ export default function Modal({ post, open, setOpen }) {
                 <h1 className="text-md font-medium ml-3">{post.user.name}</h1>
               </div>
             </div>
-            <div className="flex sm:h-[553px] h-[250px] border-b">
+            <div className="flex sm:h-[577px] h-[250px] border-b">
               <div className="text-sx w-full font-semibold overflow-y-scroll scrollbar-hide text-black-400 ">
                 {post.comments.map((com) => {
                   return (

@@ -23,6 +23,8 @@ function Profile() {
 
   const [hoverdata, setHoverdata] = useState([]);
 
+  const [mouseEnter, setMouseEnter] = useState("");
+
   const [tab, setTab] = useState("post");
 
   useChecktoken("/profile");
@@ -251,6 +253,7 @@ function Profile() {
           {/* <div className="w-[975px] shrink"> */}
           <div className=" grid grid-cols-3 gap-1 lg:pb-0 pb-[50px]">
             {post.map((e, i) => {
+              console.log(e, "thisdidifsidfiasdif");
               return (
                 <div
                   key={i}
@@ -258,8 +261,26 @@ function Profile() {
                 >
                   <div className="relative w-full h-full ">
                     <img
+                      onMouseEnter={() =>
+                        e.image[0].filter &&
+                        e.image[0].filter.filter &&
+                        setMouseEnter(i)
+                      }
+                      onMouseLeave={() => setMouseEnter("")}
                       className="w-full h-full group-hover:brightness-50 object-cover"
-                      src={e?.image[0]?.url}
+                      style={{
+                        filter:
+                          e.image[0].filter && e.image[0].filter.filter !== ""
+                            ? mouseEnter === i
+                              ? " "
+                              : e.image[0].filter.filter
+                            : "",
+                      }}
+                      src={
+                        e?.image[0]?.url
+                          ? e.image[0].url
+                          : e.image[0].cloudinaryImage.url
+                      }
                       alt=""
                     />
                     <div className="absolute right-2 top-2 w-4 h-4 ">
