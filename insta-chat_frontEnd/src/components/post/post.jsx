@@ -80,6 +80,12 @@ const Post = ({ e }) => {
     setCurrentSlide(newIndex);
   };
   console.log(e, "thiadjsfifjasdifj");
+
+  console.log(
+    e.image.some((obj) => obj.aspectRatio === 4 / 5),
+    "hasdhflkahdfklajsldkf"
+  );
+
   return (
     <div
       key={e._id}
@@ -137,17 +143,23 @@ const Post = ({ e }) => {
           onScroll={handleScroll}
         >
           {e.image.map((obj, i) => {
-            console.log(obj, "jsldkfkalsdjfasdkf");
+            console.log(
+              obj.aspectRatio === 1 / 1 || obj.aspectRatio === 4 / 5,
+              "jsldkfkalsdjfasdkf"
+            );
             return (
               <div
-                key={obj.url}
+                key={obj._id}
                 className="flex min-w-full rounded-lg justify-center snap-always snap-center"
               >
                 {/* min-h-[468px] max-h-[585px] */}
                 <img
                   className={`${
-                    obj?.aspectRatio && obj?.aspectRatio === 1 / 1
-                      ? `object-cover`
+                    obj?.aspectRatio &&
+                    (obj.aspectRatio === 1 / 1 || obj.aspectRatio !== 4 / 5)
+                      ? e.image.some((obj) => obj.aspectRatio === 4 / 5)
+                        ? `object-contain`
+                        : `object-cover`
                       : `object-contain`
                   }  `}
                   style={{
