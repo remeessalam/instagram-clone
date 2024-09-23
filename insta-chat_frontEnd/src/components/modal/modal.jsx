@@ -3,7 +3,7 @@ import uploadImage from "../../services/imageUpload";
 import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal, openModal } from "../../reduxgobalState/slices/modalslice";
+import { closeModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/cropedImage/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
 import FilterImage from "./components/imagesfilter/ImagesFilter";
@@ -78,7 +78,6 @@ export default function Modal() {
           console.log(images, "thisisimagesinthisisok");
           // return;
           InsertPost(cloudinaryImage, caption, images);
-          dispatch(openModal());
           setImages([]);
         }
         setSpinner(false);
@@ -91,6 +90,7 @@ export default function Modal() {
   const handleNext = () => {
     setSpinner(true);
     if (step === 3) {
+      setStep((pre) => pre + 1);
       addImage();
       return;
     }
@@ -120,19 +120,6 @@ export default function Modal() {
       throw Error(e, "somthing worst happening");
     }
   };
-  // const handleNextImage = () => {
-  //   setCount((prevCount) =>
-  //     prevCount < images.length - 1 ? prevCount + 1 : 0
-  //   );
-  //   setCrop({ x: 0, y: 0 });
-  // };
-  // const handlePrevImage = () => {
-  //   setCount((prevCount) =>
-  //     prevCount > 0 ? prevCount - 1 : images.length - 1
-  //   );
-  //   setCrop({ x: 0, y: 0 });
-  // };
-  const final = () => {};
   console.log(images, "thisisimagesinmodal");
   return (
     <>
@@ -146,6 +133,12 @@ export default function Modal() {
               onClick={() => {
                 setImages([]);
                 dispatch(closeModal());
+                setStep(0);
+                setSpinner(false);
+                setCaption("");
+                setCrop({ x: 0, y: 0 });
+                setImageCount(0);
+                setNext(false);
               }}
             >
               {svgIcons.whiteXCloseIcon}
@@ -156,32 +149,44 @@ export default function Modal() {
             {/** CONTAINER */}
             <div
               className={`bg-white  rounded-xl overflow-hidden ${
-                step > 1 ? `md:w-[978px]` : `md:w-[634px]`
+                step > 1 && step !== 4 ? `md:w-[978px]` : `md:w-[634px]`
               } w-[290px] h-[675px] transition-all duration-700`}
             >
-              <div className="flex items-center py-5 px-2 justify-between w-full h-8 border-b border-borderColor">
-                <span
-                  onClick={handlePrev}
-                  className={`${
-                    step === 0 ? `invisible` : `visible`
-                  } cursor-pointer`}
+              <div
+                className={`flex items-center py-5 px-2 ${
+                  step === 4 ? `justify-center` : `justify-between`
+                } w-full h-8 border-b border-borderColor`}
+              >
+                {step !== 4 && (
+                  <span
+                    onClick={handlePrev}
+                    className={`${
+                      step === 0 ? `invisible` : `visible`
+                    } cursor-pointer`}
+                  >
+                    {svgIcons.leftArrow}
+                  </span>
+                )}
+                <h3
+                  className={`font-semibold ${step === 4 ? `text-center` : ``}`}
                 >
-                  {svgIcons.leftArrow}
-                </span>
-                <h3 className="font-semibold">
-                  {spinner ? "loading" : "Create new post"}
+                  {step === 0 && "Create new post"}
+                  {step === 1 && "Crop"}
+                  {step === 2 && "Edit"}
+                  {step === 3 && "Create new post"}
+                  {step === 4 && spinner ? "Sharing" : "Post shared"}
                 </h3>
                 {next ? (
                   <h3
                     className="cursor-pointer font-semibold text-sm text-sky-500 hover:text-blue-900"
                     onClick={handleNext}
                   >
-                    {step === 3 ? "Share" : "Next"}
+                    {step === 3 ? "Share" : step === 4 ? "" : "Next"}
                   </h3>
                 ) : (
                   <div
                     className={`relative group ${
-                      step === 0 ? `invisible` : `visible`
+                      step === 0 || step === 4 ? `invisible` : `visible`
                     }`}
                   >
                     <h3 className="text-gray-200 cursor-pointer font-semibold text-sm">
@@ -244,6 +249,30 @@ export default function Modal() {
                     setImages={setImages}
                     setCaption={setCaption}
                   />
+                )}
+                {step === 4 && (
+                  <div className="w-full h-full flex justify-center items-center">
+                    {!spinner ? (
+                      <div className="flex flex-col w-full items-center">
+                        <img
+                          className="w-24 h-34"
+                          src="https://static.cdninstagram.com/rsrc.php/v3/yU/r/b_y28Mnuau9.gif"
+                          alt=""
+                        />
+                        <h4 className="text-xl font-medium">
+                          Your post has been shared.
+                        </h4>
+                      </div>
+                    ) : (
+                      <div className="w-24 h-34">
+                        <img
+                          className="w-24 h-34"
+                          src="https://static.cdninstagram.com/rsrc.php/v3/yE/r/psJ2tFS95qs.gif"
+                          alt=""
+                        />
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
