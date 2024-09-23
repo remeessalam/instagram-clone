@@ -159,6 +159,9 @@ const Post = ({ e }) => {
                     (obj.aspectRatio === 1 / 1 || obj.aspectRatio !== 4 / 5)
                       ? e.image.some((obj) => obj.aspectRatio === 4 / 5)
                         ? `object-contain`
+                        : obj.aspectRatio === 16 / 10 ||
+                          obj.aspectRatio === 16 / 9
+                        ? `object-contain`
                         : `object-cover`
                       : `object-contain`
                   }  `}
