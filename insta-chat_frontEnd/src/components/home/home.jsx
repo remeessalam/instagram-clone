@@ -36,7 +36,7 @@ function Content() {
     <div className="flex justify-center flex-row w-full h-[99vh] overflow-y-scroll  m-1 p-2 scrollbar-hide">
       {/* POST AND FRIEND DIV  */}
 
-      <div className="flex flex-col w-[630px] ml-4 mr-4   ">
+      <div className="flex flex-col w-[702px] ml-4 mr-4   ">
         {/* POST DIV */}
         {/* STORY DIV */}
         {IsBigScreen && (
@@ -45,7 +45,7 @@ function Content() {
           </div>
         )}
 
-        <div className={`flex flex-col mx-auto  p-2  w-full h-100%  `}>
+        <div className={`flex flex-col mx-auto w-[702px] p-2 h-100%  `}>
           {post.map((post) => (
             <Post key={post._id} e={post} />
           ))}

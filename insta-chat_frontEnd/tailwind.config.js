@@ -11,6 +11,10 @@ module.exports = {
         "gradient-violet-orange-red-yellow":
           "linear-gradient(to right, violet, orange, red, yellow)",
       },
+      borderColor: {
+        story:
+          "linear-gradient(25deg, rgba(251,202,65,1) 0%, rgba(194,60,144,1) 82%, rgba(144,55,173,1) 100%)",
+      },
       colors: {
         inputfieldbg: "#FAFAFA",
         newinputfieldbg: "#EFEFEF",
