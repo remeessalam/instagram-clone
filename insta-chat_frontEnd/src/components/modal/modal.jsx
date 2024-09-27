@@ -13,7 +13,7 @@ export default function Modal() {
   const [spinner, setSpinner] = useState(false);
   const [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
   const [open, setOpen] = useState("");
   const [step, setStep] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -78,7 +78,7 @@ export default function Modal() {
         setSpinner(false);
       })
       .catch((err) => {
-        setError(err);
+        // setError(err);
       });
   };
 

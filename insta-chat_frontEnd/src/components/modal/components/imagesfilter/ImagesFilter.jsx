@@ -60,7 +60,7 @@ const FilterImage = ({ images, setImages }) => {
           const [_, name, valueWithUnit] = match;
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
-
+          console.log(_);
           const positionFactor = imageFilter.position / 100;
 
           if (name === "contrast" && contrast[count]?.value !== 0) {

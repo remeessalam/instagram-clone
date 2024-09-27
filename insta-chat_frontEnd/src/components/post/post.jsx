@@ -139,7 +139,7 @@ const Post = ({ e }) => {
           {e.image.map((obj, i) => {
             return (
               <div
-                key={obj._id}
+                key={i}
                 className="flex min-w-full rounded-lg justify-center snap-always snap-center"
               >
                 <img
@@ -176,7 +176,7 @@ const Post = ({ e }) => {
           >
             {e.image.map((image, index) => {
               return (
-                <div key={image.url}>
+                <div key={index}>
                   {e.image.length > 1 && (
                     <div
                       className={`w-[6px] h-[6px] rounded-full ${

@@ -77,21 +77,19 @@ export default function Modal({ post, open, setOpen }) {
                 onScroll={handleScroll}
               >
                 {post.image?.map((obj, i) => {
+                  console.log(obj.aspectRatio, "tkljdsklgnaskdf");
                   return (
                     <div
                       key={i}
                       className="flex min-w-full min-h-full snap-always snap-center justify-center place-items-center"
                     >
                       <img
-                        // className=" h-full max-h-[325px] sm:max-h-[96vh]  object-cover aspect-auto "
-                        // src={obj.url}
                         className={`${
                           obj?.aspectRatio && obj?.aspectRatio === 1 / 1
                             ? `object-cover`
                             : `object-contain`
                         }  `}
                         style={{
-                          aspectRatio: obj?.aspectRatio && obj.aspectRatio,
                           filter:
                             obj.filter && obj.filter.filter !== ""
                               ? obj.filter.filter

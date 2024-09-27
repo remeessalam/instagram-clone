@@ -28,6 +28,7 @@ const Adjustments = ({
       }
       return updatedBrightness;
     });
+    // eslint-disable-next-line
   }, [images, count]);
 
   const resetFilter = (fun) => {
