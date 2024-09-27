@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { svgIcons } from "../../../../utils/constant";
 import { filtersImagesFilters } from "../../../../utils/constant";
 import "./filter.css";
@@ -31,7 +31,6 @@ const FilterImage = ({ images, setImages }) => {
     })
   );
 
-  console.log(brightness, "tlkasjdfkthisisibroghtness");
   const handleNextImage = () => {
     setCount((prevCount) =>
       prevCount < images.length - 1 ? prevCount + 1 : 0
@@ -42,25 +41,18 @@ const FilterImage = ({ images, setImages }) => {
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
   };
-  console.log(images[count].filter, "thisisbrightness");
 
   const getDynamicFilter = () => {
     const imageFilter = images[count].filter;
     let filters = "";
 
-    // If the filter is not applicable (position = 0 or filter is "Original"), return empty
-    if (
-      // !imageFilter ||
-      imageFilter.position === 0 ||
-      imageFilter.filterName === "Original"
-    ) {
+    if (imageFilter.position === 0 || imageFilter.filterName === "Original") {
       return "";
     }
 
-    // Apply filters based on position
     if (imageFilter?.filter && imageFilter.filterName !== "Original") {
       filters = imageFilter.filter
-        .split(/\s(?=[a-zA-Z-]+\()/) // Split filter string into individual filters
+        .split(/\s(?=[a-zA-Z-]+\()/)
         .map((part) => {
           const match = part.match(/([a-zA-Z-]+)\(([^)]+)\)/);
           if (!match) return part;
@@ -69,9 +61,8 @@ const FilterImage = ({ images, setImages }) => {
           const value = parseFloat(valueWithUnit);
           const unit = valueWithUnit.replace(/[\d.]/g, "") || "";
 
-          const positionFactor = imageFilter.position / 100; // Calculate the factor based on position (0 to 1)
+          const positionFactor = imageFilter.position / 100;
 
-          // Adjust filter values based on the slider position
           if (name === "contrast" && contrast[count]?.value !== 0) {
             const contrastValue =
               1 + (contrast[count]?.value / 400) * positionFactor;
@@ -124,9 +115,7 @@ const FilterImage = ({ images, setImages }) => {
       filters = `${filters} saturate(${saturationValue})`.trim();
     }
 
-    console.log(filters, "Updated filter string");
-
-    return filters.trim(); // Return the final filter string
+    return filters.trim();
   };
 
   return (

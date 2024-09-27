@@ -61,7 +61,6 @@ const Filters = ({
       </div>
       <div className="flex  gap-5 text-xs focus:font-medium active-within:font-bold items-center mt-8 mx-4">
         {filterSelection.map((filter, index) => {
-          console.log(filter?.position, "jasdflkajsdflkajsdklfjalksjdf");
           return (
             <div
               key={filter.filterName}
@@ -80,11 +79,6 @@ const Filters = ({
                 step={0.001}
                 max={duration}
                 onChange={(_, value) => {
-                  console.log(
-                    filterSelection?.filterName,
-                    images[count]?.filterName,
-                    "alsdjfaksdjfaksdjf"
-                  );
                   setFilterSelection((prev) => {
                     const updatedSelection = prev.map((item, idx) => {
                       if (idx === index) {

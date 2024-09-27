@@ -14,10 +14,8 @@ export default function Modal() {
   const [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
   const [error, setError] = useState("");
-  const [imageFile, setImageFile] = useState();
   const [open, setOpen] = useState("");
   const [step, setStep] = useState(0);
-  const [count, setCount] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [imageCount, setImageCount] = useState(0);
   const [next, setNext] = useState(false);
@@ -39,7 +37,7 @@ export default function Modal() {
   const uploadPhoto = (e) => {
     const files = Object.values(e.target.files);
     setImageCount(files.length);
-    setImageFile(files);
+
     files.forEach((img) => {
       const reader = new FileReader();
       reader.readAsDataURL(img);
@@ -73,9 +71,6 @@ export default function Modal() {
       .then((data) => {
         let cloudinaryImage = data;
         if (cloudinaryImage) {
-          console.log(cloudinaryImage, "htisisiddarasr");
-
-          console.log(images, "thisisimagesinthisisok");
           // return;
           InsertPost(cloudinaryImage, caption, images);
           setImages([]);
@@ -120,7 +115,6 @@ export default function Modal() {
       throw Error(e, "somthing worst happening");
     }
   };
-  console.log(images, "thisisimagesinmodal");
   return (
     <>
       {openModalState && (

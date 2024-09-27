@@ -48,7 +48,7 @@ const Post = ({ e }) => {
       return { truncatedText, truncated: true };
     };
 
-    const limit = 50; // Adjust the limit as needed
+    const limit = 50;
     const { truncatedText, truncated } = truncateText(e.caption, limit);
 
     setCaption(truncatedText);
@@ -79,12 +79,6 @@ const Post = ({ e }) => {
     const newIndex = Math.round(scrollLeft / width);
     setCurrentSlide(newIndex);
   };
-  console.log(e, "thiadjsfifjasdifj");
-
-  console.log(
-    e.image.some((obj) => obj.aspectRatio === 4 / 5),
-    "hasdhflkahdfklajsldkf"
-  );
 
   return (
     <div
@@ -143,16 +137,11 @@ const Post = ({ e }) => {
           onScroll={handleScroll}
         >
           {e.image.map((obj, i) => {
-            console.log(
-              obj.aspectRatio === 1 / 1 || obj.aspectRatio === 4 / 5,
-              "jsldkfkalsdjfasdkf"
-            );
             return (
               <div
                 key={obj._id}
                 className="flex min-w-full rounded-lg justify-center snap-always snap-center"
               >
-                {/* min-h-[468px] max-h-[585px] */}
                 <img
                   className={`${
                     obj?.aspectRatio &&
@@ -187,10 +176,7 @@ const Post = ({ e }) => {
           >
             {e.image.map((image, index) => {
               return (
-                <div
-                  // className={`${open ? "hidden" : "relative"}`}
-                  key={image.url}
-                >
+                <div key={image.url}>
                   {e.image.length > 1 && (
                     <div
                       className={`w-[6px] h-[6px] rounded-full ${
@@ -229,8 +215,6 @@ const Post = ({ e }) => {
                 }, 350);
               }}
             >
-              {/* <FavoriteBorderRoundedIcon /> */}
-              {/* <h1>like</h1> */}
               {svgIcons.likeIcon}
             </div>
           ) : (
@@ -243,10 +227,7 @@ const Post = ({ e }) => {
                 like(e._id);
               }}
             >
-              {/* <FavoriteIcon /> */}
               {svgIcons.redfillnotificationIcon}
-
-              {/* <h1>unlike</h1> */}
             </div>
           )}
           <div
@@ -256,18 +237,9 @@ const Post = ({ e }) => {
             }}
           >
             {svgIcons.commentIcon}
-
-            {/* <h1>comment</h1> */}
           </div>
-          <div
-            className="ml-4 flex flex-row cursor-pointer"
-            // onClick={() => {
-            //   setOpen(!open);
-            // }}
-          >
+          <div className="ml-4 flex flex-row cursor-pointer">
             {svgIcons.sendGrayIcon}
-
-            {/* <h1>comment</h1> */}
           </div>
         </div>
         <div>
@@ -278,12 +250,6 @@ const Post = ({ e }) => {
       </div>
       <div className="flex justify-start">
         <h1 className="text-sm font-semibold pr-5 ">{e.Likes.length} likes</h1>
-        {/* <h1
-          className="text-sx font-normal cursor-pointer"
-          onClick={() => setOpen(!open)}
-        >
-          {e.comments.length} comments
-        </h1> */}
       </div>
       <div className="flex flex-row justify-start w-full">
         <h1
@@ -308,10 +274,6 @@ const Post = ({ e }) => {
             )}
           </span>
         </h1>
-
-        {/* <p className={`${e.caption ? `` : `mb-4`}pl-1 pb-4 font-light text-sx`}>
-          {e.caption}
-        </p> */}
       </div>
       <div className="cursor-pointer">
         {e.comments.length ? (

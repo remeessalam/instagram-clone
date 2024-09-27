@@ -14,8 +14,6 @@ const Adjustments = ({
 }) => {
   const theme = useTheme();
 
-  //   const [sliderValue, setSliderValue] = useState(0);
-  console.log(brightness, "thisisbrightness");
   const [isSliding, setIsSliding] = useState(false);
   const [fade, setFade] = useState(0);
   const [temperature, setTemperature] = useState(0);
@@ -32,8 +30,6 @@ const Adjustments = ({
     });
   }, [images, count]);
 
-  console.log(brightness[count], count, "jsdfkjaksdjfkjadfk");
-
   const resetFilter = (fun) => {
     fun((prev) => {
       const updatedBrightness = [...prev];
@@ -43,7 +39,6 @@ const Adjustments = ({
       return updatedBrightness;
     });
   };
-  console.log(fade, "thhisdfdfafade");
   return (
     <div>
       <div className="px-5">
@@ -61,20 +56,11 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              //   track={false}
-              //   aria-labelledby="track-false-slider"
-              // getAriaValueText={(value) =>
-              //   setBrightness((prev) => {
-              //     const updatedBrightness = [...prev]; // Create a shallow copy of the previous brightness array
-              //     updatedBrightness[count] = value; // Update the specific index with the new value
-              //     return updatedBrightness; // Return the updated array
-              //   })
-              // }
               onChange={(e, value) =>
                 setBrightness((prev) => {
-                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
-                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
-                  return updatedBrightness; // Return the updated array
+                  const updatedBrightness = [...prev];
+                  updatedBrightness[count] = { value: value };
+                  return updatedBrightness;
                 })
               }
               min={-100}
@@ -150,16 +136,13 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              //   track={false}
-              //   aria-labelledby="track-false-slider"
               onChange={(e, value) =>
                 setContrast((prev) => {
-                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
-                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
-                  return updatedBrightness; // Return the updated array
+                  const updatedBrightness = [...prev];
+                  updatedBrightness[count] = { value: value };
+                  return updatedBrightness;
                 })
               }
-              // getAriaValueText={(value) => setContrast(value)}
               min={-100}
               max={100}
               value={contrast[count]?.value}
@@ -228,8 +211,6 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              //   track={false}
-              //   aria-labelledby="track-false-slider"
               onChange={(_, value) => setFade(value)}
               min={-100}
               max={100}
@@ -243,9 +224,7 @@ const Adjustments = ({
                   width: 22,
                   height: 22,
                   transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
-                  "&::before": {
-                    // boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
-                  },
+                  "&::before": {},
                   "&:hover, &.Mui-focusVisible": {
                     boxShadow: `0px 0px 0px 8px ${
                       theme.palette.mode === "dark"
@@ -296,14 +275,11 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              //   track={false}
-              //   aria-labelledby="track-false-slider"
-              // getAriaValueText={(value) => setSaturation(value)}
               onChange={(e, value) =>
                 setSaturation((prev) => {
-                  const updatedBrightness = [...prev]; // Create a shallow copy of the brightness array
-                  updatedBrightness[count] = { value: value }; // Update the value at the specific index
-                  return updatedBrightness; // Return the updated array
+                  const updatedBrightness = [...prev];
+                  updatedBrightness[count] = { value: value };
+                  return updatedBrightness;
                 })
               }
               min={-100}
@@ -374,8 +350,6 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              //   track={false}
-              //   aria-labelledby="track-false-slider"
               getAriaValueText={(value) => setTemperature(value)}
               min={-100}
               max={100}

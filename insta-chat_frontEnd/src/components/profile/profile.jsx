@@ -250,10 +250,9 @@ function Profile() {
           </div>
 
           {/** POST  */}
-          {/* <div className="w-[975px] shrink"> */}
+
           <div className=" grid grid-cols-3 gap-1 lg:pb-0 pb-[50px]">
             {post.map((e, i) => {
-              console.log(e, "thisdidifsidfiasdif");
               return (
                 <div
                   key={i}

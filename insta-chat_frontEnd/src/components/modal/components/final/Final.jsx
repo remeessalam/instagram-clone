@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { svgIcons } from "../../../../utils/constant";
 import { useSelector } from "react-redux";
 
-const Final = ({ images, setImages, setCaption }) => {
+const Final = ({ images, setCaption }) => {
   const [count, setCount] = useState(0);
   const [discription, setDiscription] = useState("");
   const [disLength, setDisLength] = useState(0);
@@ -18,7 +18,6 @@ const Final = ({ images, setImages, setCaption }) => {
       prevCount > 0 ? prevCount - 1 : images.length - 1
     );
   };
-  console.log(images, "thisisnewimage");
   return (
     <>
       <div className="relative w-[634px] h-[675px] bg-white text-white flex flex-wrap">
@@ -97,7 +96,6 @@ const Final = ({ images, setImages, setCaption }) => {
             id=""
             onChange={(e) => {
               let value = e.target.value;
-              console.log(e, "thisdfhaisdfadsjkf");
               if (value.length > 2200) {
                 value = value.slice(0, 2200);
               }

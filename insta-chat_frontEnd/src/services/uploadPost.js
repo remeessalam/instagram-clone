@@ -1,7 +1,6 @@
 import axios from "./axioscall";
 
 const InsertPost = (cloudinaryImage, caption, images) => {
-  console.log(cloudinaryImage, caption, images, "thisispostaftercloudinary");
   let finalImage = images.map((image, i) => {
     return {
       crop: image.crop,
