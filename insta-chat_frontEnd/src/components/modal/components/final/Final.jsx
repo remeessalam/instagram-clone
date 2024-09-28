@@ -45,8 +45,10 @@ const Final = ({ images, setCaption }) => {
                   alt=""
                   style={{
                     filter: img?.filter?.filter,
+                    aspectRatio: img.aspectRatio,
                   }}
-                  className={` aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                  // aspect-[${img.aspectRatio}]
+                  className={`  max-h-postUploadImageMaxHeight object-cover `}
                 />
               </div>
             </div>

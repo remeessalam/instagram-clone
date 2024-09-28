@@ -117,7 +117,7 @@ const FilterImage = ({ images, setImages }) => {
 
     return filters.trim();
   };
-
+  console.log(images[count]?.aspectRatio, "thlaksdfjkasldfj-filter");
   return (
     <>
       <div
@@ -133,6 +133,7 @@ const FilterImage = ({ images, setImages }) => {
         )}
 
         {images?.map((img, i) => {
+          console.log(img.aspectRatio, "thisisaspect");
           return (
             <div
               className={`relative min-w-[634px] max-w-[634px] flex ${
@@ -146,8 +147,10 @@ const FilterImage = ({ images, setImages }) => {
                   alt=""
                   style={{
                     filter: getDynamicFilter(),
+                    aspectRatio: img.aspectRatio,
                   }}
-                  className={` aspect-[${img.aspectRatio}] max-h-postUploadImageMaxHeight object-cover `}
+                  // aspect-[${img.aspectRatio}]
+                  className={`  max-h-postUploadImageMaxHeight object-cover `}
                 />
               </div>
             </div>

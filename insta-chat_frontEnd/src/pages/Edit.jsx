@@ -31,7 +31,7 @@ const ImageCropper = () => {
     if (!isDragging) return;
 
     const rect = imageRef.current.getBoundingClientRect();
-    const cropRect = cropBoxRef.current.getBoundingClientRect();
+    // const cropRect = cropBoxRef.current.getBoundingClientRect();
 
     const x = Math.max(
       0,

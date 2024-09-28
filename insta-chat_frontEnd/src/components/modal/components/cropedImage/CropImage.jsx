@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { svgIcons } from "../../../../utils/constant";
 import Cropper from "react-easy-crop";
 import Slider from "@mui/material/Slider";
 import { useTheme } from "@mui/material/styles";
-
+let f = 0;
 const CropImage = ({
   images,
   setOpen,
@@ -19,7 +19,7 @@ const CropImage = ({
   const duration = 5;
   const rotation = 0;
   const theme = useTheme();
-
+  useEffect(() => {}, [images]);
   const onCropComplete = async (croppedArea, croppedAreaPixel) => {
     if (
       isNaN(croppedAreaPixel?.width) ||
@@ -90,6 +90,9 @@ const CropImage = ({
     // setCrop(crop);
   };
 
+  console.log(f, "rendered-croppage");
+  console.log(images[count]?.aspectRatio, "thlaksdfjkasldfj");
+  f++;
   return (
     <div className=" flex h-postUploadChildContainer w-full flex-col rounded-md">
       <div className="flex  flex-col mx-auto md:w-full w-full h-[100%]">
@@ -178,7 +181,7 @@ const CropImage = ({
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
                   onClick={() => {
                     setImages((prev) => {
-                      const updatedImages = [...prev];
+                      const updatedImages = [...images];
                       updatedImages[count] = {
                         ...updatedImages[count],
                         aspectRatio: 16 / 10,
@@ -198,7 +201,7 @@ const CropImage = ({
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
                   onClick={() => {
                     setImages((prev) => {
-                      const updatedImages = [...prev];
+                      const updatedImages = [...images];
                       updatedImages[count] = {
                         ...updatedImages[count],
                         aspectRatio: 1 / 1,
@@ -217,7 +220,7 @@ const CropImage = ({
                   } items-center justify-center gap-3 cursor-pointer py-3 border-b`}
                   onClick={() => {
                     setImages((prev) => {
-                      const updatedImages = [...prev];
+                      const updatedImages = [...images];
                       updatedImages[count] = {
                         ...updatedImages[count],
                         aspectRatio: 4 / 5,
@@ -236,7 +239,7 @@ const CropImage = ({
                   } items-center justify-center gap-3 cursor-pointer py-3`}
                   onClick={() => {
                     setImages((prev) => {
-                      const updatedImages = [...prev];
+                      const updatedImages = [...images];
                       updatedImages[count] = {
                         ...updatedImages[count],
                         aspectRatio: 16 / 9,

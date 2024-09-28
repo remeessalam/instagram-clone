@@ -14,6 +14,7 @@ import { closeModal, openModal } from "../reduxgobalState/slices/modalslice";
 const SideBar = () => {
   const IsBigScreen = useMediaQuery({ query: bigScreen });
   const forSide = useMediaQuery({ query: forSideBar });
+  const openModalState = useSelector((state) => state.modal.openModalState);
 
   const navigate = useNavigate();
 
@@ -413,7 +414,7 @@ const SideBar = () => {
           </div>
         )}
       </div>
-      <Modal />
+      {openModalState && <Modal />}
     </>
   );
 };

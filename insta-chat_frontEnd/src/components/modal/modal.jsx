@@ -2,16 +2,17 @@ import { useState, useEffect } from "react";
 import uploadImage from "../../services/imageUpload";
 import InsertPost from "../../services/uploadPost";
 import { svgIcons } from "../../utils/constant";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { closeModal } from "../../reduxgobalState/slices/modalslice";
 import CropImage from "./components/cropedImage/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
 import FilterImage from "./components/imagesfilter/ImagesFilter";
 import Final from "./components/final/Final";
-
-export default function Modal() {
+let i = 0;
+const Modal = () => {
   const [spinner, setSpinner] = useState(false);
-  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  var [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
   // const [error, setError] = useState("");
   const [open, setOpen] = useState("");
@@ -19,7 +20,7 @@ export default function Modal() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [imageCount, setImageCount] = useState(0);
   const [next, setNext] = useState(false);
-  const openModalState = useSelector((state) => state.modal.openModalState);
+  // const openModalState = useSelector((state) => state.modal.openModalState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function Modal() {
         }
       }
     });
-  });
+  }, [images]);
 
   const uploadPhoto = (e) => {
     const files = Object.values(e.target.files);
@@ -84,19 +85,26 @@ export default function Modal() {
 
   const handleNext = () => {
     setSpinner(true);
+    // setLoading(true);
     if (step === 3) {
       setStep((pre) => pre + 1);
       addImage();
       return;
     }
-    setStep((pre) => pre + 1);
 
+    // setTimeout(() => {
+    setStep((prev) => prev + 1);
     setSpinner(false);
+    //   setLoading(false);
+    // }, 1000);
   };
 
   const handlePrev = () => {
     setStep((prev) => {
-      prev === 1 && setImages([]);
+      if (prev === 1) {
+        setImages([]);
+        setNext(false);
+      }
       return prev === 0 ? 0 : prev - 1;
     });
   };
@@ -115,85 +123,95 @@ export default function Modal() {
       throw Error(e, "somthing worst happening");
     }
   };
+
+  console.log(i, "rendered-mainpage");
+  console.log(images[0]?.aspectRatio, "thlaksdfjkasldfj-model");
+
+  i++;
   return (
     <>
-      {openModalState && (
-        <div className="fixed inset-0 w-full h-[100vh] !z-100 overflow-y-auto bg-black bg-opacity-60">
-          {/** CLOSE BUTTON */}
-          <div className="fixed right-2 top-2 sm:p-1 p-6">
-            <button
-              type="button"
-              className="inline-flex p-1 text-base font-medium text-white"
-              onClick={() => {
-                setImages([]);
-                dispatch(closeModal());
-                setStep(0);
-                setSpinner(false);
-                setCaption("");
-                setCrop({ x: 0, y: 0 });
-                setImageCount(0);
-                setNext(false);
-              }}
-            >
-              {svgIcons.whiteXCloseIcon}
-            </button>
-          </div>
-          {/**POST MODEL */}
-          <div className=" z-500 flex min-h-full justify-center w-full items-center">
-            {/** CONTAINER */}
+      <div className="fixed inset-0 w-full h-[100vh] !z-100 overflow-y-auto bg-black bg-opacity-60">
+        {/** CLOSE BUTTON */}
+        <div className="fixed right-2 top-2 sm:p-1 p-6">
+          <button
+            type="button"
+            className="inline-flex p-1 text-base font-medium text-white"
+            onClick={() => {
+              setImages([]);
+              dispatch(closeModal());
+              setStep(0);
+              setSpinner(false);
+              setLoading(false);
+              setCaption("");
+              setCrop({ x: 0, y: 0 });
+              setImageCount(0);
+              setNext(false);
+            }}
+          >
+            {svgIcons.whiteXCloseIcon}
+          </button>
+        </div>
+        {/**POST MODEL */}
+        <div className=" z-500 flex min-h-full justify-center w-full items-center">
+          {/** CONTAINER */}
+          <div
+            className={`bg-white  rounded-xl overflow-hidden ${
+              step > 1 && step !== 4 ? `md:w-[978px]` : `md:w-[634px]`
+            } w-[290px] h-[675px] transition-all duration-700`}
+          >
             <div
-              className={`bg-white  rounded-xl overflow-hidden ${
-                step > 1 && step !== 4 ? `md:w-[978px]` : `md:w-[634px]`
-              } w-[290px] h-[675px] transition-all duration-700`}
+              className={`flex items-center py-5 px-2 ${
+                step === 4 ? `justify-center` : `justify-between`
+              } w-full h-8 border-b border-borderColor`}
             >
-              <div
-                className={`flex items-center py-5 px-2 ${
-                  step === 4 ? `justify-center` : `justify-between`
-                } w-full h-8 border-b border-borderColor`}
-              >
-                {step !== 4 && (
-                  <span
-                    onClick={handlePrev}
-                    className={`${
-                      step === 0 ? `invisible` : `visible`
-                    } cursor-pointer`}
-                  >
-                    {svgIcons.leftArrow}
-                  </span>
-                )}
-                <h3
-                  className={`font-semibold ${step === 4 ? `text-center` : ``}`}
+              {step !== 4 && (
+                <span
+                  onClick={handlePrev}
+                  className={`${
+                    step === 0 ? `invisible` : `visible`
+                  } cursor-pointer`}
                 >
-                  {step === 0 && "Create new post"}
-                  {step === 1 && "Crop"}
-                  {step === 2 && "Edit"}
-                  {step === 3 && "Create new post"}
-                  {step === 4 && spinner ? "Sharing" : "Post shared"}
+                  {svgIcons.leftArrow}
+                </span>
+              )}
+              <h3
+                className={`font-semibold ${step === 4 ? `text-center` : ``}`}
+              >
+                {step === 0 && "Create new post"}
+                {step === 1 && "Crop"}
+                {step === 2 && "Edit"}
+                {step === 3 && "Create new post"}
+                {step === 4 && spinner ? "Sharing" : "Post shared"}
+              </h3>
+              {next ? (
+                <h3
+                  className="cursor-pointer font-semibold text-sm text-sky-500 hover:text-blue-900"
+                  onClick={handleNext}
+                >
+                  {step === 3 ? "Share" : step === 4 ? "" : "Next"}
                 </h3>
-                {next ? (
-                  <h3
-                    className="cursor-pointer font-semibold text-sm text-sky-500 hover:text-blue-900"
-                    onClick={handleNext}
-                  >
-                    {step === 3 ? "Share" : step === 4 ? "" : "Next"}
+              ) : (
+                <div
+                  className={`relative group ${
+                    step === 0 || step === 4 ? `invisible` : `visible`
+                  }`}
+                >
+                  <h3 className="text-gray-200 cursor-pointer font-semibold text-sm">
+                    Next
                   </h3>
-                ) : (
-                  <div
-                    className={`relative group ${
-                      step === 0 || step === 4 ? `invisible` : `visible`
-                    }`}
-                  >
-                    <h3 className="text-gray-200 cursor-pointer font-semibold text-sm">
-                      Next
-                    </h3>
-                    <div className="absolute -translate-x-3/4 mt-2 w-max bg-black text-white text-xs px-2 py-1  opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
-                      Crop All Images
-                    </div>
+                  <div className="absolute -translate-x-3/4 mt-2 w-max bg-black text-white text-xs px-2 py-1  opacity-0 group-hover:opacity-100 transition-opacity duration-1000">
+                    Crop All Images
                   </div>
-                )}
-              </div>
-              <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
+                </div>
+              )}
+            </div>
+            <div className="sm:flex sm:items-center w-full h-postUploadChildContainer overflow-hidden">
+              {/* {loading ? (
+                <div>Loading...</div>
+              ) : ( */}
+              <>
                 {/** STEP ONE */}
+
                 {step === 0 && (
                   <div className="mt-3  flex items-center justify-center text-center w-full h-full">
                     <div className="max-h-full p-4 flex flex-col m-2">
@@ -268,11 +286,14 @@ export default function Modal() {
                     )}
                   </div>
                 )}
-              </div>
+              </>
+              {/* )} */}
             </div>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
-}
+};
+
+export default Modal;
