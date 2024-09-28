@@ -117,7 +117,7 @@ const FilterImage = ({ images, setImages }) => {
 
     return filters.trim();
   };
-  console.log(images[count]?.aspectRatio, "thlaksdfjkasldfj-filter");
+  console.log(images[count], "thlaksdfjkasldfj-filter");
   return (
     <>
       <div

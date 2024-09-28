@@ -8,11 +8,10 @@ import CropImage from "./components/cropedImage/CropImage";
 import getCroppedImg from "../../utils/helperFuntion";
 import FilterImage from "./components/imagesfilter/ImagesFilter";
 import Final from "./components/final/Final";
-let i = 0;
+
 const Modal = () => {
   const [spinner, setSpinner] = useState(false);
-  const [loading, setLoading] = useState(false);
-  var [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
   const [caption, setCaption] = useState("");
   // const [error, setError] = useState("");
   const [open, setOpen] = useState("");
@@ -85,18 +84,14 @@ const Modal = () => {
 
   const handleNext = () => {
     setSpinner(true);
-    // setLoading(true);
     if (step === 3) {
       setStep((pre) => pre + 1);
       addImage();
       return;
     }
 
-    // setTimeout(() => {
     setStep((prev) => prev + 1);
     setSpinner(false);
-    //   setLoading(false);
-    // }, 1000);
   };
 
   const handlePrev = () => {
@@ -124,10 +119,9 @@ const Modal = () => {
     }
   };
 
-  console.log(i, "rendered-mainpage");
+  console.log("rendered-mainpage");
   console.log(images[0]?.aspectRatio, "thlaksdfjkasldfj-model");
 
-  i++;
   return (
     <>
       <div className="fixed inset-0 w-full h-[100vh] !z-100 overflow-y-auto bg-black bg-opacity-60">
@@ -141,7 +135,6 @@ const Modal = () => {
               dispatch(closeModal());
               setStep(0);
               setSpinner(false);
-              setLoading(false);
               setCaption("");
               setCrop({ x: 0, y: 0 });
               setImageCount(0);

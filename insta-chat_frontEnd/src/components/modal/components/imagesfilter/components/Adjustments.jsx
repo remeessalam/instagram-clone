@@ -57,7 +57,7 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              onChange={(e, value) =>
+              onChange={(_, value) =>
                 setBrightness((prev) => {
                   const updatedBrightness = [...prev];
                   updatedBrightness[count] = { value: value };
@@ -137,7 +137,7 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              onChange={(e, value) =>
+              onChange={(_, value) =>
                 setContrast((prev) => {
                   const updatedBrightness = [...prev];
                   updatedBrightness[count] = { value: value };
@@ -276,7 +276,7 @@ const Adjustments = ({
           </div>
           <div className="flex gap-6 items-center">
             <Slider
-              onChange={(e, value) =>
+              onChange={(_, value) =>
                 setSaturation((prev) => {
                   const updatedBrightness = [...prev];
                   updatedBrightness[count] = { value: value };

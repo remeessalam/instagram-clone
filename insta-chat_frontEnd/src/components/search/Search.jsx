@@ -63,7 +63,7 @@ const Search = ({ open, setOpen, handleClose }) => {
                           color="rgb(200, 200, 200)"
                           strokeWidth="5"
                           animationDuration="0.75"
-                          ariaLabel="rotating-lines-loading"
+                          aria-label="rotating-lines-loading"
                           wrapperStyle={{}}
                           wrapperClass=""
                         />
