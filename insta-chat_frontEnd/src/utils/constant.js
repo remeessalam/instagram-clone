@@ -868,7 +868,7 @@ export const svgIcons = {
   ),
   downArrow: (
     <svg
-      ariaLabel="Down chevron icon"
+      aria-label="Down chevron icon"
       className=""
       fill="currentColor"
       height="16"
@@ -882,7 +882,7 @@ export const svgIcons = {
   ),
   locationIcon: (
     <svg
-      ariaLabel="Add location"
+      aria-label="Add location"
       className=""
       fill="currentColor"
       height="16"

@@ -28,6 +28,20 @@ const Adjustments = ({
       }
       return updatedBrightness;
     });
+    setContrast((prev) => {
+      const updatedBrightness = [...prev];
+      if (!updatedBrightness[count]) {
+        updatedBrightness[count] = { value: 0 };
+      }
+      return updatedBrightness;
+    });
+    setSaturation((prev) => {
+      const updatedBrightness = [...prev];
+      if (!updatedBrightness[count]) {
+        updatedBrightness[count] = { value: 0 };
+      }
+      return updatedBrightness;
+    });
     // eslint-disable-next-line
   }, [images, count]);
 
