@@ -477,6 +477,10 @@ const Adjustments = ({
             </h3>
           </div>
         </div>
+        <h1 className="text-red-500 font-medium mt-2">
+          This filter is not added to the image. it only shows here. It will be
+          updated in the future.
+        </h1>
       </div>
     </div>
   );
