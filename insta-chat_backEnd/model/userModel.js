@@ -1,44 +1,49 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-
-
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String
+      type: String,
     },
     username: {
-        type: String
+      type: String,
     },
     email: {
-        type: String
+      type: String,
     },
     password: {
-        type: String
+      type: String,
     },
     image: {
-        type: String,
+      type: String,
     },
     mobile: {
-        type: String
+      type: String,
     },
     dateofbirth: {
-        type: Date
+      type: Date,
     },
     bio: {
-        type: String
+      type: String,
     },
-    following: [{
+    following: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-    }],
-    followers: [{
+        ref: "user",
+      },
+    ],
+    followers: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-    }],
+        ref: "user",
+      },
+    ],
     requests: {
-        type: Array,
-        default: [],
-    }
-}, { timestamps: true })
+      type: Array,
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model("user", userSchema);

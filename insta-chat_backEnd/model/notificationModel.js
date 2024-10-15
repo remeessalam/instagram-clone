@@ -1,22 +1,23 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-
-const notificationSchema = mongoose.Schema({
-    user: {
+const notificationSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
+  posts: [
+    {
+      post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: "post",
+      },
+      posteduser: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+      time: String,
     },
-    posts: [{
-        post: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'post'
-        },
-        posteduser: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user'
-        },
-        time: String
-    }]
-})
+  ],
+});
 
-module.exports = mongoose.model('notification', notificationSchema)
+module.exports = mongoose.model("notification", notificationSchema);
