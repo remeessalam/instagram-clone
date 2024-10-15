@@ -16,19 +16,6 @@ require("dotenv").config();
 app.use(bodyParser.json({ limit: "1000mb" })); // Adjust the limit size as needed
 app.use(bodyParser.urlencoded({ limit: "1000mb", extended: true }));
 
-moongose
-  .connect(process.env.MONGOURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000, // Increase timeout here
-    socketTimeoutMS: 45000, // Optional
-  })
-  .then(() => {
-    console.log("database connected");
-  })
-  .catch((err) => {
-    console.log(err, "error");
-  });
 app.use(
   cors({
     origin: "*",
@@ -54,4 +41,18 @@ app.use("/notification", notification);
 app.use(errorHandler);
 
 const PORT = 8000;
-server.listen(PORT, () => console.log(` app listening on port ${PORT}!`));
+
+moongose
+  .connect(process.env.MONGOURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Increase timeout here
+    socketTimeoutMS: 45000, // Optional
+  })
+  .then(() => {
+    console.log("database connected");
+    server.listen(PORT, () => console.log(` app listening on port ${PORT}!`));
+  })
+  .catch((err) => {
+    console.log(err, "error");
+  });

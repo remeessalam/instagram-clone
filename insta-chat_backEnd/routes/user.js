@@ -16,7 +16,6 @@ const {
   addprofilepicture,
 } = require("../controller/authentication");
 const routes = express.Router();
-cons = require("../middleware/token");
 
 routes.route("/signup").post(register);
 routes.route("/signup/checkusername").post(checkusername);
